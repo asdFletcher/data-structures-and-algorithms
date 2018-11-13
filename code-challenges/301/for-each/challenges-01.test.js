@@ -8,22 +8,9 @@ Write a function named greeting that takes in a string and returns the string in
 Then, write a function named speaker that takes in a string and a callback function. The speaker function should return the string in all uppercase letters only by invoking the callback.
 ------------------------------------------------------------------------------------------------ */
 
-const greeting = (word) => {
-  // Solution code here...
-  return word.toUpperCase();
-}
+const greeting = (word) => word.toUpperCase();
 
-const speaker = (message, callback) => {
-  // Solution code here...
-  return callback(message);
-}
-
-
-// describe('Testing challenge 1', () => {
-//   test('It should return the message with all uppercase characters', () => {
-//     expect(speaker('hello 301 students!', greeting)).toStrictEqual('HELLO 301 STUDENTS!');
-//   });
-// });
+const speaker = (message, callback) => callback(message);
 
 
 /* ------------------------------------------------------------------------------------------------
@@ -42,9 +29,7 @@ Within the addNumbers function, invoke the callback function as many times as ne
 Return the modified array.
 ------------------------------------------------------------------------------------------------ */
 
-const addValues = (arr, value) => {
-  arr.push(value);
-}
+const addValues = (arr, value) => arr.push(value);
 
 const addNumbers = (num, arr, times, callback) => {
   for (let i = 0; i < times; i++){
@@ -52,13 +37,6 @@ const addNumbers = (num, arr, times, callback) => {
   }
   return arr;
 }
-
-// describe('Testing challenge 2', () => {
-//   test('It should add the number 8 to the array five times', () => {
-//     expect(addNumbers(8, [], 5, addValues)).toStrictEqual([8, 8, 8, 8, 8]);
-//     expect(addNumbers(8, [], 5, addValues).length).toStrictEqual(5);
-//   });
-// });
 
 /* ------------------------------------------------------------------------------------------------
 CHALLENGE 3
