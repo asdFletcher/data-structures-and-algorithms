@@ -9,9 +9,7 @@ Write a function named sortBackwards that takes in an array of numbers and retur
 
 
 const sortBackwards = (arr) => {
-  return arr.sort(function(a, b) {    
-    return b - a;
-  });
+  return arr.sort( (a, b) => b - a);
 };
 
 
@@ -26,9 +24,7 @@ In this alphabetization, capital letters come before lower case letters.
 For example, ['Alphabet', 'Zebra', 'alphabet', 'carrot'] is correctly sorted.
 ------------------------------------------------------------------------------------------------ */
 
-const alphabetize = (arr) => {
-  // Solution code here...
-};
+const alphabetize = (arr) => arr.sort();
 
 /* ------------------------------------------------------------------------------------------------
 CHALLENGE 3
@@ -37,7 +33,10 @@ Write a function named sortByLength that takes in an array of strings and return
 ------------------------------------------------------------------------------------------------ */
 
 const sortByLength = (arr) => {
-  // Solution code here...
+
+  return arr.sort( (a,b) => {
+    return a.length - b.length
+  });
 };
 
 /* ------------------------------------------------------------------------------------------------
@@ -48,8 +47,19 @@ Write a function named alphabetizeBetter that takes in an array of strings and r
 For example, ['Alphabet', 'alphabet', 'carrot', 'Zebra'] is correctly sorted, and so is ['alphabet', 'Alphabet', 'carrot', 'Zebra'].
 ------------------------------------------------------------------------------------------------ */
 
-const alphabetizeBetter = (arr) => {
-  // Solution code here...
+const alphabetizeBetter = (array) => {
+
+  return array.sort((a,b) => {
+  
+// solution 1  
+//     if (a.toLowerCase() < b.toLowerCase()) { return -1};
+//     if (a.toLowerCase() > b.toLowerCase()) { return 1};
+//     if (a.toLowerCase() === b.toLowerCase()) { return 1};
+  
+  return (a.toLowerCase() < b.toLowerCase() ? -1 : 1);
+
+  });
+
 };
 
 /* ------------------------------------------------------------------------------------------------
@@ -65,8 +75,10 @@ Here is an example of the input:
 ];
 ------------------------------------------------------------------------------------------------ */
 
-const sortByPrice = (arr) => {
-  // Solution code here...
+var sortByPrice = (arr) => {
+
+  return arr.sort((a, b) => a.price - b.price);
+
 };
 
 /* ------------------------------------------------------------------------------------------------
@@ -78,7 +90,9 @@ For example, [1, 14, 0.2, -281, 54782] is only correctly sorted in that order.
 ------------------------------------------------------------------------------------------------ */
 
 const sortNumbersByLength = (arr) => {
-  // Solution code here...
+
+  return arr.sort( (a,b) => a.toString().length - b.toString().length);
+  
 };
 
 /*-----------------------------------------------------------------------------------------------
@@ -100,7 +114,9 @@ const people = [
 ];
 
 const sortPeople = (arr) => {
-  // Solution code here...
+
+  return arr.sort((a,b) => a.lastName < b.lastName ? -1 : 1 )
+
 };
 
 /* ------------------------------------------------------------------------------------------------
@@ -114,7 +130,17 @@ If two people have the same full name, the younger one should come first. Do not
 ------------------------------------------------------------------------------------------------ */
 
 const sortPeopleBetter = (arr) => {
-  // Solution code here...
+  return arr.sort((a,b) => {
+  
+    // solution 1
+    if (a.lastName < b.lastName) { return -1 };
+    if (a.lastName > b.lastName) { return 1 };
+    if (a.firstName < b.firstName) { return -1 };
+    if (a.firstName > b.firstName) { return 1 };
+    if (a.age < b.age) { return -1 };
+    if (a.age > b.age) { return 1 };
+
+  });
 };
 
 /* ------------------------------------------------------------------------------------------------
@@ -140,7 +166,22 @@ const meetings = [
 ];
 
 const sortMeetingsByDay = (arr) => {
-  // Solution code here...
+  return arr.sort( (a,b) => {
+    // return a.start < b.start ? -1 : 1;
+
+    // sort by day
+    let helper = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday']
+
+    return helper.indexOf(a.dayOfWeek) < helper.indexOf(b.dayOfWeek) ? -1 : 1;
+
+  });
 };
 
 /* ------------------------------------------------------------------------------------------------
@@ -154,7 +195,31 @@ You DO NOT need to use your solution to Challenge 9 in completing Challenge 10.
 ------------------------------------------------------------------------------------------------ */
 
 const sortSchedule = (arr) => {
-  // Solution code here...
+  return arr.sort( (a,b) => {
+
+    // sort by day
+    let helper = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday']
+
+    // day
+    if (helper.indexOf(a.dayOfWeek) < helper.indexOf(b.dayOfWeek)) { return -1};
+    if (helper.indexOf(a.dayOfWeek) > helper.indexOf(b.dayOfWeek)) { return 1};
+
+    // start time
+    if (a.start < b.start) { return -1};
+    if (a.start > b.start) { return 1};
+
+    // length
+    if ( (a.end - a.start) < (b.end - b.start) ) { return -1};
+    if ( (a.end - a.start) > (b.end - b.start) ) { return 1};
+
+  });
 };
 
 /* ------------------------------------------------------------------------------------------------
