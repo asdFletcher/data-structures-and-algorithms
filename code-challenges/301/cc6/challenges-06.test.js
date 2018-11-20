@@ -98,7 +98,7 @@ const hasChildrenValues = (arr, character) => {
   
   arr.forEach( (val) => {
     if (val.name === character){
-      if (Object.values(val.children).length > 0) {
+      if (Object.keys(val.children).length > 0) {
         hasChildren = true;
       }
     }
