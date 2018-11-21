@@ -40,13 +40,7 @@ CHALLENGE 3
 Write a function named mapTwoToThe that produces the same output as your forLoopTwoToThe function from challenge 1 and your forEachTwoToThe function from challenge 2, but uses map instead of a for loop or forEach.
 ------------------------------------------------------------------------------------------------ */
 
-const mapTwoToThe = (arr) => {
-    let result = [];
-  
-    arr.map( (val) => result.push(Math.pow(2,val)));
-  
-    return result;
-  };
+const mapTwoToThe = (arr) => arr.map( (val) => Math.pow(2,val));
 
 /* ------------------------------------------------------------------------------------------------
 CHALLENGE 4
@@ -59,12 +53,10 @@ For example: charCode(['h','i']) returns [104, 105].
 ------------------------------------------------------------------------------------------------ */
 
 const charCode = (arr) => {
-    let result = [];
-  
-    arr.map( (val) => result.push(val.charCodeAt(0)) );
-  
-    return result;
-  };
+ 
+  return arr.map( (val) => val.charCodeAt(0) );
+
+};
 
 /* ------------------------------------------------------------------------------------------------
 CHALLENGE 5
@@ -77,22 +69,20 @@ For example: evenOdd([1,2,3]) returns ['odd','even','odd'].
 ------------------------------------------------------------------------------------------------ */
 
 const evenOdd = (arr) => {
-    const result = [];
   
-    arr.map( (val) => {
+    return arr.map( (val) => {
       if (typeof(val) === 'number'){
         if (Math.round(val) % 2 === 0){
-          result.push('even');
+          return 'even';
         }
         if (Math.round(val) % 2 === 1){
-          result.push('odd');
+          return 'odd';
         }
       } else {
-        result.push('N/A');
+        return 'N/A';
       }
     });
-    
-    return result;
+
   };
 
 /* ------------------------------------------------------------------------------------------------
@@ -138,13 +128,9 @@ const snorlaxAbilities = {
 };
 
 const extractAbilities = (abilityArray) => {
-    const result = [];
     
-    abilityArray.map( (abilityTopLevel) => {
-      result.push(abilityTopLevel.ability.name);
-    });
-  
-    return result;
+    return abilityArray.map( (abilityTopLevel) => abilityTopLevel.ability.name);
+
 };
 
 /* ------------------------------------------------------------------------------------------------
@@ -191,18 +177,15 @@ const snorlaxStats = {
 };
 
 const extractStats = (statsArray) => {
-    const result = [];
     
-    statsArray.map( (statTopLevel) => {
+    return statsArray.map( (statTopLevel) => {
 
       let total = statTopLevel.baseStat + statTopLevel.effort;
       let name = statTopLevel.stat.name;
 
-      result.push({ name: name, total: total });
+      return ({ name: name, total: total });
       
     });
-    
-    return result;
 };
 
 /* ------------------------------------------------------------------------------------------------
