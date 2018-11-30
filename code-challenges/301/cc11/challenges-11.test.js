@@ -31,8 +31,7 @@ Note: if you ever need to validate an email using a regex in practice, the Inter
 ------------------------------------------------------------------------------------------------ */
 
 const validateEmail = (email) => {
-  // Solution code here...
-  let regex = /\w+\@\w+.((com)|(net)|(org))/g;
+  let regex = /^\w+.?\w+\@\w+.((com)|(net)|(org))$/g;
   return email.match(regex) || false;
 };
 
@@ -58,7 +57,9 @@ Return either true or false.
 ------------------------------------------------------------------------------------------------ */
 
 const validatePhoneNumber = (phoneNumber) => {
-  // Solution code here...
+  const regex = /^(\(\d{3}\)|\d{3})( |-)?\d{3}( |-)?\d{4}$/g;
+
+  return phoneNumber.match(regex) ? true : false;
 };
 
 /* ------------------------------------------------------------------------------------------------
@@ -70,8 +71,11 @@ For example, findTagNames(['<h1>Hello, world!</h1>', '<p>Welcome to my site</p>'
 findTagNames(['<div><h1>Hello, world!</h1></div>', '<p>Welcome to my site</p>']) returns ['/h1', '/div', '/p'].
 ------------------------------------------------------------------------------------------------ */
 
-const findTagNames = elements => {
-  // Solution code here...
+const findTagNames = (arrayOfStrings) => {
+  
+  const regex = /(?<=<)\/\w+(?=>)/g;
+  
+  return arrayOfStrings.reduce( (tot, str) => tot.concat(str.match(regex)), []);
 }
 
 /* ------------------------------------------------------------------------------------------------
