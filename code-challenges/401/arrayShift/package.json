@@ -1,0 +1,12 @@
+{
+  "name": "arrayshift",
+  "version": "1.0.0",
+  "description": "## Author Fletcher LaRue",
+  "main": "array-shift.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Fletcher LaRue",
+  "license": "ISC",
+  "dependencies": {}
+}
