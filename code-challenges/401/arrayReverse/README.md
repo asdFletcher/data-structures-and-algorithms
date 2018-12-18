@@ -13,7 +13,7 @@ Start at the end of the existing array and insert the values into a new array. T
 
 ## Solution
 <!-- Embedded whiteboard image -->
-![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Whiteboard image")
+![alt text](https://github.com/asdFletcher/data-structures-and-algorithms/blob/master/code-challenges/401/arrayReverse/assets/array_reverse.jpg "Whiteboard image")
 
 
 
