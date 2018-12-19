@@ -30,4 +30,4 @@ This algorithm iterates over the array once, so will be O(n). It creates a copy 
 
 ## Solution
 <!-- Embedded whiteboard image -->
-![alt text](./assets/arrayShift.jpg "Whiteboard image")
+![alt text](./assets/array-shift.jpg "Whiteboard image")
