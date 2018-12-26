@@ -1,6 +1,19 @@
-# Linked List
+![CF](http://i.imgur.com/7v5ASc8.png) LAB 05: Linked Lists
+=================================================
 
-## Author Fletcher LaRue
+
+### Author: Fletcher LaRue
+
+### Links and Resources
+
+[![Build Status](https://www.travis-ci.com/asdFletcher/data-structures-and-algorithms.svg?branch=master)](https://www.travis-ci.com/asdFletcher/data-structures-and-algorithms)
+
+* [repo](https://github.com/asdFletcher/data-structures-and-algorithms/tree/master/code-challenges/linked_list)
+* [travis](https://www.travis-ci.com/asdFletcher/data-structures-and-algorithms)
+
+--- 
+
+---
 
 # Implemented a linked list data structure
 Make a class that has the same functionality as a linked list.
@@ -29,113 +42,144 @@ Make a class that has the same functionality as a linked list.
 ## API
 <!-- Description of each method publicly available to your Linked List -->
 
-
-![CF](http://i.imgur.com/7v5ASc8.png) LAB 05: Linked Lists
-=================================================
-
-
-### Author: Fletcher LaRue
-
-### Links and Resources
-
-[![Build Status](https://www.travis-ci.com/asdFletcher/04-buffers.svg?branch=master)](https://www.travis-ci.com/asdFletcher/04-buffers)
-
-* [repo](https://github.com/asdFletcher/data-structures-and-algorithms/tree/master/code-challenges/linked_list)
-* [travis](https://www.travis-ci.com/asdFletcher/04-buffers)
-
---- 
-
----
-Description:
-This project involves reading and writing data to and from files using buffers. In the first exercise data is written in string form, converted to a buffer and written to a file using Node.js file system 'fs'. The second exercise takes data from a given text file, parses it and makes changes it (in this case, adding various HTML tags), and then writes it back to the same file.
-
 ---
 ### Files
-#### `index.js`
-#### `articler.js`
+#### `linked-list.js`
 ---
 ##### Exported Values and Methods for the following files:
 
-There are no explicitly exported modules, but the functionality can be used or changed by running the two JavaScript files:
-
-#### `index.js`
-* none
-#### `articler.js`
-* none
+#### `linked-list.js`
+`linked-list.js` exports the LinkedList class, which has methods available for adding elements to the list, testing for the existence of a value, and printing the values in the list.
+* `LinkedList` class
+    * Methods:
+        * `constructor()`
+        * `add(<value>)`
+        * `insert(<value>)`
+        * `includes(<value>)`
+        * `print()`
 ---
 
+##### Using the `LinkedList` class methods:
 
-##### Using the following files:
-The modules:
+- #### `LinkedList` `constructor()`
+```JavaScript
+const myList = new LinkedList();
+```
+* Creates a new linked list that is empty
+* Accepts no arguments
+* If arguments are passed in they will be ignored
 
+- #### `LinkedList.prototype.add(<value>)`
+```JavaScript
+const myList = new LinkedList();
+myList.add(5);
+myList.add(10);
+// results in HEAD: 5 --> 10
+```
+* Adds the value to the END of the list
+* Accepts 1 argument
+* If the method is called with no argument, the value will default to `undefined`
+* If the method is called with more than 1 argument, only the first argument will be added
 
+- #### `LinkedList.prototype.insert(<value>)`
+```JavaScript
+const myList = new LinkedList();
+myList.insert(5);
+myList.insert(10);
+// results in HEAD: 10 --> 5
+```
+* Adds the value to the START of the list
+* Accepts 1 argument
+* If the method is called with no argument, the value will default to `undefined`
+* If the method is called with more than 1 argument, only the first argument will be added
 
+- #### `LinkedList.prototype.includes(<value>)`
+```JavaScript
+const myList = new LinkedList();
+myList.insert(5);
+myList.insert(10);
 
-Since there are no exported modules, these files can only be used directly. For example via `node <file name>` in the terminal.
+myList.includes(10); // returns true
+```
+* Returns `true` if the value exists in the list
+* Returns `false` if the value does not exist in the list
+* Loops through the list once to check for the existence of the value. Returns early if the value is found.
+* Accepts 1 argument
+* If the method is called with no argument, the value will default to `undefined`
+* If the method is called with more than 1 argument, only the first argument will be searched for
 
-- #### `index.js` behavior is as follows:
+- #### `LinkedList.prototype.print()`
+```JavaScript
+const myList = new LinkedList();
+myList.insert(5);
+myList.insert(10);
 
-* Generates some content as a string
-* allocate a buffer (default `utf-8`)
-* convert the content to a buffer via `.charCodeAt()`
-* write the file using `.writeFile`
-
-- #### `articler.js` behavior is as follows:
-
-* Read file from a specified path (hard coded)
-* call `.readFile` using Node.js's `fs`
-* convert the content to a buffer via `.charCodeAt()`
-* alter the data `alterData()`
-* write the file using `.writeFile`
-* File is over-written by any changes
-
+myList.includes(10); 
+// log output:
+// > 10
+// > 5
+```
+* Console logs the all values in the list
+* List values are logged in order starting from the start
+* Each list value is logged as a separate console.log command
+* This method logs the string 'undefined' if the list is empty
+* Method accepts no arguments
+* If the method is called with more than 1 or more arguments they are ignored
 ---
 
 ### Testing
 
-Test files for each module are located in the repository as follows:
+The linked-list folder holds all files that define the linked list class:
+`/data-structures-and-algorithms/code-challenges/linked_list`
 
-// TODO: Create test files
+Tests are written for the LinkedList class methods and can be found here:
+`/data-structures-and-algorithms/code-challenges/linked_list/__tests__/linked-list.test.js`
 
-To perform testing using jest, run the following command in the terminal from the root of a local copy of the repository:
-```JavaScript
-npm jest --verbose --coverage
-```
 
-It is useful to bind this command to:
-```JavaScript
-npm test
-```
+All testing for this class was done with Jest: 
+* [Jest docs](https://jestjs.io/docs/en/getting-started)
 
-An example of the `package.json` contents that create this bind is as follows:
-```Javascript
-  "scripts": {
-    "test": "jest --verbose --coverage",
-    "test-watch": "jest --watchAll --verbose --coverage"
-  }
-```
+Instructions for replicating the tests for this project are as follows:
 
-To create a `package.json` file run:
-```JavaScript
-npm init
-```
+* Clone the repo.
+* Create a node runtime environment
+
+    ```JavaScript
+    npm init
+    ```
+    This will create a `package.json` file, a `package-lock.json` file.
+
+* Install Jest
+
+    ```JavaScript
+    npm i jest
+    ```
+* Run jest
+    ```JavaScript
+    npm jest --verbose --coverage
+    ```
+    It is useful to bind this to the command:
+    ```JavaScript
+    npm test
+    ```
+    To do this, manually edit your package.json to include the following under the "scripts" attribute:
+    ```Javascript
+    "scripts": {
+        "test": "jest --verbose --coverage",
+        "test-watch": "jest --watchAll --verbose --coverage"
+    }
+    ```
+    `test-watch` will re-run tests when the file is saved
+
 
 ---
 
 ### Dependencies
 
 * jest: `npm i jest`
-* Node.js included filesystem: `require('fs')`
-
 
 
 ### Setup
 #### `.env` requirements
 * n/a
 
-
-#### Tests
-TODO: Fill in the following
-* How do you run tests?
-* What assertions were made?
-* What assertions need to be / should be made?
