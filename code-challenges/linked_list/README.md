@@ -69,17 +69,17 @@ const myList = new LinkedList();
 * Accepts no arguments
 * If arguments are passed in they will be ignored
 
-- #### `LinkedList.prototype.add(<value>)`
+- #### `LinkedList.prototype.append(<value>)`
 ```JavaScript
 const myList = new LinkedList();
-myList.add(5);
-myList.add(10);
+myList.append(5);
+myList.append(10);
 // results in HEAD: 5 --> 10
 ```
-* Adds the value to the END of the list
+* appends the value to the END of the list
 * Accepts 1 argument
 * If the method is called with no argument, the value will default to `undefined`
-* If the method is called with more than 1 argument, only the first argument will be added
+* If the method is called with more than 1 argument, only the first argument will be appended
 
 - #### `LinkedList.prototype.insert(<value>)`
 ```JavaScript
@@ -125,6 +125,29 @@ myList.includes(10);
 * This method logs the string 'undefined' if the list is empty
 * Method accepts no arguments
 * If the method is called with more than 1 or more arguments they are ignored
+
+- #### `LinkedList.prototype.insertBefore(<value>,<new value>)`
+```JavaScript
+const myList = new LinkedList();
+myList.append(5);
+myList.append(10);
+myList.insertBefore(10,3);
+// results in HEAD: 5 --> 3 --> 10
+```
+* appends the `new value` to the list, before the first instance of `value`
+* Accepts 2 arguments
+
+- #### `LinkedList.prototype.insertAfter(<value>,<new value>)`
+```JavaScript
+const myList = new LinkedList();
+myList.append(5);
+myList.append(10);
+myList.append(10);
+myList.insertAfter(10,3);
+// results in HEAD: 5 --> 10 --> 3 --> 10
+```
+* appends the `new value` to the list, after the first instance of `value`
+* Accepts 2 arguments
 ---
 
 ### Testing
@@ -183,18 +206,23 @@ Instructions for replicating the tests for this project are as follows:
 #### `.env` requirements
 * n/a
 
+--- 
+## Whiteboard Solution For Methods `append` `insertBefore` and `insertAfter`
+<!-- Embedded whiteboard image -->
+![alt text](./assets/linked_list1.jpg "Whiteboard image")
+![alt text](./assets/linked_list2.jpg "Whiteboard image")
+
+---
+
 ### To-do list
 - [x] Read all of these instructions carefully
 - [x] All work in repo: data-structures-and-algorithms
-- [x] Branch name: linked_list
-- [x] Folder name: linkedList
-- [x] File name: linked-list.js
-- [x] Create a Node class
-- [x] LinkedList class, include a head property
-- [x] `insert` method
-- [x] `includes` method
-- [x] `print` method
-- [x] `insert` method
+- [x] Work on branch: ll_insertions
+- [x] Work in folder: linkedList
+- [x] Work in file: linked-list.js
+- [x] Create the linked list method `append`
+- [x] Create the linked list method `insertBefore`
+- [x] Create the linked list method `insertAfter`
 - [x] Write at least three test assertions for each method that you define.
 - [x] Ensure your tests are passing before you submit your solution.
 - [x] Create a pull request from your branch to your master branch
