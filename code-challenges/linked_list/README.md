@@ -183,3 +183,21 @@ Instructions for replicating the tests for this project are as follows:
 #### `.env` requirements
 * n/a
 
+### To-do list
+- [x] Read all of these instructions carefully
+- [x] All work in repo: data-structures-and-algorithms
+- [x] Branch name: linked_list
+- [x] Folder name: linkedList
+- [x] File name: linked-list.js
+- [x] Create a Node class
+- [x] LinkedList class, include a head property
+- [x] `insert` method
+- [x] `includes` method
+- [x] `print` method
+- [x] `insert` method
+- [x] Write at least three test assertions for each method that you define.
+- [x] Ensure your tests are passing before you submit your solution.
+- [x] Create a pull request from your branch to your master branch
+- [x] In your open pull request, leave as a comment a checklist
+- [ ] Submitting your completed work to Canvas (soon)
+- [ ] Merge your branch into master (soon)
