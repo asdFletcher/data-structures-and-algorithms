@@ -96,6 +96,30 @@ class LinkedList {
     node.next = current.next;
     current.next = node;
   }
+
+  kthFromEnd(k){
+    
+    if(!this.head){ return; }
+    let current = this.head;
+    let totalSteps = 0;
+
+    while(current.next){
+      current = current.next;
+      totalSteps++;
+    }
+
+    current = this.head;
+    let steps = totalSteps - k;
+    
+    if (steps < 0){ return; }
+
+    for(let i = 0; i < steps; i++){
+      current = current.next;
+    }
+    
+    return current.value;
+  }
+
 }
 
 module.exports = {LinkedList};

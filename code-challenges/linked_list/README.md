@@ -212,17 +212,19 @@ Instructions for replicating the tests for this project are as follows:
 ![alt text](./assets/linked_list1.jpg "Whiteboard image")
 ![alt text](./assets/linked_list2.jpg "Whiteboard image")
 
+## Whiteboard Solution For Methods `kthFromEnd`
+<!-- Embedded whiteboard image -->
+![alt text](./assets/kthFromEnd.jpg "Whiteboard image")
+
 ---
 
 ### To-do list
 - [x] Read all of these instructions carefully
 - [x] All work in repo: data-structures-and-algorithms
-- [x] Work on branch: ll_insertions
+- [x] Work on branch: ll_kth_from_end
 - [x] Work in folder: linkedList
 - [x] Work in file: linked-list.js
-- [x] Create the linked list method `append`
-- [x] Create the linked list method `insertBefore`
-- [x] Create the linked list method `insertAfter`
+- [x] Create the linked list method `kthFromEnd`
 - [x] Write at least three test assertions for each method that you define.
 - [x] Ensure your tests are passing before you submit your solution.
 - [x] Create a pull request from your branch to your master branch

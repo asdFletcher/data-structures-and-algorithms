@@ -394,3 +394,50 @@ describe('linked list insert after', () => {
     expect(list.head.value).toEqual(5);
   });
 });
+
+describe('linked list kthFromEnd', () => {
+  it('correctly returns the kth element from the end of the list', () => { 
+    let list = new LinkedList();
+    list.append(1);
+    list.append(2);
+    list.append(3);
+    list.append(4);
+
+    let expected = 2;
+    let result = list.kthFromEnd(2);
+
+    expect(result).toEqual(expected);
+  });
+
+  it('returns undefined if k > list length', () => { 
+    let list = new LinkedList();
+    list.append(1);
+    list.append(2);
+    list.append(3);
+    list.append(4);
+
+    let expected = undefined;
+    let result = list.kthFromEnd(4);
+
+    expect(result).toEqual(expected);
+  });
+
+  it('retruns undefined if list is empty', () => { 
+    let list = new LinkedList();
+
+    let expected = undefined;
+    let result = list.kthFromEnd(4);
+
+    expect(result).toEqual(expected);
+  });
+
+  it('retruns undefined if no parameters are passed in', () => { 
+    let list = new LinkedList();
+
+    let expected = undefined;
+    let result = list.kthFromEnd();
+
+    expect(result).toEqual(expected);
+  });
+
+});
