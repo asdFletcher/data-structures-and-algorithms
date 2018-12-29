@@ -8,30 +8,41 @@ console.log('~~~~~~~~~~~~~')
 let test = new LinkedList();
 // console.log('1: ', util.inspect(test));
 
-test.add(5);
-// console.log('2: ', util.inspect(test));
+test.append(1);
+test.append(2);
+test.append(3);
+test.append(4);
 
-test.add(6);
-// console.log('3: ', util.inspect(test));
+console.log(test.kthFromEnd(0));
+console.log(test.kthFromEnd(1));
+console.log(test.kthFromEnd(2));
+console.log(test.kthFromEnd(3));
+console.log(test.kthFromEnd(4));
 
-test.add(10);
-// console.log('4: ', util.inspect(test));
+// test.add(5);
+// // console.log('2: ', util.inspect(test));
 
-test.print();
+// test.add(6);
+// // console.log('3: ', util.inspect(test));
 
-let test2 = new LinkedList();
-test2.print();
+// test.add(10);
+// // console.log('4: ', util.inspect(test));
 
-console.log('includes 2? ', test.includes(2));
-console.log('includes 10? ', test.includes(10));
-console.log('includes 5? ', test.includes(5));
-console.log('includes 6? ', test.includes(6));
+// test.print();
 
-test.insert(123);
-console.log('5: ', util.inspect(test));
-console.log('includes 2? ', test.includes(2));
-console.log('includes 10? ', test.includes(10));
-console.log('includes 5? ', test.includes(5));
-console.log('includes 6? ', test.includes(6));
-console.log('includes 123? ', test.includes(123));
-test.print();
+// let test2 = new LinkedList();
+// test2.print();
+
+// console.log('includes 2? ', test.includes(2));
+// console.log('includes 10? ', test.includes(10));
+// console.log('includes 5? ', test.includes(5));
+// console.log('includes 6? ', test.includes(6));
+
+// test.insert(123);
+// console.log('5: ', util.inspect(test));
+// console.log('includes 2? ', test.includes(2));
+// console.log('includes 10? ', test.includes(10));
+// console.log('includes 5? ', test.includes(5));
+// console.log('includes 6? ', test.includes(6));
+// console.log('includes 123? ', test.includes(123));
+// test.print();
