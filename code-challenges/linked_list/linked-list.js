@@ -51,15 +51,12 @@ class LinkedList {
 
   append(value){
     let node = new Node(value);
-    // if first node, make it the head
+
     if (this.head === null){
       this.head = node;
       return;
     }
-    // if it is not empty
-    // go to the end and create a new node
-    // go until current.next === null;
-  
+
     let current = this.head;
     while(current.next !== null){
       current = current.next;
