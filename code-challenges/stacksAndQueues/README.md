@@ -216,18 +216,21 @@ Instructions for replicating the tests for this project are as follows:
 
 --- 
 
+## Whiteboard Solution For Methods `enqueue` and `dequeue`
+<!-- Embedded whiteboard image -->
+![alt text](./queueWithStacks/assets/queue_with_stacks.jpg "Whiteboard image")
 
-
+Worked with: Ryan Gallaway
 ---
 
 ### To-do list
 - [x] Read all of these instructions carefully
 - [x] All work in repo: `data-structures-and-algorithms`
-- [x] Work on branch: `stack_and_queue`
-- [x] Work in folder: `stacksAndQueues`
-- [x] Work in file: `stacks-and-queues.js`
-- [x] Create the `queue` and `stack` and `node` class
-- [x] Write at least three test assertions for each method that you define.
+- [x] Work on branch: `queue_with_stacks`
+- [x] Work in folder: `queueWithStacks`
+- [x] Work in file: `queue-with-stacks.js`
+- [x] Create the `pseudoQueue` class
+- [] Write at least three test assertions for each method that you define.
 - [x] Ensure your tests are passing before you submit your solution.
 - [x] Document your implementation with a README.md
 - [x] Create a pull request from your branch to your master branch
