@@ -1,8 +1,8 @@
-![CF](http://i.imgur.com/7v5ASc8.png) Zipper 2 Linked Lists 
+![CF](http://i.imgur.com/7v5ASc8.png) Lab 10
 =================================================
 
 
-### Author: Fletcher LaRue and Heather Cherewaty
+### Author: Fletcher LaRue
 
 ### Links and Resources
 
