@@ -28,7 +28,9 @@ dequeue(pref): returns either a dog or a cat. If pref is not "dog" or "cat" then
 ## API
 <!-- Description of each method publicly available to your Linked List -->
 
-TODO: Complete the following documetnation:
+## Whiteboard Solution
+<!-- Embedded whiteboard image -->
+![alt text](./assets/fifo_animal_shelter.jpg "Whiteboard image")
 
 ---
 ### Files
@@ -200,9 +202,7 @@ Instructions for replicating the tests for this project are as follows:
 ![alt text](./assets/linked_list1.jpg "Whiteboard image")
 ![alt text](./assets/linked_list2.jpg "Whiteboard image")
 
-## Whiteboard Solution For Methods `kthFromEnd`
-<!-- Embedded whiteboard image -->
-![alt text](./assets/kthFromEnd.jpg "Whiteboard image")
+
 
 ---
 
