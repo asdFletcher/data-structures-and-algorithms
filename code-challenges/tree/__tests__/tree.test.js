@@ -1,6 +1,6 @@
 'ust strict';
 
-let Tree = require('../tree.js');
+let BinaryTree = require('../tree.js').BinaryTree;
 
 describe('tree constructor', () => {
 
@@ -9,7 +9,7 @@ describe('tree constructor', () => {
     {
       root: null,
     };
-    let result = new Tree();
+    let result = new BinaryTree();
     expect(expected).toEqual(result);
   });
 
@@ -18,7 +18,7 @@ describe('tree constructor', () => {
     {
       root: null,
     };
-    let result = new Tree(1234);
+    let result = new BinaryTree(1234);
     expect(expected).toEqual(result);
   });
 });
@@ -35,7 +35,7 @@ describe('tree add method', () => {
       root: node1,
     };
 
-    let result = new Tree();
+    let result = new BinaryTree();
     result.add(5);
     expect(expected).toEqual(result);
   });
@@ -54,7 +54,7 @@ describe('tree add method', () => {
       root: node1,
     };
 
-    let result = new Tree();
+    let result = new BinaryTree();
     result.add(5);
     result.add(10);
     expect(expected).toEqual(result);
@@ -74,7 +74,7 @@ describe('tree add method', () => {
       root: node1,
     };
 
-    let result = new Tree();
+    let result = new BinaryTree();
     result.add(5);
     result.add(null);
     expect(expected).toEqual(result);
@@ -90,7 +90,7 @@ describe('tree add method', () => {
       root: node1,
     };
 
-    let result = new Tree();
+    let result = new BinaryTree();
     result.add();
     expect(expected).toEqual(result);
   });
@@ -105,7 +105,7 @@ describe('tree add method', () => {
       root: node1,
     };
 
-    let result = new Tree();
+    let result = new BinaryTree();
     result.add(5, 10);
     expect(expected).toEqual(result);
   });
@@ -116,7 +116,7 @@ describe('tree includes method', () => {
   it('can handle an empty tree', () => {
     let expected = false;
 
-    let tree = new Tree();
+    let tree = new BinaryTree();
     let result = tree.includes(5);
     expect(expected).toEqual(result);
   });
@@ -124,7 +124,7 @@ describe('tree includes method', () => {
   it('returns true correctly', () => {
     let expected = true;
 
-    let tree = new Tree();
+    let tree = new BinaryTree();
     tree.insert(5);
     tree.insert(10);
     let result = tree.includes(5);
@@ -134,7 +134,7 @@ describe('tree includes method', () => {
   it('returns false correctly', () => {
     let expected = false;
 
-    let tree = new Tree();
+    let tree = new BinaryTree();
     tree.insert(5);
     tree.insert(10);
     let result = tree.includes(11);
@@ -144,7 +144,7 @@ describe('tree includes method', () => {
   it('handles single item trees', () => {
     let expected = true;
 
-    let tree = new Tree();
+    let tree = new BinaryTree();
     tree.insert(5);
     let result = tree.includes(5);
     expect(expected).toEqual(result);
@@ -153,7 +153,7 @@ describe('tree includes method', () => {
   it('handles multiple item trees', () => {
     let expected = true;
 
-    let tree = new Tree();
+    let tree = new BinaryTree();
     tree.insert(null);
     tree.insert(10);
     let result = tree.includes(null);
@@ -163,7 +163,7 @@ describe('tree includes method', () => {
   it('handles no parameters', () => {
     let expected = false;
 
-    let tree = new Tree();
+    let tree = new BinaryTree();
     tree.insert(2);
     tree.insert(10);
     let result = tree.includes();
@@ -173,7 +173,7 @@ describe('tree includes method', () => {
   it('can handle multiple parameters', () => {
     let expected = true;
 
-    let tree = new Tree();
+    let tree = new BinaryTree();
     tree.insert(2);
     tree.insert(10);
     let result = tree.includes(2,100);
@@ -181,5 +181,52 @@ describe('tree includes method', () => {
   });
 });
 
+
+describe('tree includes method', () => {
+
+  let a = new Node(5);
+  let b = new Node(2);
+  let c = new Node(15);
+  let d = new Node(-3);
+  let e = new Node(4);
+  let f = new Node(6);
+
+  const myTree = new BinaryTree();
+  myTree.root = a;
+  
+  a.left = b;
+  a.right = c;
+  b.left = d;
+  b.right = e;
+  c.right = f;
+
+  it('can handle an empty tree', () => {
+    const logSpy = jest.spyOn(console, 'log');
+    let tree = new BinaryTree();
+    tree.breadthFirst();
+    expect(logSpy).not.toHaveBeenCalled();
+
+    logSpy.mockRestore();
+  });
+
+  it('handles a 1-node tree', () => {
+    const logSpy = jest.spyOn(console, 'log');
+    let tree = new BinaryTree();
+    tree.breadthFirst();
+    console.log('hi');
+    expect(logSpy).toHaveBeenCalled();
+
+    logSpy.mockRestore();
+  });
+
+  it('handles a larger tree', () => {
+    let expected = false;
+
+    let tree = new BinaryTree();
+    let result = tree.includes(5);
+    expect(expected).toEqual(result);
+  });
+
+});
 
 
