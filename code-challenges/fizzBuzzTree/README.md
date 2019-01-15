@@ -1,9 +1,9 @@
-![CF](http://i.imgur.com/7v5ASc8.png) Lab 15
+![CF](http://i.imgur.com/7v5ASc8.png)
 =================================================
 
-### Trees
+### Code challenge 16
 
-### Author: Fletcher LaRue
+### Author: Fletcher LaRue and Ryan Gallaway
 
 ### Links and Resources
 
@@ -16,60 +16,27 @@
 
 ---
 
-# Implemented a tree class
-```js
-// tree:
-//       (1)
-//       / \
-//     (3) (5)
-//    /  \    \
-// (2)   (6)  (15)
-```
+# FizzBuzzTree function
+Write a function called FizzBuzzTree which takes a tree as an argument.
+
+Without utilizing any of the built-in methods available to your language, determine weather or not the value of each node is divisible by 3, 5 or both, and change the value of each of the nodes:
+
+- If the value is divisible by 3, replace the value with “Fizz”
+- If the value is divisible by 5, replace the value with “Buzz”
+- If the value is divisible by 3 and 5, replace the value with “FizzBuzz”
+Return the tree with its new values.
+
+For explicitly-typed languages: Ensure your node values are of type Object, to hold either strings or integers.
+
 ---
 ### Files
-#### `tree.js`
+#### `fizz-buzz-tree.js.js`
 
 ---
 ##### Exported Values and Methods for the following files:
 
-#### `tree.js`
-`tree.js` exports the `Tree` and `Node` class, which have methods for adding and removing elements that follow the traditional data structure scheme for trees. Including a `preOrder`, `postOrder`, and `inOrder` traversal.
-
-
-* `Tree` class
-    * Methods:
-        * `constructor()`
-        * `preOrder()`
-        * `postOrder()`
-        * `inOrder()`
-        * `add()`
-        * `contains()`
-
----
-
-##### Using the `Tree` class methods:
-
-- #### `Tree` `constructor()`
-```JavaScript
-const myTree = new Tree();
-```
-* Creates a new tree that is empty
-* Accepts no arguments
-* If arguments are passed in they will be ignored
-* The `root` value of a new empty tree is `null`
-
-- #### `Tree.prototype.add(<value>)`
-```JavaScript
-const myTree = new Tree();
-myTree.add(5);
-myTree.add(10);
-```
-* Adds the value to the tree
-* Accepts 1 argument
-* If the method is called with no argument, the value will default to `undefined`
-* If the method is called with more than 1 argument, only the first argument will be accepted
-
-
+#### `fizz-buzz-tree.js.js`
+`fizz-buzz-tree.js.js` exports a function called `FizzBuzzTree`, the function described above.
 ---
 
 ### Testing
@@ -109,11 +76,9 @@ Instructions for replicating the tests for this project are as follows:
     ```
     `test-watch` will re-run tests when the file is saved
 
-
 ---
 
 ### Dependencies
-
 * jest: `npm i jest`
 
 
