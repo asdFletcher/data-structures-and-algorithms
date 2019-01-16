@@ -1,7 +1,7 @@
 'ust strict';
 
 let FizzBuzzTree = require('../fizz-buzz-tree.js');
-let Tree = require('../../tree/tree.js').Tree;
+let BinaryTree = require('../../tree/tree.js').BinaryTree;
 let Node = require('../../tree/tree.js').Node;
 
 
@@ -13,7 +13,7 @@ describe('fizz-buzz-tree', () => {
   let e = new Node(4);
   let f = new Node(6);
 
-  const myTree = new Tree();
+  const myTree = new BinaryTree();
   myTree.root = a;
   
   a.left = b;
@@ -39,7 +39,7 @@ describe('fizz-buzz-tree', () => {
   });
 
   it('correctly changes a tree', () => {
-    const myTree2 = new Tree();
+    const myTree2 = new BinaryTree();
 
     expect( ()=> {
       FizzBuzzTree(myTree2);

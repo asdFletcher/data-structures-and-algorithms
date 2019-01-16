@@ -8,7 +8,7 @@ class Node{
   }
 }
 
-class Tree {
+class BinaryTree {
 
   constructor(){
     this.root = null;
@@ -52,9 +52,28 @@ class Tree {
 
   }
 
+  breadthFirst() {
+    const Queue = require('../stacksAndQueues/stacks-and-queues.js').Queue;
+    let node = this.root;
+    let queue = new Queue();
+    if (!this.root) {
+      return;
+    }
+    queue.enqueue(node);
+    while(queue.front) {
+      console.log(queue.front.value);
+      if(queue.front.left) {
+        queue.enqueue(queue.front.left);
+      }
+      if(queue.front.right) {
+        queue.enqueue(queue.front.right);
+      }
+      queue.dequeue();
+    }
+  }
 }
 
 module.exports = {
-  Tree,
+  BinaryTree,
   Node,
 };
