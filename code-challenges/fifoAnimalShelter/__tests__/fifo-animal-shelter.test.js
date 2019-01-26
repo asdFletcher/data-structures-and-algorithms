@@ -15,8 +15,8 @@ describe('animal shelter', () => {
     myShelter.enQ(cat);
 
     expect(myShelter.cat.front).not.toBeNull();
-    expect(myShelter.dog.front).not.toBeNull();
-    expect(myShelter.cat.front.species).toEqual('cat');
+    expect(myShelter.dog.front).toBeNull();
+    expect(myShelter.cat.front.value.species).toEqual('cat');
     expect(myShelter).toBeInstanceOf(AnimalShelter);
   });
 
@@ -29,10 +29,41 @@ describe('animal shelter', () => {
     };
     myShelter.enQ(cat);
 
-    // expect(myShelter.cat.front).not.toBeNull();
     expect(myShelter.cat.front).toBeNull();
-    expect(myShelter.dog.front.species).toEqual('dog');
+    expect(myShelter.dog.front.value.species).toEqual('dog');
     expect(myShelter).toBeInstanceOf(AnimalShelter);
+  });
+
+  it('accepts more than 1 accepts dog', () => {
+    let myShelter = new AnimalShelter();
+
+    let dog = 
+    {
+      species: 'dog',
+    };
+    myShelter.enQ(dog);
+    myShelter.enQ(dog);
+
+    expect(myShelter.dog.front.value.species).toEqual('dog');
+    expect(myShelter.dog.back.value.species).toEqual('dog');
+    expect(myShelter).toBeInstanceOf(AnimalShelter);
+    expect( ()=> {
+      myShelter.deQ('dog');
+    }).not.toThrow();
+    expect( ()=> {
+      myShelter.deQ('dog');
+    }).not.toThrow();
+    expect( ()=> {
+      myShelter.deQ('dog');
+    }).toThrow();
+  });
+
+  it('dequeue throws an error when tehre are none of a type', () => {
+    let myShelter = new AnimalShelter();
+
+    expect( ()=> {
+      myShelter.deQ('dog');
+    }).toThrow();
   });
 });
 
