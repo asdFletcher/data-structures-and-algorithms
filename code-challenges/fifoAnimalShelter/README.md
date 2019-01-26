@@ -1,9 +1,9 @@
-![CF](http://i.imgur.com/7v5ASc8.png) LAB 05: Linked Lists
+![CF](http://i.imgur.com/7v5ASc8.png)
 =================================================
 
 
 ### Author: Fletcher LaRue
-Worked with Michael George
+Worked with Jonathan DiQuattro and Ryan Gallaway
 
 ### Links and Resources
 
@@ -34,120 +34,71 @@ dequeue(pref): returns either a dog or a cat. If pref is not "dog" or "cat" then
 
 ---
 ### Files
-#### `linked-list.js`
+#### `fif-animal-shelter.js`
 ---
 ##### Exported Values and Methods for the following files:
 
-#### `linked-list.js`
-`linked-list.js` exports the LinkedList class, which has methods available for adding elements to the list, testing for the existence of a value, and printing the values in the list.
-* `LinkedList` class
+#### `fifo-animal-shelter.js`
+`fifo-animal-shelter.js` exports the AnimalShelte class, which has 2 methods available for adding and removing animals to the queue.
+
+* `AnimalShelter` class
     * Methods:
         * `constructor()`
-        * `add(<value>)`
-        * `insert(<value>)`
-        * `includes(<value>)`
-        * `print()`
+        * `enQ(<animal>)`
+        * `deQ(<preference>)`
 ---
 
-##### Using the `LinkedList` class methods:
+##### Using the `AnimalShelter` class methods:
 
-- #### `LinkedList` `constructor()`
+- #### `AnimalShelter` `constructor()`
 ```JavaScript
-const myList = new LinkedList();
+const myShelter = new AnimalShelter();
 ```
-* Creates a new linked list that is empty
+* Creates a new shelter that is empty
 * Accepts no arguments
 * If arguments are passed in they will be ignored
 
-- #### `LinkedList.prototype.append(<value>)`
+- #### `AnimalShelter.prototype.enQ(<amimal>)`
 ```JavaScript
-const myList = new LinkedList();
-myList.append(5);
-myList.append(10);
-// results in HEAD: 5 --> 10
+const myShelter = new AnimalShelter();
+let myCat = {
+    species: 'cat'
+}
+let myDog = {
+    species: 'dog'
+}
+myShelter.enQ(myCat);
+myShelter.enQ(myDog);
+
 ```
-* appends the value to the END of the list
+* appends the cats to the end of the cat queue
 * Accepts 1 argument
-* If the method is called with no argument, the value will default to `undefined`
-* If the method is called with more than 1 argument, only the first argument will be appended
+* The argument must be an object with a species attribute that is either `cat` or `dog` otherwise it will not be added to the shelter
 
-- #### `LinkedList.prototype.insert(<value>)`
+- #### `AnimalShelter.prototype.dqQ(<amimal>)`
 ```JavaScript
-const myList = new LinkedList();
-myList.insert(5);
-myList.insert(10);
-// results in HEAD: 10 --> 5
+const myShelter = new AnimalShelter();
+let myCat = {
+    species: 'cat'
+}
+let myDog = {
+    species: 'dog'
+}
+myShelter.enQ(myCat);
+myShelter.enQ(myDog);
+
+myShelter.deQ('cat'); // removes 1 cat
+myShelter.deQ('cat'); // throws error, 'no cats'
+
 ```
-* Adds the value to the START of the list
-* Accepts 1 argument
-* If the method is called with no argument, the value will default to `undefined`
-* If the method is called with more than 1 argument, only the first argument will be added
-
-- #### `LinkedList.prototype.includes(<value>)`
-```JavaScript
-const myList = new LinkedList();
-myList.insert(5);
-myList.insert(10);
-
-myList.includes(10); // returns true
-```
-* Returns `true` if the value exists in the list
-* Returns `false` if the value does not exist in the list
-* Loops through the list once to check for the existence of the value. Returns early if the value is found.
-* Accepts 1 argument
-* If the method is called with no argument, the value will default to `undefined`
-* If the method is called with more than 1 argument, only the first argument will be searched for
-
-- #### `LinkedList.prototype.print()`
-```JavaScript
-const myList = new LinkedList();
-myList.insert(5);
-myList.insert(10);
-
-myList.includes(10); 
-// log output:
-// > 10
-// > 5
-```
-* Console logs the all values in the list
-* List values are logged in order starting from the start
-* Each list value is logged as a separate console.log command
-* This method logs the string 'undefined' if the list is empty
-* Method accepts no arguments
-* If the method is called with more than 1 or more arguments they are ignored
-
-- #### `LinkedList.prototype.insertBefore(<value>,<new value>)`
-```JavaScript
-const myList = new LinkedList();
-myList.append(5);
-myList.append(10);
-myList.insertBefore(10,3);
-// results in HEAD: 5 --> 3 --> 10
-```
-* appends the `new value` to the list, before the first instance of `value`
-* Accepts 2 arguments
-
-- #### `LinkedList.prototype.insertAfter(<value>,<new value>)`
-```JavaScript
-const myList = new LinkedList();
-myList.append(5);
-myList.append(10);
-myList.append(10);
-myList.insertAfter(10,3);
-// results in HEAD: 5 --> 10 --> 3 --> 10
-```
-* appends the `new value` to the list, after the first instance of `value`
-* Accepts 2 arguments
+* removes either a `cat` or `dog` from the `cat` and `dog` queues. 
+* Accepts 1 argument, a string of either `cat` or `dog`
+* If there are no more of the preferred species an error is thrown.
 ---
 
 ### Testing
 
-The linked-list folder holds all files that define the linked list class:
-`/data-structures-and-algorithms/code-challenges/linked_list`
-
-Tests are written for the LinkedList class methods and can be found here:
-`/data-structures-and-algorithms/code-challenges/linked_list/__tests__/linked-list.test.js`
-
+Tests are written and can be found in the `__tests__` folder.
 
 All testing for this class was done with Jest: 
 * [Jest docs](https://jestjs.io/docs/en/getting-started)
@@ -197,25 +148,7 @@ Instructions for replicating the tests for this project are as follows:
 * n/a
 
 --- 
-## Whiteboard Solution For Methods `append` `insertBefore` and `insertAfter`
-<!-- Embedded whiteboard image -->
-![alt text](./assets/linked_list1.jpg "Whiteboard image")
-![alt text](./assets/linked_list2.jpg "Whiteboard image")
+## Whiteboard Solution
+![alt text](./assets/fifo_animal_shelter.jpg "Whiteboard image")
 
 
-
----
-
-### To-do list
-- [x] Read all of these instructions carefully
-- [x] All work in the correct remo
-- [x] Work on the correct branch
-- [x] Work in the correct folder
-- [x] Work in the correct file
-- [x] Create the code
-- [x] Write at least three test assertions for each method that you define.
-- [x] Ensure your tests are passing before you submit your solution.
-- [x] Create a pull request from your branch to your master branch
-- [x] In your open pull request, leave as a comment a checklist
-- [ ] Submitting your completed work to Canvas (soon)
-- [ ] Merge your branch into master (soon)
