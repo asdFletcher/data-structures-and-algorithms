@@ -112,12 +112,4 @@ class HashTable {
   }
 }
 
-let myHashTable = new HashTable(10);
-
-myHashTable.add('key', 'valuebbbb');
-myHashTable.add('keya', 'valueaaaa');
-console.log('myHashTable: ', myHashTable);
-
-
-
 module.exports = HashTable;
