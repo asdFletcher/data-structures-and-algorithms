@@ -42,7 +42,7 @@ class HashTable {
     let list = this._getList();
 
     let node = this._locateNode(list);
-    
+    console.log(`from find: ${node}`);
     if (!node) { return undefined; }
 
     return node.value[1];
