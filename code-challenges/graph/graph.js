@@ -88,3 +88,16 @@ module.exports = {
   Graph,
   Node,
 };
+
+const myGraph = new Graph();
+
+let a = myGraph.addNode(1);
+let b = myGraph.addNode(2);
+let c = myGraph.addNode(3);
+
+myGraph.addEdge(a,b,1);
+myGraph.addEdge(b,c,1);
+
+let result = myGraph.breadthFirst(a);
+
+console.log(result);
