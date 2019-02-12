@@ -168,6 +168,29 @@ console.log(myGraph.size());
 * Accepts 0 arguments
 * If the method is called with any arguments they will be ignored
 
+
+- #### `Graph.prototype.breadthFirst(<start node>)`
+```JavaScript
+const myGraph = new Graph();
+
+let a = myGraph.addNode(1);
+let b = myGraph.addNode(2);
+let c = myGraph.addNode(3);
+
+myGraph.addEdge(a,b,1);
+myGraph.addEdge(b,c,1);
+
+let result = myGraph.breadthFirst(a);
+
+console.log(result);
+// [ Node { value: 1 }, Node { value: 2 }, Node { value: 3 } ]
+
+```
+* Returns an array of nodes in the order processed by a breadth-first traversal
+* Accepts 1 argument, the starting node
+* If the method is called with any additional arguments they will be ignored
+* Returns undefined if the graph has no nodes.
+
 ### Testing
 
 All testing for this class was done with Jest: 
@@ -224,14 +247,24 @@ Instructions for replicating the tests for this project are as follows:
 * Methods:
   * `constructor()`
     * constant time
+    
   * `addNode(<value>)`
     * All nodes are stored in a JavaScript map, so insertion, lookup, and deletion are all constant time, average case, with a possibility of O(n). For almost all cases this can be treated as constant time.
+
   * `addEdge(<startNode>, <endNode>, <weight = 0>)`
       * All edges are stored in a JavaScript map, so insertion, lookup, and deletion are all constant time, average case, with a possibility of O(n). For almost all cases this can be treated as constant time.
   * `getNodes()`
     * This returns the Graph property `this.nodeList` and is constant time.
+
   * `getNeighbors(<node>)`
     * This is a JavaScript Map object lookup, which is constant time.
+
   * `size()`
     * This returns the Graph property `this.nodeCount` and is constant time.
+
+  * `breadthFirst()`
+    * This returns an array of the graph traversed breadth-first given a starting node. Adds all neighbor nodes to a queue in the order that it finds them, and processes them from the front of the queue. In a connected graph this will reach all nodes. All nodes are stored in a results `Array`, a queue (which is actually an `Array`), and a seen `Set`. All nodes are pass by reference so the space complexity is the cost of storing these pointers. I'll call this O(1) since we're not copying any of the data. If the queue was an actual Queue with O(1) insertion and deletion, then all operations would be O(1). Actual time complexity depends on the Array.push and Array.shift methods. **Summary**: Time complexity is O(n), and space complexity is O(1).
+
+
+
 
