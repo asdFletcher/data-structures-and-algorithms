@@ -7,9 +7,9 @@
 
 ### Links and Resources
 
-[![Build Status](https://www.travis-ci.com/asdFletcher/data-structures-and-algorithms.svg?branch=master)](https://www.travis-ci.com/asdFletcher/data-structures-and-algorithms)
+[![Build Status](https://www.travis-ci.com/asdFletcher/data-structures-and-algorithms.svg?branch=master)](https://www.travis-ci.com/asdFletcher/data-structures-and-algorithms/graph)
 
-* [repo](https://github.com/asdFletcher/data-structures-and-algorithms/tree/master/code-challenges)
+* [repo](https://github.com/asdFletcher/data-structures-and-algorithms/tree/master/code-challenges/graph)
 * [travis](https://www.travis-ci.com/asdFletcher/data-structures-and-algorithms)
 
 ---
