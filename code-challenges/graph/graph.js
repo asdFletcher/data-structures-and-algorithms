@@ -1,5 +1,7 @@
 'use strict';
 
+const util = require('util');
+
 class Node{
   constructor(value){
     this.value = value;
@@ -43,8 +45,45 @@ class Graph {
   size(){
     return this.nodeCount;
   }
-}
 
+  breadthFirst(startNode){
+    if (this.nodeCount === 0) {return; }
+
+    let result = [];
+    let queue = [];
+    let seen = new Set();
+
+    this._storeNode(startNode, result, queue, seen);
+    this._processQueue(result, queue, seen);
+
+    return result;
+  }
+
+  _processQueue(result, queue, seen){
+    while(queue.length > 0){
+      let neighborMap = this.getNeighbors(queue[0]);
+      this._enqueueNeighbors(neighborMap, result, queue, seen);
+      queue.shift();
+    }
+  }
+
+  _enqueueNeighbors(map, result, queue, seen){
+    for(let neighbor of map){
+      let node = neighbor[0];
+      if(seen.has(node)){
+        continue;
+      }
+      this._storeNode(node, result, queue, seen);
+    }
+  }
+
+  _storeNode(node, result, queue, seen){
+    result.push(node);
+    queue.push(node);
+    seen.add(node);
+  }
+
+}
 module.exports = {
   Graph,
   Node,

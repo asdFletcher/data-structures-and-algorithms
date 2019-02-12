@@ -243,4 +243,45 @@ describe ('graph class', ()=>{
       expect(resultB.get(a)).toEqual(20);
     });
   });
+
+  describe('breadthFirst', () => {
+    it('correctly process a graph breadth first', () => {
+      const myGraph = new Graph();
+
+      let a = myGraph.addNode(1);
+      let b = myGraph.addNode(2);
+      let c = myGraph.addNode(3);
+      let d = myGraph.addNode(4);
+      let e = myGraph.addNode(5);
+      let f = myGraph.addNode(6);
+      let g = myGraph.addNode(7);
+      let h = myGraph.addNode(8);
+      let k = myGraph.addNode(9);
+
+      myGraph.addEdge(a,b,1);
+      myGraph.addEdge(b,c,1);
+      myGraph.addEdge(b,g,1);
+      myGraph.addEdge(c,d,1);
+      myGraph.addEdge(c,e,1);
+      myGraph.addEdge(c,f,1);
+      myGraph.addEdge(f,k,1);
+      myGraph.addEdge(g,c,1);
+      myGraph.addEdge(g,h,1);
+      myGraph.addEdge(h,f,1);
+
+      let result = myGraph.breadthFirst(a);
+      let expected = [a,b,c,g,d,e,f,h,k];
+
+      expect(result).toEqual(expected);
+    });
+
+    it('handles an empty graph', () => {
+      const myGraph = new Graph();
+      let a = new Node(1);
+
+      let result = myGraph.breadthFirst(a);
+
+      expect(result).toEqual(undefined);
+    });
+  });
 });
