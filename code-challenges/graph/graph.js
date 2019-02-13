@@ -20,12 +20,26 @@ class Graph {
   }
 
   addEdge(startNode, endNode, weight = 0) {
+    this._addEdge(startNode, endNode, weight);
+  }
+
+  addDoubleEdge(startNode, endNode, weight = 0){
+    this._addEdge(startNode, endNode, weight, true);
+  }
+
+  _addEdge(startNode, endNode, weight = 0, isDouble){
     let startNodeMap = this.nodeList.get(startNode);
     let endNodeMap = this.nodeList.get(endNode);
+
     if(!startNodeMap || !endNodeMap){
       throw new Error(`__ERROR__ invalid nodes`);
     }
+
     startNodeMap.set(endNode, weight);
+    
+    if(isDouble){
+      endNodeMap.set(startNode, weight);
+    }
   }
 
   getNodes(){
