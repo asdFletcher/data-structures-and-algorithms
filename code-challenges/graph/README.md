@@ -25,54 +25,244 @@
 ##### Exported Values and Methods for the following files:
 
 #### `graph.js`
-`graph.js` exports the `depthFirstGraphTraversal` function.
+`graph.js` exports the `Graph` and `Node` class, which have methods for adding and removing nodes. Including a `addNode`, `addEdge`, and `getNodes` methods.
+
+
+* `Graph` class
+    * Properties
+      * `nodeCount` - integer that stores the total node count
+      * `nodeList` - map that stores the nodes and their edges
+    * Methods:
+      * `constructor()`
+      * `addNode(<value>)`
+      * `addEdge(<startNode>, <endNode>, <weight = 0>)`
+      * `getNodes()`
+      * `getNeighbors(<node>)`
+      * `size()`
+* `Node` class
+  * Properties
+      * `value` - the node value
+  * Methods:
+      * `constructor(<value>)`
 
 ---
 
-##### Using the `depthFirstGraphTraversal` function:
+##### Using the `Graph` class methods:
 
 - #### `Graph` `constructor()`
 ```JavaScript
+const myGraph = new Graph();
+```
+* Creates a new graph that is empty
+* Accepts no arguments
+* If arguments are passed in they will be ignored
+* The `nodeList` property of a new empty graph is an empty JavaScript `map` object
+* The `nodeCount` property of a new empty graph is `0`
 
-// create the graph and all the edges
+- #### `Graph.prototype.addNode(<value>)`
+```JavaScript
+const myGraph = new Graph();
+myGraph.addNode(5);
+myGraph.addNode([1,2,3]);
+
+myGraph.getNodes();
+
+// Map {
+//   Node { value: 5 } => Map {},
+//   Node { value: [ 1, 2, 3 ] } => Map {} }
+```
+* Creates a new `Node` with the given `value`
+* Adds the node to the graph
+* Accepts 1 argument
+* The value of a node can be anything
+* If the method is called with no argument, the value will default to `undefined`
+* If the method is called with more than 1 argument, only the first argument will be accepted
+* Returns a reference to the node. This is important for setting edges once the node is added.
+
+- #### `Graph.prototype.addEdge(<startNode>, <endNode>, <weight = 0>)`
+```JavaScript
+const myGraph = new Graph();
+let a = myGraph.addNode(5);
+let b = myGraph.addNode([1,2,3]);
+
+myGraph.addEdge(a,b,10);
+
+myGraph.getNeighbors(a);
+// Map { Node { value: [ 1, 2, 3 ] } => 10 }
+```
+* Creates a new 1-way edge from the 1st node to the 2nd node
+* The edge can have a weight specified as a 3rd argument
+* The weight defaults to 0
+* Accepts 3 arguments:
+  * start node
+    * this node must be in the graph already
+  * end node
+    * this node must be in the graph already
+  * edge weight
+    * the edge weight can be any data type
+* The weight is stored as a value in a JavaScript Map
+* If either node is not in the graph or is undefined an error will be thrown
+* If the method is called with more than 3 arguments, they will be ignored
+
+
+- #### `Graph.prototype.getNodes()`
+```JavaScript
+const myGraph = new Graph();
+let a = myGraph.addNode(5);
+let b = myGraph.addNode([1,2,3]);
+myGraph.addEdge(a,b,10);
+
+let myNodeList = myGraph.getNodes();
+
+// Map {
+//   Node { value: 5 } => Map { Node { value: [Array] } => 10 },
+//   Node { value: [ 1, 2, 3 ] } => Map {} }
+```
+* Returns a Map of all nodes
+  * Map keys are the nodes
+  * Map values is a map of that node's outgoing edges
+* Internally, simply returns the Graph property `this.nodeList`
+* Accepts no arguments
+* If the method is called with any arguments they will be ignored
+---
+
+- #### `Graph.prototype.getNeighbors(<node>)`
+```JavaScript
 let myGraph = new Graph();
 
-let a = myGraph.addNode('A');
-let b = myGraph.addNode('B');
-let c = myGraph.addNode('C');
-let d = myGraph.addNode('D');
-let e = myGraph.addNode('E');
-let f = myGraph.addNode('F');
-let g = myGraph.addNode('G');
-let h = myGraph.addNode('H');
+let a = myGraph.addNode(5);
+let b = myGraph.addNode([1,2,3]);
+let c = myGraph.addNode('a string');
 
-myGraph.addDoubleEdge(a,b);
-myGraph.addDoubleEdge(a,d);
-myGraph.addDoubleEdge(b,d);
-myGraph.addDoubleEdge(b,c);
-myGraph.addDoubleEdge(c,g);
-myGraph.addDoubleEdge(d,e);
-myGraph.addDoubleEdge(d,h);
-myGraph.addDoubleEdge(d,f);
+myGraph.addEdge(a,b,10);
+myGraph.addEdge(a,c,20);
 
-// extract the adjacency list ( a map where the nodes are keys, and values are a list of neighbors)
-let nodeList = myGraph.getNodes();
+console.log(myGraph.getNeighbors(a));
+// Map {
+//   Node { value: [ 1, 2, 3 ] } => 10,
+//   Node { value: 'a string' } => 20 }
+console.log(myGraph.getNeighbors(b));
+// Map {}
+```
+* Returns a map of the node's neighbors
+  * Neighbors connected via outgoing edges are included
+  * Neighbors connected via incoming edges are **NOT** included
+* Accepts 1 arguments, the node of interest
+* If the method is called with more than 1 arguments, they will be ignored
 
-// feed that list to the traversal function
-let answer = depthFirstGraphTraversal(nodeList);
 
+- #### `Graph.prototype.size()`
+```JavaScript
+let myGraph = new Graph();
+
+let a = myGraph.addNode(5);
+let b = myGraph.addNode([1,2,3]);
+let c = myGraph.addNode('a string');
+
+console.log(myGraph.size());
+// 3
 
 ```
-## Efficiency
-  * `depthFirstGraphTraversal()`
-    * This returns an array of the graph nodes traversed depth-first given a list of all the nodes. Since the first node is not specified, the first node in the list is the start. Iterates through each neighbor in the order seen, and adds those nodes to a `seen` Set. If the node has already been seen, it does not re-visit the node. Adding the nodes to the set is O(1). Adding the nodes to the `seen` and `result` array could be said to be O(n) depending on the implementation, but in reality we should be using a hashmap (anything with constant time insertion AND lookup).
+* Returns the number of nodes in the graph as an integer
+* All nodes are included, even those without neighbors
+* Accepts 0 arguments
+* If the method is called with any arguments they will be ignored
 
-    Iterating through each node is O(n) where n is the number of nodes in the graph.
+
+- #### `Graph.prototype.breadthFirst(<start node>)`
+```JavaScript
+const myGraph = new Graph();
+
+let a = myGraph.addNode(1);
+let b = myGraph.addNode(2);
+let c = myGraph.addNode(3);
+
+myGraph.addEdge(a,b,1);
+myGraph.addEdge(b,c,1);
+
+let result = myGraph.breadthFirst(a);
+
+console.log(result);
+// [ Node { value: 1 }, Node { value: 2 }, Node { value: 3 } ]
+
+```
+* Returns an array of nodes in the order processed by a breadth-first traversal
+* Accepts 1 argument, the starting node
+* If the method is called with any additional arguments they will be ignored
+* Returns undefined if the graph has no nodes.
+
+### Testing
+
+All testing for this class was done with Jest: 
+* [Jest docs](https://jestjs.io/docs/en/getting-started)
+
+Instructions for replicating the tests for this project are as follows:
+
+* Clone the repo.
+* Create a node runtime environment
+
+    ```JavaScript
+    npm init
+    ```
+    This will create a `package.json` file, a `package-lock.json` file.
+
+* Install Jest
+
+    ```JavaScript
+    npm i jest
+    ```
+* Run jest
+    ```JavaScript
+    npm jest --verbose --coverage
+    ```
+    It is useful to bind this to the command:
+    ```JavaScript
+    npm test
+    ```
+    To do this, manually edit your package.json to include the following under the "scripts" attribute:
+    ```Javascript
+    "scripts": {
+        "test": "jest --verbose --coverage",
+        "test-watch": "jest --watchAll --verbose --coverage"
+    }
+    ```
+    `test-watch` will re-run tests when the file is saved
+
+
+---
+
+### Dependencies
+
+* jest: `npm i jest`
+
+
+### Setup
+#### `.env` requirements
+* n/a
+
+--- 
+
+## Implementation and efficiency
+
+* Methods:
+  * `constructor()`
+    * constant time
     
-    - Time complexity: O(n)
-    - Space complexity: constant
+  * `addNode(<value>)`
+    * All nodes are stored in a JavaScript map, so insertion, lookup, and deletion are all constant time, average case, with a possibility of O(n). For almost all cases this can be treated as constant time.
 
+  * `addEdge(<startNode>, <endNode>, <weight = 0>)`
+      * All edges are stored in a JavaScript map, so insertion, lookup, and deletion are all constant time, average case, with a possibility of O(n). For almost all cases this can be treated as constant time.
+  * `getNodes()`
+    * This returns the Graph property `this.nodeList` and is constant time.
 
+  * `getNeighbors(<node>)`
+    * This is a JavaScript Map object lookup, which is constant time.
 
+  * `size()`
+    * This returns the Graph property `this.nodeCount` and is constant time.
+
+  * `breadthFirst()`
+    * This returns an array of the graph traversed breadth-first given a starting node. Adds all neighbor nodes to a queue in the order that it finds them, and processes them from the front of the queue. In a connected graph this will reach all nodes. All nodes are stored in a results `Array`, a queue (which is actually an `Array`), and a seen `Set`. All nodes are pass by reference so the space complexity is the cost of storing these pointers. I'll call this O(1) since we're not copying any of the data. If the queue was an actual Queue with O(1) insertion and deletion, then all operations would be O(1). Actual time complexity depends on the Array.push and Array.shift methods. **Summary**: Time complexity is O(n), and space complexity is O(1).
 
 
