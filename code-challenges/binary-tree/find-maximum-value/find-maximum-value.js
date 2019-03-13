@@ -1,8 +1,6 @@
 'use strict';
 
-// let BinaryTree = require('./tree.js').BinaryTree;
-// let Node = require('./tree.js').Node;
-let Queue = require('../stacksAndQueues/stacks-and-queues.js').Queue;
+let Queue = require('../../../data-structures/queue/queue.js');
 
 function findMaximumValue(tree){
   if (!tree){ return; }

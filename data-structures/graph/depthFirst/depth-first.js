@@ -1,6 +1,6 @@
 'use strict';
 
-const Graph = require('./../graph.js').Graph;
+const Graph = require('./../graph.js');
 const util = require('util');
 
 function depthFirstGraphTraversal(adjacencyList){

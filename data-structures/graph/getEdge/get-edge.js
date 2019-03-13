@@ -1,6 +1,6 @@
 'use strict';
 
-const Graph = require('./../graph.js').Graph;
+const Graph = require('./../graph.js');
 
 function possiblePath(graph, path){
 

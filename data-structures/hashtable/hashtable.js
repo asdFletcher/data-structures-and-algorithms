@@ -1,6 +1,7 @@
 'use strict';
 
-const LinkedList = require('/Users/fletcher/programming/codefellows/401/data-structures-and-algorithms/code-challenges/linked_list/linked-list.js').LinkedList;
+const LinkedList = require('../linked-list/linked-list.js');
+
 const util = require('util');
 // [ undefined , undefined , undefined ]
 // [ LinkedList--> head: Node { [k,v], next: } , LinkedList--> head: Node { [k,v], next: } ]

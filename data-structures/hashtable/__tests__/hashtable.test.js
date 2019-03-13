@@ -2,7 +2,8 @@
 
 
 const HashTable = require('../hashtable.js');
-const LinkedList = require('/Users/fletcher/programming/codefellows/401/data-structures-and-algorithms/code-challenges/linked_list/linked-list.js').LinkedList;
+const LinkedList = require('../../linked-list/linked-list.js');
+
 
 describe('hashtable constructor', () => {
   it('defaults to a size if none specified', ()=> {
