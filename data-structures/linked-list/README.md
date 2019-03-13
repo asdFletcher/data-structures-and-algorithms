@@ -24,10 +24,13 @@
 * `LinkedList` class
     * Methods:
         * `constructor()`
-        * `add(<value>)`
         * `insert(<value>)`
+        * `append(<value>)`
         * `includes(<value>)`
         * `print()`
+        * `insertBefore(<value>, <new value>)`
+        * `insertAfter(<value>, <new value>)`
+        * `kthFromEnd(<number k>)`
 ---
 
 ##### Using the `LinkedList` class methods:
@@ -39,6 +42,18 @@ const myList = new LinkedList();
 * Creates a new linked list that is empty
 * Accepts no arguments
 * If arguments are passed in they will be ignored
+
+- #### `LinkedList.prototype.insert(<value>)`
+```JavaScript
+const myList = new LinkedList();
+myList.insert(5);
+myList.insert(10);
+// results in HEAD: 10 --> 5
+```
+* Adds the value to the START of the list
+* Accepts 1 argument
+* If the method is called with no argument, the value will default to `undefined`
+* If the method is called with more than 1 argument, only the first argument will be added
 
 - #### `LinkedList.prototype.append(<value>)`
 ```JavaScript
@@ -52,17 +67,7 @@ myList.append(10);
 * If the method is called with no argument, the value will default to `undefined`
 * If the method is called with more than 1 argument, only the first argument will be appended
 
-- #### `LinkedList.prototype.insert(<value>)`
-```JavaScript
-const myList = new LinkedList();
-myList.insert(5);
-myList.insert(10);
-// results in HEAD: 10 --> 5
-```
-* Adds the value to the START of the list
-* Accepts 1 argument
-* If the method is called with no argument, the value will default to `undefined`
-* If the method is called with more than 1 argument, only the first argument will be added
+
 
 - #### `LinkedList.prototype.includes(<value>)`
 ```JavaScript
@@ -78,6 +83,8 @@ myList.includes(10); // returns true
 * Accepts 1 argument
 * If the method is called with no argument, the value will default to `undefined`
 * If the method is called with more than 1 argument, only the first argument will be searched for
+
+
 
 - #### `LinkedList.prototype.print()`
 ```JavaScript
@@ -119,44 +126,53 @@ myList.insertAfter(10,3);
 ```
 * appends the `new value` to the list, after the first instance of `value`
 * Accepts 2 arguments
+
+- #### `LinkedList.prototype.kthFromEnd(<number k>)`
+```JavaScript
+const myList = new LinkedList();
+myList.append(5);
+myList.append(10);
+myList.append(3);
+myList.append(1);
+// results in HEAD: 5 --> 10 --> 3 --> 1
+myList.kthFromEnd(2);
+// returns 10
+```
+* Given a number k, returns the value of the node that is k from the end of the list
+* k = 0 returns the last element in the list
+* k = 1 returns the 2nd to last element in the list
+* Accepts 1 argument, k
+* returns undefined if k is larger than the length of the list
+* returns undefined if the list is empty
+* returns undefined if k is not provided
+
 ---
 
 ### Testing
 
-The linked-list folder holds all files that define the linked list class:
-`/data-structures-and-algorithms/code-challenges/linked_list`
-
-Tests are written for the LinkedList class methods and can be found here:
-`/data-structures-and-algorithms/code-challenges/linked_list/__tests__/linked-list.test.js`
-
+Tests are written for the class methods and can be found in the `__tests__` folder.
 
 All testing for this class was done with Jest: 
 * [Jest docs](https://jestjs.io/docs/en/getting-started)
 
 Instructions for replicating the tests for this project are as follows:
 
-* Clone the repo.
-* Create a node runtime environment
+* Clone the repo from github.
+* Install dependencies  (including `Jest`)
 
-    ```JavaScript
-    npm init
     ```
-    This will create a `package.json` file, a `package-lock.json` file.
-
-* Install Jest
-
-    ```JavaScript
-    npm i jest
+    npm i
     ```
-* Run jest
-    ```JavaScript
+
+* Run `Jest`
+    ```
     npm jest --verbose --coverage
     ```
-    It is useful to bind this to the command:
-    ```JavaScript
+    This command is bound to:
+    ```
     npm test
     ```
-    To do this, manually edit your package.json to include the following under the "scripts" attribute:
+    The binding for this is in the package.json file:
     ```Javascript
     "scripts": {
         "test": "jest --verbose --coverage",
@@ -164,7 +180,6 @@ Instructions for replicating the tests for this project are as follows:
     }
     ```
     `test-watch` will re-run tests when the file is saved
-
 
 ---
 
@@ -187,18 +202,3 @@ Instructions for replicating the tests for this project are as follows:
 <!-- Embedded whiteboard image -->
 ![alt text](./assets/kthFromEnd.jpg "Whiteboard image")
 
----
-
-### To-do list
-- [x] Read all of these instructions carefully
-- [x] All work in repo: data-structures-and-algorithms
-- [x] Work on branch: ll_kth_from_end
-- [x] Work in folder: linkedList
-- [x] Work in file: linked-list.js
-- [x] Create the linked list method `kthFromEnd`
-- [x] Write at least three test assertions for each method that you define.
-- [x] Ensure your tests are passing before you submit your solution.
-- [x] Create a pull request from your branch to your master branch
-- [x] In your open pull request, leave as a comment a checklist
-- [ ] Submitting your completed work to Canvas (soon)
-- [ ] Merge your branch into master (soon)
