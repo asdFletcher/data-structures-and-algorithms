@@ -1,9 +1,7 @@
 'use strict';
 
-'use strict';
-
-const BinaryTree = require('./../tree.js').BinaryTree;
-const Node = require('./../tree.js').Node;
+const BinaryTree = require('../../../data-structures/binary-tree/binary-tree.js/index.js').BinaryTree;
+const Node = require('../../../data-structures/binary-tree/binary-tree.js/index.js').Node;
 const findMaximumValue = require('./../find-maximum-value.js');
 
 describe('tree max value', ()=> {

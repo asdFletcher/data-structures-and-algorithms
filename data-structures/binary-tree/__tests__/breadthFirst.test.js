@@ -1,8 +1,8 @@
 'use strict';
 
 
-let BinaryTree = require('../tree.js').BinaryTree;
-let Node = require('../tree.js').Node;
+let BinaryTree = require('../binary-tree.js');
+let Node = require('../binary-tree-node.js');
 
 describe('tree includes method', () => {
 

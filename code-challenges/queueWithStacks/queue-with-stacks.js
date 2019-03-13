@@ -2,7 +2,7 @@
 
 const Stack = require ('./../stacks-and-queues.js').Stack;
 
-class PsuedoCode {
+class PseudoQueue {
   constructor(){
     this.stack1 = new Stack();
     this.stack2 = new Stack();
@@ -33,4 +33,4 @@ class PsuedoCode {
   }
 }
 
-module.exports = PsuedoCode;
+module.exports = PseudoQueue;
