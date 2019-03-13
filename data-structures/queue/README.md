@@ -1,7 +1,4 @@
-## Implementation of a queue class
-
-![CF](http://i.imgur.com/7v5ASc8.png)
-=================================================
+## Implementation of a `queue` class
 
 ### Author: Fletcher LaRue
 

@@ -2,9 +2,8 @@
 
 const tree_intersection = require('./../tree-intersection.js');
 
-const importBinaryTree = require('/Users/fletcher/programming/codefellows/401/data-structures-and-algorithms/code-challenges/tree/tree.js');
-const BinaryTree = importBinaryTree.BinaryTree;
-const Node = importBinaryTree.Node;
+const BinaryTree = require('../../../data-structures/binary-tree/binary-tree.js');
+const Node = require('../../../data-structures/binary-tree/binary-tree-node.js');
 
 
 describe('tree intersection function', () => {

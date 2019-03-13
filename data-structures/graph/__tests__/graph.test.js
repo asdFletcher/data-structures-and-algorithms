@@ -1,7 +1,7 @@
 'use strict';
 
-const Graph = require('./../graph.js').Graph;
-const Node = require('./../graph.js').Node;
+const Graph = require('./../graph.js');
+const Node = require('./../graph-node.js');
 
 describe ('node class', ()=>{
   it('can correctly instantiate a node with no args', ()=>{
@@ -13,7 +13,6 @@ describe ('node class', ()=>{
     let myNode = new Node(5);
     expect(myNode).toBeInstanceOf(Node);
     expect(myNode.value).toEqual(5);
-
   });
 });
 

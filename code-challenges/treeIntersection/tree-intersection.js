@@ -1,7 +1,7 @@
 'use strict';
 
-const importBinaryTree = require('/Users/fletcher/programming/codefellows/401/data-structures-and-algorithms/code-challenges/tree/tree.js');
-const BinaryTree = importBinaryTree.BinaryTree;
+const BinaryTree = require('../../data-structures/binary-tree/binary-tree.js');
+
 
 function tree_intersection(treeA, treeB){
   let seenValues = {};

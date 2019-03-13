@@ -1,12 +1,6 @@
 'use strict';
 
-const util = require('util');
-
-class Node{
-  constructor(value){
-    this.value = value;
-  }
-}
+const Node = require('./graph-node.js');
 
 class Graph {
   constructor(){
@@ -98,10 +92,7 @@ class Graph {
   }
 
 }
-module.exports = {
-  Graph,
-  Node,
-};
+module.exports = Graph;
 
 const myGraph = new Graph();
 

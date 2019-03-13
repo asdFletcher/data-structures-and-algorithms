@@ -1,8 +1,8 @@
 'ust strict';
 
 let FizzBuzzTree = require('../fizz-buzz-tree.js');
-let BinaryTree = require('../../tree/tree.js').BinaryTree;
-let Node = require('../../tree/tree.js').Node;
+let BinaryTree = require('../../../data-structures/binary-tree/binary-tree.js');
+let Node = require('../../../data-structures/binary-tree/binary-tree-node.js');
 
 
 describe('fizz-buzz-tree', () => {

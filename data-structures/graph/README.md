@@ -1,20 +1,13 @@
-![CF](http://i.imgur.com/7v5ASc8.png)
-=================================================
-
-### Graphs
+# Implementation of a `graph` class
 
 ### Author: Fletcher LaRue
 
 ### Links and Resources
 
-[![Build Status](https://www.travis-ci.com/asdFletcher/data-structures-and-algorithms.svg?branch=master)](https://www.travis-ci.com/asdFletcher/data-structures-and-algorithms/graph)
+[![Build Status](https://www.travis-ci.com/asdFletcher/data-structures-and-algorithms.svg?branch=master)](https://www.travis-ci.com/asdFletcher/data-structures-and-algorithms/)
 
-* [repo](https://github.com/asdFletcher/data-structures-and-algorithms/tree/master/code-challenges/graph)
+* [repo](https://github.com/asdFletcher/data-structures-and-algorithms/tree/master/code-challenges/)
 * [travis](https://www.travis-ci.com/asdFletcher/data-structures-and-algorithms)
-
----
-
-# Implemented a graph class
 
 ---
 ### Files

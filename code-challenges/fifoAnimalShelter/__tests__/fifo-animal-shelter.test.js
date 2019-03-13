@@ -1,7 +1,5 @@
 'use strict';
 
-// stacksAndQueues/stacks-and-queues.js
-
 const AnimalShelter = require('./../fifo-animal-shelter.js');
 
 describe('animal shelter', () => {
@@ -34,7 +32,7 @@ describe('animal shelter', () => {
     expect(myShelter).toBeInstanceOf(AnimalShelter);
   });
 
-  it('accepts more than 1 accepts dog', () => {
+  it('accepts more than 1 dog', () => {
     let myShelter = new AnimalShelter();
 
     let dog = 
@@ -58,7 +56,31 @@ describe('animal shelter', () => {
     }).toThrow();
   });
 
-  it('dequeue throws an error when tehre are none of a type', () => {
+  it('accepts more than 1 cat', () => {
+    let myShelter = new AnimalShelter();
+
+    let cat = 
+    {
+      species: 'cat',
+    };
+    myShelter.enQ(cat);
+    myShelter.enQ(cat);
+
+    expect(myShelter.cat.front.value.species).toEqual('cat');
+    expect(myShelter.cat.back.value.species).toEqual('cat');
+    expect(myShelter).toBeInstanceOf(AnimalShelter);
+    expect( ()=> {
+      myShelter.deQ('cat');
+    }).not.toThrow();
+    expect( ()=> {
+      myShelter.deQ('cat');
+    }).not.toThrow();
+    expect( ()=> {
+      myShelter.deQ('cat');
+    }).toThrow();
+  });
+
+  it('dequeue throws an error when there are none of a type', () => {
     let myShelter = new AnimalShelter();
 
     expect( ()=> {

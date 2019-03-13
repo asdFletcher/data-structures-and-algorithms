@@ -1,6 +1,6 @@
 'use strict';
 
-let Queue = require('./../stacksAndQueues/stacks-and-queues.js').Queue;
+const Queue = require('../../data-structures/queue/queue.js');
 
 class AnimalShelter {
   constructor() {

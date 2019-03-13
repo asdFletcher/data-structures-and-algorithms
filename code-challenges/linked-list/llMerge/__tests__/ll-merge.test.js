@@ -1,7 +1,7 @@
 'ust strict';
 
 let mergeLists = require('../ll-merge.js');
-let LinkedList = require('../../linked_list/linked-list.js').LinkedList;
+let LinkedList = require('../../../../data-structures/linked-list/linked-list.js');
 
 describe('linked list merge function', () => {
 
