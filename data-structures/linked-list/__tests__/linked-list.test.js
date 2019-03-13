@@ -1,6 +1,6 @@
 'ust strict';
 
-let LinkedList = require('../linked-list.js').LinkedList;
+let LinkedList = require('../linked-list.js');
 
 describe('linked list constructor', () => {
 
