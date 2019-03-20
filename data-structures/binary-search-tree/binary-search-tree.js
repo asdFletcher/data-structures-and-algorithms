@@ -6,9 +6,13 @@ class BinarySearchTree {
 
   constructor() {
     this.root = null;
+    this.insertComputations = 0;
   }
 
   insert(value){
+
+    // for timing
+    this.insertComputations = 0;
 
     if (!this.isNumericInput(value)) { return; }
     value = parseInt(value);
@@ -20,7 +24,9 @@ class BinarySearchTree {
       return newNode;
     }
 
-    function _go(node){
+    const _go = (node) => {
+      this.insertComputations = this.insertComputations + 1;
+
       if (node.value === value) { return; } // already in tree
 
       if (!node.left && value < node.value ) {
