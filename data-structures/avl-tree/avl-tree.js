@@ -5,37 +5,41 @@ const Node = require('./avl-tree-node.js');
 class AVLTree {
   constructor(){
     this.root = null;
+    this.insertComputations = 0;
+    this.removeComputations = 0;
+    this.containsComputations = 0;
+    this.findMaxComputations = 0;
+    this.findMinComputations = 0;
+    this.printComputations = 0;
   }
 
   insert(value){
+    this.insertComputations = 0;
 
     if (!this.isNumericInput()){ return undefined; }
     value = parseInt(value);
 
     let newNode = new Node(value);
 
-    // console.log(`new node: `, newNode);
     if (this.treeIsEmpty()){ 
       this.root = newNode;
       return newNode;
     }
 
-    let problemNode;
+    let imbalancedNode;
 
     const _go = (node) => {
-      // console.log(`~~ ${node.value} ~~`);
+      this.insertComputations++;
       if (value === node.value) { return undefined; } // value already in tree
 
       // add right node
       if (!node.right && value > node.value ){
-        // console.log(`🍦 adding right`);
         node.right = newNode;
         this.updateNodeHeight(node);
         return newNode;
       }
       // add left node
       if (!node.left && value < node.value ){
-        // console.log(`🍕 adding left`);
         node.left = newNode;
         this.updateNodeHeight(node);
         return newNode;
@@ -44,50 +48,46 @@ class AVLTree {
       let result;
       // navigate right
       if (value > node.value){
-        // console.log(`🍡 go right`);
         result = _go(node.right);
       } else if (value < node.value){
         // navigate left
-        // console.log(`🌝 go left`);
         result = _go(node.left);
       }
       
       // done with recursion
-      // console.log(`done with recrusion 🍊`);
-      this.updateNodeHeight(node);
-      if(problemNode){
-        let problemNodeDirection = this.getProblemNodeDirection(node, problemNode);
-        this.handleProblemNode(problemNode, node, problemNodeDirection);
+      
+      if(imbalancedNode){
+        let problemNodeDirection = this.getProblemNodeDirection(node, imbalancedNode);
+        this.performRotations(imbalancedNode, node, problemNodeDirection);
       }
-      if(!problemNode && this.isImbalanced(node)){
-        problemNode = node;
+      if(!imbalancedNode && this.isImbalanced(node)){
+        imbalancedNode = node;
       }
 
+      this.updateNodeHeight(node);
       return result;
-    }
+    };
     
     let result = _go(this.root);
 
+    // root imbalance
     if(this.isImbalanced(this.root)){
-      // console.log(`root imbalance detected`);
-      this.handleProblemNode(problemNode);
+      this.performRotations(imbalancedNode);
     }
 
-    this.updateHeights();
-    // console.log(`Tree this.root: `, this.root);
 
-    // console.log(`problemNode: `, problemNode);
+    // this.updateHeights();
     return result;
   }
 
-  getProblemNodeDirection(node, problemNode){
-    if(node.left && node.left.value === problemNode.value){
-      return "left";
+  getProblemNodeDirection(node, imbalancedNode){
+    if(node.left && node.left.value === imbalancedNode.value){
+      return 'left';
     }
-    return "right";
+    return 'right';
   }
 
-  handleProblemNode(originalRoot, parentNode, problemNodeDirection){
+  performRotations(originalRoot, parentNode, problemNodeDirection){
     let leftHeight = this.getLeftHeight(originalRoot);
     let rightHeight = this.getRightHeight(originalRoot);
 
@@ -100,13 +100,11 @@ class AVLTree {
       // single left rotation
       if (leftChildLeftHeight > leftChildRightHeight){
         this._handleSingleLeftRotation(originalRoot, parentNode, problemNodeDirection);
-
       }
       // double left rotation
       if (leftChildRightHeight > leftChildLeftHeight){
         this._handleDoubleLeftRotation(originalRoot, parentNode, problemNodeDirection);
       }
-
     }
 
     // right imbalance
@@ -123,7 +121,6 @@ class AVLTree {
         this._handleDoubleRightRotation(originalRoot, parentNode, problemNodeDirection);
       }
     }
-
   }
 
   _handleDoubleLeftRotation(originalRoot, parentNode, problemNodeDirection){
@@ -137,6 +134,10 @@ class AVLTree {
       newRoot.left = leftSubTree;
       newRoot.right = rightSubTree;
       this.root = newRoot;
+
+      this.updateNodeHeight(leftSubTree);
+      this.updateNodeHeight(rightSubTree);
+      this.updateNodeHeight(newRoot);
       return;
     }
     const rightSubTree = originalRoot;
@@ -148,7 +149,12 @@ class AVLTree {
     newRoot.left = leftSubTree;
     newRoot.right = rightSubTree;
     parentNode[problemNodeDirection] = newRoot;
+
+    this.updateNodeHeight(leftSubTree);
+    this.updateNodeHeight(rightSubTree);
+    this.updateNodeHeight(newRoot);
   }
+
   _handleDoubleRightRotation(originalRoot, parentNode, problemNodeDirection){
     if(!parentNode){
       const leftSubTree = this.root;
@@ -160,6 +166,10 @@ class AVLTree {
       newRoot.left = leftSubTree;
       newRoot.right = rightSubTree;
       this.root = newRoot;
+
+      this.updateNodeHeight(leftSubTree);
+      this.updateNodeHeight(rightSubTree);
+      this.updateNodeHeight(newRoot);
       return;
     }
 
@@ -173,64 +183,61 @@ class AVLTree {
     newRoot.right = rightSubTree;
     parentNode[problemNodeDirection] = newRoot;
 
+    this.updateNodeHeight(leftSubTree);
+    this.updateNodeHeight(rightSubTree);
+    this.updateNodeHeight(newRoot);
   }
+
   _handleSingleLeftRotation(originalRoot, parentNode, problemNodeDirection){
     if(!parentNode){
       this.root = originalRoot.left;
       originalRoot.left = this.root.right;
       this.root.right = originalRoot;
+
+      this.updateNodeHeight(this.root.left);
+      this.updateNodeHeight(this.root.right);
+      this.updateNodeHeight(this.root);
       return;
     }
+
     let newRoot = originalRoot.left;
     originalRoot.left = newRoot.right;
     newRoot.right = originalRoot;
     parentNode[problemNodeDirection] = newRoot;
+
+    this.updateNodeHeight(newRoot.left);
+    this.updateNodeHeight(newRoot.right);
+    this.updateNodeHeight(newRoot);
   }
+
   _handleSingleRightRotation(originalRoot, parentNode, problemNodeDirection){
     if(!parentNode){
       this.root = originalRoot.right;
       originalRoot.right = this.root.left;
       this.root.left = originalRoot;
+
+      this.updateNodeHeight(this.root.left);
+      this.updateNodeHeight(this.root.right);
+      this.updateNodeHeight(this.root);
       return;
     }
+
     let newRoot = originalRoot.right;
     originalRoot.right = newRoot.left;
     newRoot.left = originalRoot;
     parentNode[problemNodeDirection] = newRoot;
-  }
-  
-  updateHeights(){
-    if(this.treeIsEmpty()){ return; }
 
-    const _go = (node) => {
-      if (!node.left && !node.right){
-        this.updateNodeHeight(node);
-      }
-      // go right
-      if (node.right){
-        // going down
-        _go(node.right);
-        // coming up
-        this.updateNodeHeight(node);
-      }
-      // go left
-      if (node.left){
-        // going down
-        _go(node.left);
-        // coming up
-        this.updateNodeHeight(node);
-      }
-    }
-
-    _go(this.root);
+    this.updateNodeHeight(newRoot.left);
+    this.updateNodeHeight(newRoot.right);
+    this.updateNodeHeight(newRoot);
   }
 
   getLeftHeight(node){
-    if(!node.left){ return -1 }
+    if(!node.left){ return -1; }
     return node.left.height;
   }
   getRightHeight(node){
-    if(!node.right){ return -1 }
+    if(!node.right){ return -1; }
     return node.right.height;
   }
 
@@ -271,7 +278,6 @@ class AVLTree {
     if ( typeof numericalValue === 'number' ) { return true; }
     return false;
   }
-  // insert
   // delete
   // contains
   // findMin
