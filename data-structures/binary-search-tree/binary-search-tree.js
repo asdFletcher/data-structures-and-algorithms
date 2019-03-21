@@ -7,6 +7,11 @@ class BinarySearchTree {
   constructor() {
     this.root = null;
     this.insertComputations = 0;
+    this.removeComputations = 0;
+    this.containsComputations = 0;
+    this.findMaxComputations = 0;
+    this.findMinComputations = 0;
+    this.printComputations = 0;
   }
 
   insert(value){
@@ -25,7 +30,7 @@ class BinarySearchTree {
     }
 
     const _go = (node) => {
-      this.insertComputations = this.insertComputations + 1;
+      this.insertComputations++;
 
       if (node.value === value) { return; } // already in tree
 
@@ -43,24 +48,33 @@ class BinarySearchTree {
       }
 
       return _go(node.left);
-    }
+    };
 
     return _go(this.root);
   }
 
   remove(value){
-
-    if(this.treeIsEmpty()) { return; }
     
-    if(!this.isNumericInput(value)) { return; }
+    // for timing
+    this.removeComputations = 0;
+
+    if (this.treeIsEmpty()) { return; }
+    
+    if (!this.isNumericInput(value)) { return; }
     value = parseInt(value);
+
+    // if root is removed
+    if(this.root.value === value){
+      let newRoot = this._removeRootFromTree(this.root);
+      this.root = newRoot;
+    }
 
     let parentNode = this.findParent(value);
     let deletedNode;
 
-    if(!parentNode) { return; }
+    if (!parentNode) { return; }
 
-    if( value < parentNode.value ) {
+    if ( value < parentNode.value ) {
       deletedNode = parentNode.left;
       parentNode.left = this._removeRootFromTree(parentNode.left);
     } else {
@@ -79,12 +93,12 @@ class BinarySearchTree {
     const replacementDirection = this._pickASide();
     let newRoot = node[replacementDirection];
 
-    if (replacementDirection === "left"){
+    if (replacementDirection === 'left'){
       const maxNodeOfLeftTree = this.findMaxNode(node.left);
       maxNodeOfLeftTree.right = node.right;
     }
     
-    if (replacementDirection === "right"){
+    if (replacementDirection === 'right'){
       const minNodeOfRightTree = this.findMinNode(node.right);
       minNodeOfRightTree.left = node.left;
     }
@@ -93,28 +107,34 @@ class BinarySearchTree {
   }
 
   findMax(){
+    this.findMaxComputations = 0;
     let node = this.findMaxNode(this.root);
     return node && node.value;
   }
   
   findMin(){
+    this.findMinComputations = 0;
     let node = this.findMinNode(this.root);
     return node && node.value;
   }
 
   contains(value){
+    this.containsComputations = 0;
+
     if (this.treeIsEmpty()) { return false; }
     if (!this.isNumericInput(value)) { return false; }
 
     value = parseInt(value);
 
-    function _go(node){
+    const _go = (node) => {
+      this.containsComputations++;
+
       if (!node) { return false; }
       if (node.value === value) { return true; }
       if (value > node.value) { return _go(node.right); }
       
       return _go(node.left);
-    }
+    };
 
     return _go(this.root);
   }
@@ -125,18 +145,18 @@ class BinarySearchTree {
     return false;
   }
 
-  _pickASide(node){
+  _pickASide(){
     let roll = Math.random();
     if (roll > 0.5){
-      return "left";
+      return 'left';
     } else {
-      return "right";
+      return 'right';
     }
   }
 
   findParent(value){
-    function _go(node){
-      
+    const _go = (node) => {
+      this.removeComputations++;
       if (!node) { return undefined; }
 
       if (node.left && node.left.value === value){ return node; }
@@ -147,7 +167,7 @@ class BinarySearchTree {
       }
       
       return _go(node.left);
-    }
+    };
 
     return _go(this.root);
   }
@@ -159,6 +179,8 @@ class BinarySearchTree {
 
     while (current.right){
       current = current.right;
+      this.removeComputations++;
+      this.findMaxComputations++;
     }
 
     return current;
@@ -171,26 +193,31 @@ class BinarySearchTree {
 
     while (current.left){
       current = current.left;
+      this.removeComputations++;
+      this.findMinComputations++;
     }
 
     return current;
   }
 
   treeIsEmpty(){
-    if(!this.root) { return true; }
+    if (!this.root) { return true; }
 
     return false;
   }
 
   printPreOrder(){
+    this.printComputations = 0;
     const result = [];
 
-    function _go(node){
-      if(!node) { return; }
+    const _go = (node) => {
+      
+      if (!node) { return; }
+      this.printComputations++;
       result.push(node.value);
       _go(node.left);
       _go(node.right);
-    }
+    };
 
     _go(this.root);
     return result;
@@ -198,12 +225,12 @@ class BinarySearchTree {
   printInOrder(){
     const result = [];
 
-    function _go(node){
-      if(!node) { return; }
+    const _go = (node) => {
+      if (!node) { return; }
       _go(node.left);
       result.push(node.value);
       _go(node.right);
-    }
+    };
 
     _go(this.root);
     return result;
@@ -211,12 +238,12 @@ class BinarySearchTree {
   printPostOrder(){
     const result = [];
 
-    function _go(node){
-      if(!node) { return; }
+    const _go = (node) => {
+      if (!node) { return; }
       _go(node.left);
       _go(node.right);
       result.push(node.value);
-    }
+    };
 
     _go(this.root);
     return result;
