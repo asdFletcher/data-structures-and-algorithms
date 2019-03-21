@@ -7,11 +7,11 @@ const AVLTree = require('../avl-tree/avl-tree.js');
 
 const BST = require ('../binary-search-tree/binary-search-tree.js');
 
-const n = 10;
+let n = 1000;
 const sampleRate = 1;
 let manyRandomNumbers = new Set();
-const numberOfRuns = 1;
-const dataset = [];
+const numberOfRuns = 1000;
+let dataset = [];
 const showLine = false;
 
 function generateRandomNumbers(){
@@ -22,6 +22,15 @@ function generateRandomNumbers(){
   }
 }
 
+function generateRandomNumberSet(count){
+  let randomNumbers = new Set();
+  while (randomNumbers.size < count){
+    let num = Math.floor(Math.random() * 1024 * 1024 * 128);
+    randomNumbers.add(num);
+  }
+  return randomNumbers;
+}
+
 function createBlankDataset(){
   let colors = ['red', 'blue', 'green', 'orange', 'black', 'purple', 'violet', 'brown', 'aquamarine', 'yellow'];
   
@@ -29,7 +38,7 @@ function createBlankDataset(){
     dataset.push({
       // label: i,
       pointBorderColor: 'rgba(0, 0, 0, 0)',
-      pointBackgroundColor: 'rgba(0, 0, 0, 0.01)',
+      pointBackgroundColor: `rgba(0, 0, 0, ${5 / 100})`,
       pointRadius: '2',
       showLine: showLine,
       labels: {
@@ -63,7 +72,8 @@ function runSingleTest_WallClock(){
 
 function runSingleTest_Insert_Counter(){
   let times = new Array(n);
-  const myTree = new BST();
+  // const myTree = new BST();
+  const myTree = new AVLTree();
   
   let i = 0;
   manyRandomNumbers.forEach( val => {
@@ -94,12 +104,7 @@ function runSingleTest_Remove_Counter(){
 
   // remove them in a random order
   let i = 0;
-  console.log(myTree.root);
-  console.log(numbers);
-  console.log(Math.floor(Math.random() * manyRandomNumbers.size));
-  let counter = 0;
-  while (myTree.root && counter < 50){
-    // console.log(myTree.root.value);
+  while (myTree.root){
     let randomIndex = Math.floor(Math.random() * manyRandomNumbers.size);
     let randomNodeValue = numbers[randomIndex];
 
@@ -108,10 +113,80 @@ function runSingleTest_Remove_Counter(){
       i++;
       times[i] = myTree.removeComputations;
     }
-    counter++;
   }
 
   return times;
+}
+
+function runSingleTest_Contains_Counter(treesize){
+  let times = new Array(n);
+  const myTree = new BST();
+  let numbers = [];
+
+  // build tree with random numbers
+  manyRandomNumbers.forEach( val => {
+    myTree.insert(val);
+    numbers.push(val);
+  });
+
+  // access them in a random order
+  let i = 0;
+  while (i < n){
+    let randomIndex = Math.floor(Math.random() * manyRandomNumbers.size);
+    let randomNodeValue = numbers[randomIndex];
+
+    let success = myTree.contains(randomNodeValue);
+    if(success){
+      i++;
+      times[treesize] = myTree.containsComputations;
+    }
+  }
+
+  return times;
+}
+
+function runTheTest_Variable_Tree_Size(){
+
+  let output = {
+    // label: i,
+    pointBorderColor: 'rgba(0, 0, 0, 0)',
+    pointBackgroundColor: `rgba(0, 0, 0, ${5 / 100})`,
+    pointRadius: '2',
+    showLine: false,
+    labels: {
+      display: false,
+    },
+    data: [],
+  };
+
+  for(let i = 0; i < 100; i++){
+    for(let j = 0; j < 100; j++){
+      let treeSize = i;
+
+      const myTree = new BST();
+
+      // generate random number set
+      let randomNumbers = generateRandomNumberSet(treeSize);
+      let numbers = [];
+    
+      // build tree with random numbers
+      randomNumbers.forEach( val => {
+        myTree.insert(val);
+        numbers.push(val);
+      });
+
+      // pick a random one
+      let randomIndex = Math.floor(Math.random() * randomNumbers.size);
+      let randomNodeValue = numbers[randomIndex];
+    
+      // access it
+      myTree.printPreOrder();
+
+      // save the data
+      output.data.push({x: treeSize, y: myTree.printComputations});
+    }
+  }
+  return [output];
 }
 
 function runTheTest(){
@@ -120,15 +195,15 @@ function runTheTest(){
 
     let totalStart = now();
     // let times = runSingleTest_Insert_Counter();
-    let times = runSingleTest_Remove_Counter();
+    // let times = runSingleTest_Remove_Counter();
+    let times = runSingleTest_Contains_Counter();
     let totalEnd = now();
 
     let elapsed = (totalEnd-totalStart).toFixed(3);
 
     // console.log(`total Time for test ${i}: `, elapsed);
-    let resultA = postProcessA(times);
         
-    dataset[i].data = resultA;
+    dataset[i].data = postProcessA(times);
   }
 }
 
@@ -178,9 +253,9 @@ function postProcessB(){
   return newDataSets;
 }
 
-function writeResultsToFile(){
+function writeResultsToFile(data){
 
-  let stringData = JSON.stringify(dataset);
+  let stringData = JSON.stringify(data);
 
   fs.writeFile('temp.json', stringData, function(err, data) {
     if (err) console.log(err);
@@ -191,10 +266,11 @@ function doStuff(){
 
   createBlankDataset();
   console.log(`running the test 🥕`);
-  runTheTest();
+  // runTheTest();
+  let output = runTheTest_Variable_Tree_Size();
   console.log(`Test complete, 🍌`);
   
-  writeResultsToFile();
+  writeResultsToFile(output);
 }
 
 doStuff();
