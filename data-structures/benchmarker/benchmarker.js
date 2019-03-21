@@ -7,10 +7,10 @@ const AVLTree = require('../avl-tree/avl-tree.js');
 
 const BST = require ('../binary-search-tree/binary-search-tree.js');
 
-const n = 15;
+const n = 10;
 const sampleRate = 1;
 let manyRandomNumbers = new Set();
-const numberOfRuns = 5;
+const numberOfRuns = 1;
 const dataset = [];
 const showLine = false;
 
@@ -61,7 +61,7 @@ function runSingleTest_WallClock(){
   return times;
 }
 
-function runSingleTest_Counter(){
+function runSingleTest_Insert_Counter(){
   let times = new Array(n);
   const myTree = new BST();
   
@@ -81,13 +81,46 @@ function runSingleTest_Counter(){
   return times;
 }
 
+function runSingleTest_Remove_Counter(){
+  let times = new Array(n);
+  const myTree = new BST();
+  let numbers = [];
+
+  // build tree with random numbers
+  manyRandomNumbers.forEach( val => {
+    myTree.insert(val);
+    numbers.push(val);
+  });
+
+  // remove them in a random order
+  let i = 0;
+  console.log(myTree.root);
+  console.log(numbers);
+  console.log(Math.floor(Math.random() * manyRandomNumbers.size));
+  let counter = 0;
+  while (myTree.root && counter < 50){
+    // console.log(myTree.root.value);
+    let randomIndex = Math.floor(Math.random() * manyRandomNumbers.size);
+    let randomNodeValue = numbers[randomIndex];
+
+    let success = myTree.remove(randomNodeValue);
+    if(success){
+      i++;
+      times[i] = myTree.removeComputations;
+    }
+    counter++;
+  }
+
+  return times;
+}
+
 function runTheTest(){
   for(let i = 0; i < numberOfRuns; i++){
-    // console.log(`generating numbers 🥩`);
     generateRandomNumbers();
 
     let totalStart = now();
-    let times = runSingleTest_Counter();
+    // let times = runSingleTest_Insert_Counter();
+    let times = runSingleTest_Remove_Counter();
     let totalEnd = now();
 
     let elapsed = (totalEnd-totalStart).toFixed(3);
@@ -97,10 +130,6 @@ function runTheTest(){
         
     dataset[i].data = resultA;
   }
-
-  
-
-
 }
 
 function postProcessA(arr){
@@ -149,15 +178,9 @@ function postProcessB(){
   return newDataSets;
 }
 
-
 function writeResultsToFile(){
 
-  let resultB = postProcessB();
-
-  // let stringData = JSON.stringify(dataset);
-  // let stringData = JSON.stringify(resultB);
-  let a = [...dataset , ...resultB];
-  let stringData = JSON.stringify(a);
+  let stringData = JSON.stringify(dataset);
 
   fs.writeFile('temp.json', stringData, function(err, data) {
     if (err) console.log(err);
@@ -171,10 +194,6 @@ function doStuff(){
   runTheTest();
   console.log(`Test complete, 🍌`);
   
-  console.log(`Post processing complete 🥦!`);
-  // console.log(JSON.stringify(plotPoints))
-  // console.log(dataset);
-  // console.log(`${data[data.length-1].y - data[0].y} ms`);
   writeResultsToFile();
 }
 
