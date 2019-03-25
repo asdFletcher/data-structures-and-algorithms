@@ -9,7 +9,7 @@ const BST = require ('../binary-search-tree/binary-search-tree.js');
 
 let n = 100;
 let manyRandomNumbers = new Set();
-const numberOfRuns = 30;
+const numberOfRuns = 100;
 
 // for fixed tree size tests (insert, delete)
 
@@ -18,8 +18,8 @@ function runTheTest_Dependent_Tree_Size(){
 
   for(let i = 0; i < numberOfRuns; i++){
 
-    // let times = runSingleTest_Insert_Counter();
-    let times = runSingleTest_Remove_Counter();
+    let times = runSingleTest_Insert_Counter();
+    // let times = runSingleTest_Remove_Counter();
     // let times = runSingleTest_Contains_Counter();
 
     dataset[i].data = postProcess(times);
@@ -35,7 +35,7 @@ function runTheTest_Variable_Tree_Size(){
     pointBorderColor: 'rgba(0, 0, 0, 0)',
     pointBackgroundColor: `rgba(0, 0, 0, ${5 / 100})`,
     pointRadius: '2',
-    showLine: false,
+    showLine: true,
     labels: {
       display: false,
     },
