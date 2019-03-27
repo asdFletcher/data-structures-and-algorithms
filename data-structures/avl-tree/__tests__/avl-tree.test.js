@@ -743,8 +743,301 @@ describe('avl remove', () => {
     expect(myTree).toEqual(myExpectedTree);
 
   });
+  
+  describe('contains', () => {
+    it('returns false if tree is empty', () => {
+      let myTree = new AVLTree();
 
+      let result = myTree.contains(2);
+      
+      expect(result).toBe(false);
+    });
 
+    it('correctly returns false if the tree is 1 node', () => {
+      let myTree = new AVLTree();
+      myTree.insert(3);
+
+      let result = myTree.contains(2);
+      
+      expect(result).toBe(false);
+    });
+
+    it('correctly returns true if the tree is 1 node', () => {
+      let myTree = new AVLTree();
+      myTree.insert(3);
+
+      let result = myTree.contains(3);
+      
+      expect(result).toBe(true);
+    });
+
+    it('correctly returns true on left sub tree leaf node, multi node tree', () => {
+      let myTree = new AVLTree();
+      myTree.insert(10);
+      myTree.insert(5);
+      myTree.insert(15);
+      myTree.insert(3);
+      myTree.insert(7);
+      myTree.insert(12);
+      myTree.insert(17);
+
+      let result = myTree.contains(7);
+      
+      expect(result).toBe(true);
+    });
+
+    it('correctly returns true on right sub tree leaf node, multi node tree', () => {
+      let myTree = new AVLTree();
+      myTree.insert(10);
+      myTree.insert(5);
+      myTree.insert(15);
+      myTree.insert(3);
+      myTree.insert(7);
+      myTree.insert(12);
+      myTree.insert(17);
+
+      let result = myTree.contains(17);
+      
+      expect(result).toBe(true);
+    });
+
+    it('correctly returns true on left sub tree non-leaf node, multi node tree', () => {
+      let myTree = new AVLTree();
+      myTree.insert(10);
+      myTree.insert(5);
+      myTree.insert(15);
+      myTree.insert(3);
+      myTree.insert(7);
+      myTree.insert(12);
+      myTree.insert(17);
+
+      let result = myTree.contains(5);
+      
+      expect(result).toBe(true);
+    });
+
+    it('correctly returns true on right sub tree non-leaf node, multi node tree', () => {
+      let myTree = new AVLTree();
+      myTree.insert(10);
+      myTree.insert(5);
+      myTree.insert(15);
+      myTree.insert(3);
+      myTree.insert(7);
+      myTree.insert(12);
+      myTree.insert(17);
+
+      let result = myTree.contains(15);
+      
+      expect(result).toBe(true);
+    });
+
+    it('correctly returns false on left sub tree, multi node tree', () => {
+      let myTree = new AVLTree();
+      myTree.insert(10);
+      myTree.insert(5);
+      myTree.insert(15);
+      myTree.insert(3);
+      myTree.insert(7);
+      myTree.insert(12);
+      myTree.insert(17);
+
+      let result = myTree.contains(0);
+      
+      expect(result).toBe(false);
+    });
+    
+    it('correctly returns false on right sub tree, multi node tree', () => {
+      let myTree = new AVLTree();
+      myTree.insert(10);
+      myTree.insert(5);
+      myTree.insert(15);
+      myTree.insert(3);
+      myTree.insert(7);
+      myTree.insert(12);
+      myTree.insert(17);
+
+      let result = myTree.contains(20);
+      
+      expect(result).toBe(false);
+    });
+
+  });
+
+  describe('findMin', () => {
+    it('returns undefined if tree is empty', () => {
+      let myTree = new AVLTree();
+
+      let result = myTree.findMin();
+      
+      expect(result).toBe(undefined);
+    });
+    
+    it('correctly returns min value, single node tree', () => {
+      let myTree = new AVLTree();
+      myTree.insert(10);
+
+      let result = myTree.findMin();
+      
+      expect(result).toBe(10);
+    });
+
+    it('correctly returns min value, multi node tree', () => {
+      let myTree = new AVLTree();
+      myTree.insert(10);
+      myTree.insert(5);
+      myTree.insert(15);
+      myTree.insert(3);
+      myTree.insert(7);
+      myTree.insert(12);
+      myTree.insert(17);
+
+      let result = myTree.findMin();
+      
+      expect(result).toBe(3);
+    });
+
+  });
+
+  describe('findMax', () => {
+    it('returns undefined if tree is empty', () => {
+      let myTree = new AVLTree();
+
+      let result = myTree.findMax();
+      
+      expect(result).toBe(undefined);
+    });
+    
+    it('correctly returns max value, single node tree', () => {
+      let myTree = new AVLTree();
+      myTree.insert(10);
+
+      let result = myTree.findMax();
+      
+      expect(result).toBe(10);
+    });
+
+    it('correctly returns max value, multi node tree', () => {
+      let myTree = new AVLTree();
+      myTree.insert(10);
+      myTree.insert(5);
+      myTree.insert(15);
+      myTree.insert(3);
+      myTree.insert(7);
+      myTree.insert(12);
+      myTree.insert(17);
+
+      let result = myTree.findMax();
+      
+      expect(result).toBe(17);
+    });
+
+  });
+
+  describe('printPreOrder', () => {
+    it('returns empty array if tree is empty', () => {
+      let myTree = new AVLTree();
+
+      let result = myTree.printPreOrder();
+      
+      expect(result).toEqual([]);
+    });
+    
+    it('correctly returns pre order traversal, single node tree', () => {
+      let myTree = new AVLTree();
+      myTree.insert(10);
+
+      let result = myTree.printPreOrder();
+      let expected = [10];
+      
+      expect(result).toEqual(expected);
+    });
+
+    it('correctly returns pre order traversal, multi node tree', () => {
+      let myTree = new AVLTree();
+      myTree.insert(10);
+      myTree.insert(5);
+      myTree.insert(15);
+      myTree.insert(3);
+      myTree.insert(7);
+      myTree.insert(12);
+      myTree.insert(17);
+
+      let result = myTree.printPreOrder();
+      let expected = [10, 5, 3, 7, 15, 12, 17];
+
+      expect(result).toEqual(expected);
+    });
+  });
+
+  describe('printInOrder', () => {
+    it('returns empty array if tree is empty', () => {
+      let myTree = new AVLTree();
+
+      let result = myTree.printInOrder();
+      
+      expect(result).toEqual([]);
+    });
+    
+    it('correctly returns in order traversal, single node tree', () => {
+      let myTree = new AVLTree();
+      myTree.insert(10);
+
+      let result = myTree.printInOrder();
+      let expected = [10];
+      
+      expect(result).toEqual(expected);
+    });
+
+    it('correctly returns in order traversal, multi node tree', () => {
+      let myTree = new AVLTree();
+      myTree.insert(10);
+      myTree.insert(5);
+      myTree.insert(15);
+      myTree.insert(3);
+      myTree.insert(7);
+      myTree.insert(12);
+      myTree.insert(17);
+
+      let result = myTree.printInOrder();
+      let expected = [3, 5, 7, 10, 12, 15, 17];
+
+      expect(result).toEqual(expected);
+    });
+  });
+
+  describe('printPostOrder', () => {
+    it('returns empty array if tree is empty', () => {
+      let myTree = new AVLTree();
+
+      let result = myTree.printPostOrder();
+      
+      expect(result).toEqual([]);
+    });
+    
+    it('correctly returns post order traversal, single node tree', () => {
+      let myTree = new AVLTree();
+      myTree.insert(10);
+
+      let result = myTree.printPostOrder();
+      let expected = [10];
+      
+      expect(result).toEqual(expected);
+    });
+
+    it('correctly returns post order traversal, multi node tree', () => {
+      let myTree = new AVLTree();
+      myTree.insert(10);
+      myTree.insert(5);
+      myTree.insert(15);
+      myTree.insert(3);
+      myTree.insert(7);
+      myTree.insert(12);
+      myTree.insert(17);
+
+      let result = myTree.printPostOrder();
+      let expected = [3, 7, 5, 12, 17, 15, 10];
+
+      expect(result).toEqual(expected);
+    });
+  });
 });
-
-
