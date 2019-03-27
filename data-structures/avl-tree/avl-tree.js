@@ -191,11 +191,8 @@ class AVLTree {
   }
 
   removeNodeWithTwoChildren(node){
-    console.log(`it has 2 children`);
     let maxNodeValueOfSubTree;
     let minNodeValueOfSubTree;
-    let imbalancedNode;
-    
 
     const _goMin = (node) => {
       console.log(`~~ goMin ~~ node: `, node);
@@ -216,8 +213,7 @@ class AVLTree {
         node.left = null;
         this.updateNodeHeight(node);
         if (this.isImbalanced(node)){
-          console.log(`🍎imbalance detected, setting it: node: `, node);
-          imbalancedNode = node;
+          this.imbalancedNode = node;
         }
         return true;
       }
@@ -226,8 +222,7 @@ class AVLTree {
         this.updateNodeHeight(node.left);
         this.updateNodeHeight(node);
         if (this.isImbalanced(node)){
-          console.log(`🍊🍎imbalance detected, setting it: node: `, node);
-          imbalancedNode = node;
+          this.imbalancedNode = node;
         }
         return true;
       }
@@ -245,7 +240,6 @@ class AVLTree {
 
       // base case
       if(!node.right){
-        console.log(`base case of goMax, minNodeValueOfSubTree:`, maxNodeValueOfSubTree);
 
         maxNodeValueOfSubTree = node.value;
 
@@ -261,8 +255,7 @@ class AVLTree {
         node.right = null;
         this.updateNodeHeight(node);
         if (this.isImbalanced(node)){
-          console.log(`🍎imbalance detected, setting it: node: `, node);
-          imbalancedNode = node;
+          this.imbalancedNode = node;
         }
         return true;
       }
@@ -271,8 +264,7 @@ class AVLTree {
         this.updateNodeHeight(node.right);
         this.updateNodeHeight(node);
         if (this.isImbalanced(node)){
-          console.log(`🍊🍎imbalance detected, setting it: node: `, node);
-          imbalancedNode = node;
+          this.imbalancedNode = node;
         }
         return true;
       }
@@ -287,15 +279,10 @@ class AVLTree {
 
     let result;
     if (node.left.height > node.right.height){
-      
       result = _goMax(node.left);
-      
       node.value = maxNodeValueOfSubTree;
-      
     } else {
-
       result = _goMin(node.right);
-
       node.value = minNodeValueOfSubTree;
     }
 
@@ -501,10 +488,115 @@ class AVLTree {
     return false;
   }
 
-  // contains
-  // findMin
-  // findMax
-  // print
+  contains(value){
+    if (!this.isNumericInput()){ return undefined; }
+    value = parseInt(value);
+
+    if (this.treeIsEmpty()){ return false; }
+
+    const _go = (node) => {
+      // base case
+      if(node.value === value){
+        return true;
+      }
+
+      if (!node.left && !node.right) { return false; }
+      
+      if (value < node.value){
+        if(node.left){
+          return _go(node.left);
+        }
+        return false;
+      }
+      if (value > node.value){
+        if(node.right){
+          return _go(node.right);
+        }
+        return false;
+      }
+    };
+
+    let result = _go(this.root);
+
+    return result;
+  }
+
+
+  findMin(){
+    
+    if (this.treeIsEmpty()){ return undefined; }
+    
+    let current = this.root;
+
+    while(current.left){
+      current = current.left;
+    }
+
+    return current.value;
+  }
+
+  findMax(){
+    
+    if (this.treeIsEmpty()){ return undefined; }
+    
+    let current = this.root;
+
+    while(current.right){
+      current = current.right;
+    }
+
+    return current.value;
+  }
+
+  printPreOrder(){
+    let result = [];
+
+    if (this.treeIsEmpty()){ return result; }
+
+    const _go = (node) => {
+      result.push(node.value);
+      if(node && node.left){ _go(node.left); }
+      if(node && node.right){ _go(node.right); }
+    };
+
+    _go(this.root);
+
+    return result;
+  }
+
+  printInOrder(){
+    let result = [];
+
+    if (this.treeIsEmpty()){ return result; }
+
+    const _go = (node) => {
+      if(node && node.left){ _go(node.left); }
+      result.push(node.value);
+      if(node && node.right){ _go(node.right); }
+    };
+
+    _go(this.root);
+
+    return result;
+  }
+
+  printPostOrder(){
+    let result = [];
+
+    if (this.treeIsEmpty()){ return result; }
+
+    const _go = (node) => {
+      if(node && node.left){ _go(node.left); }
+      if(node && node.right){ _go(node.right); }
+      result.push(node.value);
+    };
+
+    _go(this.root);
+
+    return result;
+  }
+
+
 }
 
 module.exports = AVLTree;
