@@ -11,19 +11,98 @@ describe('avl constructor', () => {
     let myTree = new AVLTree();
     expect(myTree.root).toBeNull();
   });
+  it('ignores parameters', ()=>{
+    let myTree = new AVLTree(2);
+    expect(myTree.root).toBeNull();
+  });
 });
 
 describe('avl insert', () => {
+  it('returns undefined when no input is given, doesnt return a node', ()=>{
+    let myTree = new AVLTree();
+    let result = myTree.insert();
+
+    expect(result).toBeUndefined();
+    expect(myTree.root).toBeNull();
+  });
+
+  it('returns undefined if input is a non numeric string, and does not insert the node', ()=>{
+    let myTree = new AVLTree();
+    let result = myTree.insert('test');
+
+    expect(result).toBeUndefined();
+    expect(myTree.root).toBeNull();
+  });
+
+  it('returns the node if input is a numeric string, and inserts the node', ()=>{
+    let myTree = new AVLTree();
+    let result = myTree.insert('4');
+
+    expect(myTree.root).toBeInstanceOf(Node);
+    expect(myTree.root.value).toBe(4);
+    expect(myTree.root.left).toBeNull();
+    expect(myTree.root.right).toBeNull();
+
+    expect(result).toBeInstanceOf(Node);
+    expect(result.value).toBe(4);
+  });
+
+  it('returns undefined if input is true, and does not insert the node', ()=>{
+    let myTree = new AVLTree();
+    let result = myTree.insert(true);
+
+    expect(result).toBeUndefined();
+    expect(myTree.root).toBeNull();
+  });
+
+  it('returns undefined if input is false, and does not insert the node', ()=>{
+    let myTree = new AVLTree();
+    let result = myTree.insert(false);
+
+    expect(result).toBeUndefined();
+    expect(myTree.root).toBeNull();
+  });
+
+  it('returns the node if input is not an integer, and inserts the node', ()=>{
+    let myTree = new AVLTree();
+    let result = myTree.insert(3.4);
+
+    expect(myTree.root).toBeInstanceOf(Node);
+    expect(myTree.root.value).toEqual(3.4);
+    expect(myTree.root.left).toBeNull();
+    expect(myTree.root.right).toBeNull();
+
+    expect(result).toBeInstanceOf(Node);
+    expect(result.value).toBe(3.4);
+  });
+
+  it('returns the node if input is negative, and inserts the node', ()=>{
+    let myTree = new AVLTree();
+    let result = myTree.insert(-5.4);
+
+    expect(myTree.root).toBeInstanceOf(Node);
+    expect(myTree.root.value).toEqual(-5.4);
+    expect(myTree.root.left).toBeNull();
+    expect(myTree.root.right).toBeNull();
+
+    expect(result).toBeInstanceOf(Node);
+    expect(result.value).toBe(-5.4);
+  });
+  
   it('can insert a node', ()=>{
     let myTree = new AVLTree();
-    myTree.insert(5);
+    let result = myTree.insert(5);
 
     expect(myTree.root).toBeInstanceOf(Node);
     expect(myTree.root.value).toBe(5);
     expect(myTree.root.left).toBeNull();
     expect(myTree.root.right).toBeNull();
-  });
+    expect(myTree.root.height).toBe(0);
 
+    expect(result).toBeInstanceOf(Node);
+    expect(result.value).toBe(5);
+  });
+  
   it('can insert 2 nodes with no rotations', ()=>{
     let myTree = new AVLTree();
     myTree.insert(10);
@@ -31,13 +110,16 @@ describe('avl insert', () => {
 
     expect(myTree.root).toBeInstanceOf(Node);
     expect(myTree.root.value).toBe(10);
+    expect(myTree.root.height).toBe(1);
+
 
     expect(myTree.root.left).toBeInstanceOf(Node);
     expect(myTree.root.left.value).toBe(5);
     expect(myTree.root.left.left).toBeNull();
-    
-    
     expect(myTree.root.right).toBeNull();
+
+    expect(myTree.root.left.height).toBe(0);
+
   });
 
   it('can insert 3 nodes with no rotations', ()=>{
@@ -48,15 +130,18 @@ describe('avl insert', () => {
 
     expect(myTree.root).toBeInstanceOf(Node);
     expect(myTree.root.value).toBe(5);
+    expect(myTree.root.height).toBe(1);
 
     expect(myTree.root.left).toBeInstanceOf(Node);
     expect(myTree.root.left.value).toBe(4);
     expect(myTree.root.left.left).toBeNull();
+    expect(myTree.root.left.height).toBe(0);
     
     
     expect(myTree.root.right).toBeInstanceOf(Node);
     expect(myTree.root.right.value).toBe(6);
     expect(myTree.root.right.left).toBeNull();
+    expect(myTree.root.right.height).toBe(0);
   });
 
   it('can insert 3 nodes with a single left root rotation', ()=>{
@@ -78,6 +163,17 @@ describe('avl insert', () => {
     expect(myTree.root.right.left).toBeNull();
   });
 
+  it('can insert 3 nodes with a single left root rotation, with correct height maintenance', ()=>{
+    let myTree = new AVLTree();
+    myTree.insert(5);
+    myTree.insert(4);
+    myTree.insert(3);
+
+    expect(myTree.root.height).toBe(1);
+    expect(myTree.root.left.height).toBe(0);
+    expect(myTree.root.right.height).toBe(0);
+  });
+
   it('can insert 3 nodes with a single right root rotation', ()=>{
     let myTree = new AVLTree();
     myTree.insert(1);
@@ -95,6 +191,17 @@ describe('avl insert', () => {
     expect(myTree.root.right).toBeInstanceOf(Node);
     expect(myTree.root.right.value).toBe(3);
     expect(myTree.root.right.left).toBeNull();
+  });
+
+  it('can insert 3 nodes with a single right root rotation, with correct height maintenance', ()=>{
+    let myTree = new AVLTree();
+    myTree.insert(1);
+    myTree.insert(2);
+    myTree.insert(3);
+
+    expect(myTree.root.height).toBe(1);
+    expect(myTree.root.left.height).toBe(0);
+    expect(myTree.root.right.height).toBe(0);
   });
 
   it('can insert 3 nodes with a double left root rotation, with no sub trees', ()=>{
@@ -116,23 +223,15 @@ describe('avl insert', () => {
     expect(myTree.root.right.left).toBeNull();
   });
 
-  it('can insert 3 nodes with a double right root rotation, with no sub trees', ()=>{
+  it('can insert 3 nodes with a double left root rotation, with correct height maintenance', ()=>{
     let myTree = new AVLTree();
     myTree.insert(7);
-    myTree.insert(9);
-    myTree.insert(8);
+    myTree.insert(5);
+    myTree.insert(6);
 
-    expect(myTree.root).toBeInstanceOf(Node);
-    expect(myTree.root.value).toBe(8);
-
-    expect(myTree.root.left).toBeInstanceOf(Node);
-    expect(myTree.root.left.value).toBe(7);
-    expect(myTree.root.left.left).toBeNull();
-    
-    
-    expect(myTree.root.right).toBeInstanceOf(Node);
-    expect(myTree.root.right.value).toBe(9);
-    expect(myTree.root.right.left).toBeNull();
+    expect(myTree.root.height).toBe(1);
+    expect(myTree.root.left.height).toBe(0);
+    expect(myTree.root.right.height).toBe(0);
   });
 
   it('can insert 3 nodes with a double right root rotation, with no sub trees', ()=>{
@@ -146,9 +245,19 @@ describe('avl insert', () => {
     expect(myTree.root.left.value).toBe(7);
     expect(myTree.root.left.left).toBeNull();
     
-    
     expect(myTree.root.right.value).toBe(9);
     expect(myTree.root.right.left).toBeNull();
+  });
+
+  it('can insert 3 nodes with a double right root rotation, with correct height maintenance', ()=>{
+    let myTree = new AVLTree();
+    myTree.insert(7);
+    myTree.insert(9);
+    myTree.insert(8);
+
+    expect(myTree.root.height).toBe(1);
+    expect(myTree.root.left.height).toBe(0);
+    expect(myTree.root.right.height).toBe(0);
   });
 
   it('does a double left root rotation, with a single left child on new root', ()=>{
@@ -170,6 +279,27 @@ describe('avl insert', () => {
     expect(myTree.root.right.right.value).toBe(25);
     expect(myTree.root.right.left).toBeNull();
   });
+
+  it('does a double left root rotation, with a single left child on new root, with correct height maintenance', ()=>{
+    let myTree = new AVLTree();
+    myTree.insert(20);
+    myTree.insert(10);
+    myTree.insert(25);
+    myTree.insert(5);
+    myTree.insert(15);
+    myTree.insert(14);
+
+    expect(myTree.root.height).toBe(2);
+    
+    expect(myTree.root.left.height).toBe(1);
+
+    expect(myTree.root.left.left.height).toBe(0);
+    expect(myTree.root.left.right.height).toBe(0);
+
+    expect(myTree.root.right.height).toBe(1);
+    expect(myTree.root.right.right.height).toBe(0);
+  });
+
   it('does a double left root rotation, with a single right child on new root', ()=>{
     let myTree = new AVLTree();
     myTree.insert(20);
@@ -188,6 +318,25 @@ describe('avl insert', () => {
     expect(myTree.root.right.value).toBe(20);
     expect(myTree.root.right.right.value).toBe(25);
     expect(myTree.root.right.left.value).toBe(16);
+  });
+
+  it('does a double left root rotation, with a single right child on new root, with correct height maintenance', ()=>{
+    let myTree = new AVLTree();
+    myTree.insert(20);
+    myTree.insert(10);
+    myTree.insert(25);
+    myTree.insert(5);
+    myTree.insert(15);
+    myTree.insert(16);
+
+    expect(myTree.root.height).toBe(2);
+
+    expect(myTree.root.left.height).toBe(1);
+    expect(myTree.root.left.left.height).toBe(0);
+
+    expect(myTree.root.right.height).toBe(1);
+    expect(myTree.root.right.right.height).toBe(0);
+    expect(myTree.root.right.left.height).toBe(0);
   });
 
   it('does a double right root rotation, with a single right child on new root', ()=>{
@@ -210,6 +359,25 @@ describe('avl insert', () => {
     expect(myTree.root.right.left.value).toBe(26);
   });
 
+  it('does a double right root rotation, with a single right child on new root, with correct height maintenance', ()=>{
+    let myTree = new AVLTree();
+    myTree.insert(20);
+    myTree.insert(10);
+    myTree.insert(30);
+    myTree.insert(25);
+    myTree.insert(35);
+    myTree.insert(26);
+
+    expect(myTree.root.height).toBe(2);
+
+    expect(myTree.root.left.height).toBe(1);
+    expect(myTree.root.left.left.height).toBe(0);
+
+    expect(myTree.root.right.height).toBe(1);
+    expect(myTree.root.right.right.height).toBe(0);
+    expect(myTree.root.right.left.height).toBe(0);
+  });
+
   it('does a double right root rotation, with a single left child on new root', ()=>{
     let myTree = new AVLTree();
     myTree.insert(20);
@@ -228,6 +396,24 @@ describe('avl insert', () => {
     expect(myTree.root.right.value).toBe(30);
     expect(myTree.root.right.right.value).toBe(35);
     expect(myTree.root.right.left).toBeNull();
+  });
+  it('does a double right root rotation, with a single left child on new root, with correct height maintenance', ()=>{
+    let myTree = new AVLTree();
+    myTree.insert(20);
+    myTree.insert(10);
+    myTree.insert(30);
+    myTree.insert(25);
+    myTree.insert(35);
+    myTree.insert(24);
+
+    expect(myTree.root.height).toBe(2);
+
+    expect(myTree.root.left.height).toBe(1);
+    expect(myTree.root.left.left.height).toBe(0);
+    expect(myTree.root.left.right.height).toBe(0);
+
+    expect(myTree.root.right.height).toBe(1);
+    expect(myTree.root.right.right.height).toBe(0);
   });
 
   it('does a single left non-root rotation', ()=>{
@@ -250,6 +436,25 @@ describe('avl insert', () => {
     expect(myTree.root.right.left.value).toBe(8);
   });
 
+  it('does a single left non-root rotation, with correct height maintenance', ()=>{
+    let myTree = new AVLTree();
+    myTree.insert(7);
+    myTree.insert(6);
+    myTree.insert(9);
+    myTree.insert(8);
+    myTree.insert(5);
+    myTree.insert(4);
+
+    expect(myTree.root.height).toBe(2);
+
+    expect(myTree.root.left.height).toBe(1);
+    expect(myTree.root.left.left.height).toBe(0);
+    expect(myTree.root.left.right.height).toBe(0);
+
+    expect(myTree.root.right.height).toBe(1);
+    expect(myTree.root.right.left.height).toBe(0);
+  });
+
   it('does a single right non-root rotation', ()=>{
     let myTree = new AVLTree();
     myTree.insert(3);
@@ -268,6 +473,25 @@ describe('avl insert', () => {
     expect(myTree.root.right.value).toBe(6);
     expect(myTree.root.right.right.value).toBe(7);
     expect(myTree.root.right.left.value).toBe(5);
+  });
+
+  it('does a single right non-root rotation, with correct height maintenance', ()=>{
+    let myTree = new AVLTree();
+    myTree.insert(3);
+    myTree.insert(2);
+    myTree.insert(5);
+    myTree.insert(1);
+    myTree.insert(6);
+    myTree.insert(7);
+
+    expect(myTree.root.height).toBe(2);
+
+    expect(myTree.root.left.height).toBe(1);
+    expect(myTree.root.left.left.height).toBe(0);
+
+    expect(myTree.root.right.height).toBe(1);
+    expect(myTree.root.right.right.height).toBe(0);
+    expect(myTree.root.right.left.height).toBe(0);
   });
 
   it('does a double left non-root rotation', ()=>{
@@ -290,6 +514,25 @@ describe('avl insert', () => {
     expect(myTree.root.right.left).toBeNull();
   });
 
+  it('does a double left non-root rotation, with correct height maintenance', ()=>{
+    let myTree = new AVLTree();
+    myTree.insert(7);
+    myTree.insert(6);
+    myTree.insert(8);
+    myTree.insert(4);
+    myTree.insert(9);
+    myTree.insert(5);
+
+    expect(myTree.root.height).toBe(2);
+
+    expect(myTree.root.left.height).toBe(1);
+    expect(myTree.root.left.left.height).toBe(0);
+    expect(myTree.root.left.right.height).toBe(0);
+
+    expect(myTree.root.right.height).toBe(1);
+    expect(myTree.root.right.right.height).toBe(0);
+  });
+
   it('does a double right non-root rotation', ()=>{
     let myTree = new AVLTree();
     myTree.insert(3);
@@ -308,6 +551,25 @@ describe('avl insert', () => {
     expect(myTree.root.right.value).toBe(8);
     expect(myTree.root.right.right.value).toBe(9);
     expect(myTree.root.right.left.value).toBe(6);
+  });
+
+  it('does a double right non-root rotation, with correct height maintenance', ()=>{
+    let myTree = new AVLTree();
+    myTree.insert(3);
+    myTree.insert(2);
+    myTree.insert(6);
+    myTree.insert(1);
+    myTree.insert(9);
+    myTree.insert(8);
+
+    expect(myTree.root.height).toBe(2);
+
+    expect(myTree.root.left.height).toBe(1);
+    expect(myTree.root.left.left.height).toBe(0);
+
+    expect(myTree.root.right.height).toBe(1);
+    expect(myTree.root.right.right.height).toBe(0);
+    expect(myTree.root.right.left.height).toBe(0);
   });
 
   it('does a double left non-root rotation, with a single left child on new root', ()=>{
@@ -340,6 +602,34 @@ describe('avl insert', () => {
     expect(myTree.root.right.left).toBeNull();
   });
 
+  it('does a double left non-root rotation, with a single left child on new root, with correct height maintenance', ()=>{
+    let myTree = new AVLTree();
+    myTree.insert(20);
+    myTree.insert(9);
+    myTree.insert(22);
+    myTree.insert(6);
+    myTree.insert(10);
+    myTree.insert(24);
+    myTree.insert(5);
+    myTree.insert(8);
+    myTree.insert(7);
+
+    expect(myTree.root.height).toBe(3);
+
+    expect(myTree.root.left.height).toBe(2);
+
+    expect(myTree.root.left.left.height).toBe(1);
+    expect(myTree.root.left.right.height).toBe(1);
+
+    expect(myTree.root.left.left.left.height).toBe(0);
+    expect(myTree.root.left.left.right.height).toBe(0);
+
+    expect(myTree.root.left.right.right.height).toBe(0);
+
+    expect(myTree.root.right.height).toBe(1);
+    expect(myTree.root.right.right.height).toBe(0);
+  });
+
   it('does a double left non-root rotation, with a single right child on new root', ()=>{
     let myTree = new AVLTree();
     myTree.insert(20);
@@ -368,6 +658,34 @@ describe('avl insert', () => {
     expect(myTree.root.right.value).toBe(22);
     expect(myTree.root.right.right.value).toBe(24);
     expect(myTree.root.right.left).toBeNull();
+  });
+
+  it('does a double left non-root rotation, with a single right child on new root, with correct height maintenance', ()=>{
+    let myTree = new AVLTree();
+    myTree.insert(20);
+    myTree.insert(10);
+    myTree.insert(22);
+    myTree.insert(4);
+    myTree.insert(15);
+    myTree.insert(24);
+    myTree.insert(2);
+    myTree.insert(7);
+    myTree.insert(8);
+
+    expect(myTree.root.height).toBe(3);
+
+    expect(myTree.root.left.height).toBe(2);
+
+    expect(myTree.root.left.left.height).toBe(1);
+    expect(myTree.root.left.right.height).toBe(1);
+
+    expect(myTree.root.left.left.left.height).toBe(0);
+
+    expect(myTree.root.left.right.left.height).toBe(0);
+    expect(myTree.root.left.right.right.height).toBe(0);
+
+    expect(myTree.root.right.height).toBe(1);
+    expect(myTree.root.right.right.height).toBe(0);
   });
 
   it('does a double right non-root rotation, with a single left child on new root', ()=>{
@@ -401,6 +719,35 @@ describe('avl insert', () => {
     expect(myTree.root.right.left.right.value).toBe(15);
   });
 
+  it('does a double right non-root rotation, with a single left child on new root, with correct height maintenance', ()=>{
+    let myTree = new AVLTree();
+    myTree.insert(10);
+    myTree.insert(9);
+    myTree.insert(14);
+    myTree.insert(8);
+    myTree.insert(12);
+    myTree.insert(20);
+    myTree.insert(16);
+    myTree.insert(22);
+    myTree.insert(15);
+
+    expect(myTree.root.height).toBe(3);
+
+    expect(myTree.root.left.height).toBe(1);
+
+    expect(myTree.root.left.left.height).toBe(0);
+
+    expect(myTree.root.right.height).toBe(2);
+    
+    expect(myTree.root.right.right.height).toBe(1);
+    expect(myTree.root.right.left.height).toBe(1);
+
+    expect(myTree.root.right.right.right.height).toBe(0);
+
+    expect(myTree.root.right.left.left.height).toBe(0);
+    expect(myTree.root.right.left.right.height).toBe(0);
+  });
+
   it('does a double right non-root rotation, with a single right child on new root', ()=>{
     let myTree = new AVLTree();
     myTree.insert(10);
@@ -432,12 +779,64 @@ describe('avl insert', () => {
     expect(myTree.root.right.left.right).toBeNull();
   });
 
+  it('does a double right non-root rotation, with a single right child on new root, with correct height maintenance', ()=>{
+    let myTree = new AVLTree();
+    myTree.insert(10);
+    myTree.insert(9);
+    myTree.insert(14);
+    myTree.insert(8);
+    myTree.insert(12);
+    myTree.insert(20);
+    myTree.insert(16);
+    myTree.insert(22);
+    myTree.insert(17);
+
+    expect(myTree.root.height).toBe(3);
+
+    expect(myTree.root.left.height).toBe(1);
+
+    expect(myTree.root.left.left.height).toBe(0);
+
+    expect(myTree.root.right.height).toBe(2);
+    
+    expect(myTree.root.right.right.height).toBe(1);
+    expect(myTree.root.right.left.height).toBe(1);
+
+    expect(myTree.root.right.right.right.height).toBe(0);
+    expect(myTree.root.right.right.left.height).toBe(0);
+
+    expect(myTree.root.right.left.left.height).toBe(0);
+  });
+
 });
 
 describe('avl remove', () => {
 
+  it('returns undefined when given non numeric input', ()=>{
+    let myTree = new AVLTree();
 
-  it('does undefined when value is not present in an empty tree', ()=>{
+    let result = myTree.remove('test');
+
+    expect(result).toBeUndefined();
+  });
+
+  it('returns undefined when given true', ()=>{
+    let myTree = new AVLTree();
+
+    let result = myTree.remove(true);
+
+    expect(result).toBeUndefined();
+  });
+  
+  it('returns undefined when given false', ()=>{
+    let myTree = new AVLTree();
+
+    let result = myTree.remove(false);
+
+    expect(result).toBeUndefined();
+  });
+
+  it('returns undefined when value is not present in an empty tree', ()=>{
     let myTree = new AVLTree();
 
     let result = myTree.remove(2);
