@@ -19,8 +19,8 @@ class AVLTree {
   insert(value){
     this.insertComputations = 0;
 
-    if (!this.isNumericInput()){ return undefined; }
-    value = parseInt(value);
+    if (!this.isNumericInput(value)){ return undefined; }
+    value = Number(value);
 
     let newNode = new Node(value);
 
@@ -72,8 +72,8 @@ class AVLTree {
   }
 
   remove(value){
-    if (!this.isNumericInput()){ return undefined; }
-    value = parseInt(value);
+    if (!this.isNumericInput(value)){ return undefined; }
+    value = Number(value);
 
     if (this.treeIsEmpty()){ return undefined; }
 
@@ -170,8 +170,6 @@ class AVLTree {
   }
 
   removeNode(node){
-    console.log(`in remove node`);
-
     // if leaf, remove
     if (!node.left && !node.right){
       return null;
@@ -195,11 +193,9 @@ class AVLTree {
     let minNodeValueOfSubTree;
 
     const _goMin = (node) => {
-      console.log(`~~ goMin ~~ node: `, node);
       // base case
       if(!node.left){
         minNodeValueOfSubTree = node.value;
-        console.log(`base case of goMin, minNodeValueOfSubTree:`, minNodeValueOfSubTree);
 
         if(!node.right){
           return null;
@@ -236,8 +232,6 @@ class AVLTree {
     };
 
     const _goMax = (node) => {
-      console.log(`~~ goMax ~~ node: `, node);
-
       // base case
       if(!node.right){
 
@@ -483,14 +477,19 @@ class AVLTree {
   }
 
   isNumericInput(value){
-    let numericalValue = parseInt(value);
+    if (typeof value === 'boolean'){ return false; }
+
+    let numericalValue = Number(value);
+
+    if (isNaN(numericalValue)){ return false; }
+    
     if ( typeof numericalValue === 'number' ) { return true; }
     return false;
   }
 
   contains(value){
-    if (!this.isNumericInput()){ return undefined; }
-    value = parseInt(value);
+    if (!this.isNumericInput(value)){ return undefined; }
+    value = Number(value);
 
     if (this.treeIsEmpty()){ return false; }
 
