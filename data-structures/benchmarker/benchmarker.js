@@ -9,7 +9,7 @@ const BST = require ('../binary-search-tree/binary-search-tree.js');
 
 let n = 100;
 let manyRandomNumbers = new Set();
-const numberOfRuns = 100;
+const numberOfRuns = 10;
 
 // for fixed tree size tests (insert, delete)
 
@@ -17,14 +17,13 @@ function runTheTest_Dependent_Tree_Size(){
   let dataset = createBlankDataset(numberOfRuns);
 
   for(let i = 0; i < numberOfRuns; i++){
-
-    let times = runSingleTest_Insert_Counter();
-    // let times = runSingleTest_Remove_Counter();
+    // let times = runSingleTest_Insert_Counter();
+    let times = runSingleTest_Remove_Counter();
     // let times = runSingleTest_Contains_Counter();
 
     dataset[i].data = postProcess(times);
   }
-
+  
   return dataset;
 }
 
@@ -118,7 +117,7 @@ function runSingleTest_Insert_Counter(){
   return times;
 }
 
-function runSingleTest_Remove_Counter(){
+async function runSingleTest_Remove_Counter(){
   let times = new Array(n);
 
   // const myTree = new BST();
@@ -128,8 +127,8 @@ function runSingleTest_Remove_Counter(){
   
   // build tree with random numbers
   let randomNumbers = generateRandomNumberSet(n);
-  randomNumbers.forEach( val => {
-    myTree.insert(val);
+  randomNumbers.forEach( async val => {
+    await myTree.insert(val);
     numbers.push(val);
   });
 
@@ -139,7 +138,7 @@ function runSingleTest_Remove_Counter(){
     let randomIndex = Math.floor(Math.random() * randomNumbers.size);
     let randomNodeValue = numbers[randomIndex];
 
-    let success = myTree.remove(randomNodeValue);
+    let success = await myTree.remove(randomNodeValue);
     if(success){
       i++;
       times[i] = myTree.removeComputations;
@@ -170,8 +169,8 @@ function runSingleTest_Contains_Counter(treesize){
 
     let success = myTree.contains(randomNodeValue);
     if(success){
-      i++;
       times[treesize] = myTree.containsComputations;
+      i++;
     }
   }
 
