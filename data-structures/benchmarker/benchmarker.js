@@ -34,18 +34,19 @@ function runTheTest_Variable_Tree_Size(){
     pointBorderColor: 'rgba(0, 0, 0, 0)',
     pointBackgroundColor: `rgba(0, 0, 0, ${5 / 100})`,
     pointRadius: '2',
-    showLine: true,
+    showLine: false,
     labels: {
       display: false,
     },
     data: [],
   };
 
-  for(let i = 0; i < 100; i++){
-    for(let j = 0; j < 100; j++){
+  for(let i = 0; i < 1000; i++){
+    for(let j = 0; j < 50; j++){
       let treeSize = i;
 
-      const myTree = new BST();
+      // const myTree = new BST();
+      const myTree = new AVLTree();
 
       // generate random number set
       let randomNumbers = generateRandomNumberSet(treeSize);
@@ -62,10 +63,10 @@ function runTheTest_Variable_Tree_Size(){
       let randomNodeValue = numbers[randomIndex];
     
       // access it
-      myTree.printPreOrder();
+      myTree.contains(randomNodeValue);
 
       // save the data
-      output.data.push({x: treeSize, y: myTree.printComputations});
+      output.data.push({x: treeSize, y: myTree.containsComputations});
     }
   }
   return [output];
@@ -199,8 +200,8 @@ function writeResultsToFile(data){
 function doStuff(){
 
   console.log(`running the test 🥕`);
-  let output = runTheTest_Dependent_Tree_Size();
-  // let output = runTheTest_Variable_Tree_Size();
+  // let output = runTheTest_Dependent_Tree_Size();
+  let output = runTheTest_Variable_Tree_Size();
 
   console.log(`Test complete, 🍌`);
   
