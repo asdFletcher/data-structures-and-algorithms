@@ -7,9 +7,9 @@ const AVLTree = require('../avl-tree/avl-tree.js');
 
 const BST = require ('../binary-search-tree/binary-search-tree.js');
 
-let n = 100;
+let n = 1000;
 let manyRandomNumbers = new Set();
-const numberOfRuns = 10;
+const numberOfRuns = 100;
 
 // for fixed tree size tests (insert, delete)
 
@@ -117,18 +117,17 @@ function runSingleTest_Insert_Counter(){
   return times;
 }
 
-async function runSingleTest_Remove_Counter(){
+function runSingleTest_Remove_Counter(){
   let times = new Array(n);
 
   // const myTree = new BST();
   const myTree = new AVLTree();
-  
   let numbers = [];
   
   // build tree with random numbers
   let randomNumbers = generateRandomNumberSet(n);
-  randomNumbers.forEach( async val => {
-    await myTree.insert(val);
+  randomNumbers.forEach( val => {
+    myTree.insert(val);
     numbers.push(val);
   });
 
@@ -138,7 +137,7 @@ async function runSingleTest_Remove_Counter(){
     let randomIndex = Math.floor(Math.random() * randomNumbers.size);
     let randomNodeValue = numbers[randomIndex];
 
-    let success = await myTree.remove(randomNodeValue);
+    let success = myTree.remove(randomNodeValue);
     if(success){
       i++;
       times[i] = myTree.removeComputations;

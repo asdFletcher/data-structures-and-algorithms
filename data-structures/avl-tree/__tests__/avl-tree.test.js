@@ -2,6 +2,15 @@
 const AVLTree = require ('../avl-tree.js');
 const Node = require('../avl-tree-node.js');
 
+function setCountersToZero(tree){
+  tree.insertComputations = 0;
+  tree.removeComputations = 0;
+  tree.containsComputations = 0;
+  tree.findMaxComputations = 0;
+  tree.findMinComputations = 0;
+  tree.printComputations = 0;
+}
+
 describe('avl tree', () => {
   describe('constructor', () => {
     it('constructs a tree', ()=>{
@@ -1024,9 +1033,9 @@ describe('avl tree', () => {
       let myTree = new AVLTree();
   
       myTree.insert(1);
+      myTree.insert(0);
       myTree.insert(2);
       myTree.insert(3);
-      myTree.insert(0);
   
       let result = myTree.remove(0);
   
@@ -1153,20 +1162,9 @@ describe('avl tree', () => {
       }
   
       // ignore analyitics counters
-      myTree.insertComputations = 0;
-      myTree.removeComputations = 0;
-      myTree.containsComputations = 0;
-      myTree.findMaxComputations = 0;
-      myTree.findMinComputations = 0;
-      myTree.printComputations = 0;
-      myExpectedTree.insertComputations = 0;
-      myExpectedTree.removeComputations = 0;
-      myExpectedTree.containsComputations = 0;
-      myExpectedTree.findMaxComputations = 0;
-      myExpectedTree.findMinComputations = 0;
-      myExpectedTree.printComputations = 0;
-  
-  
+      setCountersToZero(myTree);
+      setCountersToZero(myExpectedTree);
+
       expect(myTree).toEqual(myExpectedTree);
   
     });
@@ -1183,6 +1181,506 @@ describe('avl tree', () => {
       expect(result).toBeUndefined();
     });
   
+    it('creates imbalance in left sub tree when removing left leaf node, when removed node is 0 deep', ()=>{
+      let myTree = new AVLTree();
+  
+      let values = [10, 3, 12, 0, 7, 11, 13, 5];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
+      let result = myTree.remove(0);
+
+      let expectedTreeValues = [10, 5, 12, 3, 7, 11, 13];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
+      expect(result.value).toBe(0);
+      expect(myTree).toEqual(expectedTree);
+    });
+    it('creates imbalance in left sub tree when removing right leaf node, when removed node is 0 deep', ()=>{
+      let myTree = new AVLTree();
+  
+      let values = [10, 3, 12, 0, 7, 11, 13, 1];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
+      let result = myTree.remove(7);
+
+      let expectedTreeValues = [10, 1, 12, 0, 3, 11, 13];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
+      expect(result.value).toBe(7);
+      expect(myTree).toEqual(expectedTree);
+    });
+
+    it('creates imbalance in right sub tree when removing left leaf node, when removed node is 0 deep', ()=>{
+      let myTree = new AVLTree();
+  
+      let values = [10, 3, 15, 0, 7, 12, 17, 13];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
+      let result = myTree.remove(17);
+
+      let expectedTreeValues = [10, 3, 13, 0, 7, 12, 15];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
+      expect(result.value).toBe(17);
+      expect(myTree).toEqual(expectedTree);
+    });
+    it('creates imbalance in right sub tree when removing right leaf node, when removed node is 0 deep', ()=>{
+      let myTree = new AVLTree();
+  
+      let values = [10, 3, 15, 0, 7, 12, 17, 16];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
+      let result = myTree.remove(12);
+
+      let expectedTreeValues = [10, 3, 16, 0, 7, 15, 17];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
+      expect(result.value).toBe(12);
+      expect(myTree).toEqual(expectedTree);
+    });
+
+    
+    it('removes left sub tree root, when replacement is in left tree, 2 deep, replacement causes double left rotation', ()=>{
+      let myTree = new AVLTree();
+  
+      let values = [20, 10, 30, 5, 15, 25, 35, 2, 8, 13, 17, 40, 3];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
+      let result = myTree.remove(10);
+
+      let expectedTreeValues = [20, 8, 30, 3, 15, 25, 35, 2, 5, 13, 17, 40];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
+      expect(result.value).toBe(10);
+      expect(myTree).toEqual(expectedTree);
+    });
+    it('removes left sub tree root, when replacement is in left tree, 2 deep, replacement causes single left rotation', ()=>{
+      let myTree = new AVLTree();
+  
+      let values = [20, 10, 30, 5, 15, 25, 35, 2, 8, 13, 17, 40, 1];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
+      let result = myTree.remove(10);
+
+      let expectedTreeValues = [20, 8, 30, 2, 15, 25, 35, 1, 5, 13, 17, 40];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
+      expect(result.value).toBe(10);
+      expect(myTree).toEqual(expectedTree);
+    });
+    it('removes left sub tree root, when replacement is in left tree, 2 deep, replacement causes no rotation', ()=>{
+      let myTree = new AVLTree();
+  
+      let values = [20, 10, 30, 5, 15, 25, 35, 2, 8, 13, 17, 40, 7];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
+      let result = myTree.remove(10);
+
+      let expectedTreeValues = [20, 8, 30, 5, 15, 25, 35, 2, 7, 13, 17, 40];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
+      expect(result.value).toBe(10);
+      expect(myTree).toEqual(expectedTree);
+    });
+    it('removes left sub tree root, when replacement is in left tree, 2 deep, replacement causes no rotation', ()=>{
+      let myTree = new AVLTree();
+  
+      let values = [20, 10, 30, 5, 15, 25, 35, 2, 8, 13, 17, 40, 9];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
+      let result = myTree.remove(10);
+
+      let expectedTreeValues = [20, 9, 30, 5, 15, 25, 35, 2, 8, 13, 17, 40];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
+      expect(result.value).toBe(10);
+      expect(myTree).toEqual(expectedTree);
+    });
+    it('removes left sub tree root, when replacement is in right tree, 2 deep, replacement causes no rotation', ()=>{
+      let myTree = new AVLTree();
+  
+      let values = [20, 10, 30, 5, 15, 25, 35, 2, 8, 13, 17, 40, 12];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
+      let result = myTree.remove(10);
+
+      let expectedTreeValues = [20, 12, 30, 5, 15, 25, 35, 2, 8, 13, 17, 40];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
+      expect(result.value).toBe(10);
+      expect(myTree).toEqual(expectedTree);
+    });
+    it('removes left sub tree root, when replacement is in right tree, 2 deep, replacement causes no rotation', ()=>{
+      let myTree = new AVLTree();
+  
+      let values = [20, 10, 30, 5, 15, 25, 35, 2, 8, 13, 17, 40, 14];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
+      let result = myTree.remove(10);
+
+      let expectedTreeValues = [20, 13, 30, 5, 15, 25, 35, 2, 8, 14, 17, 40];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
+      expect(result.value).toBe(10);
+      expect(myTree).toEqual(expectedTree);
+    });
+    it('removes left sub tree root, when replacement is in right tree, 2 deep, replacement causes double rotation', ()=>{
+      let myTree = new AVLTree();
+  
+      let values = [20, 10, 30, 5, 15, 25, 35, 2, 8, 13, 17, 40, 16];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
+      let result = myTree.remove(10);
+
+      let expectedTreeValues = [20, 13, 30, 5, 16, 25, 35, 2, 8, 15, 17, 40];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
+      expect(result.value).toBe(10);
+      expect(myTree).toEqual(expectedTree);
+    });
+    it('removes left sub tree root, when replacement is in right tree, 2 deep, replacement causes single rotation', ()=>{
+      let myTree = new AVLTree();
+  
+      let values = [20, 10, 30, 5, 15, 25, 35, 2, 8, 13, 17, 40, 18];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
+      let result = myTree.remove(10);
+
+      let expectedTreeValues = [20, 13, 30, 5, 17, 25, 35, 2, 8, 15, 18, 40];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
+      expect(result.value).toBe(10);
+      expect(myTree).toEqual(expectedTree);
+    });
+    it('removes right sub tree root, when replacement is in left tree, 2 deep, replacement causes single left rotation', ()=>{
+      let myTree = new AVLTree();
+  
+      let values = [20, 10, 30, 5, 15, 25, 35, 1, 23, 27, 33, 40, 22];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
+      let result = myTree.remove(30);
+
+      let expectedTreeValues = [20, 10, 27, 5, 15, 23, 35, 1, 22, 25, 33, 40];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
+      expect(result.value).toBe(30);
+      expect(myTree).toEqual(expectedTree);
+    });
+    it('removes right sub tree root, when replacement is in left tree, 2 deep, replacement causes double left rotation', ()=>{
+      let myTree = new AVLTree();
+  
+      let values = [20, 10, 30, 5, 15, 25, 35, 1, 23, 27, 33, 40, 24];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
+      let result = myTree.remove(30);
+
+      let expectedTreeValues = [20, 10, 27, 5, 15, 24, 35, 1, 23, 25, 33, 40];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
+      expect(result.value).toBe(30);
+      expect(myTree).toEqual(expectedTree);
+    });
+    it('removes right sub tree root, when replacement is in left tree, 2 deep, replacement causes no rotation', ()=>{
+      let myTree = new AVLTree();
+  
+      let values = [20, 10, 30, 5, 15, 25, 35, 1, 23, 27, 33, 40, 26];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
+      let result = myTree.remove(30);
+
+      let expectedTreeValues = [20, 10, 27, 5, 15, 25, 35, 1, 23, 26, 33, 40];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
+      expect(result.value).toBe(30);
+      expect(myTree).toEqual(expectedTree);
+    });
+    it('removes right sub tree root, when replacement is in left tree, 2 deep, replacement causes no rotation', ()=>{
+      let myTree = new AVLTree();
+  
+      let values = [20, 10, 30, 5, 15, 25, 35, 1, 23, 27, 33, 40, 28];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
+      let result = myTree.remove(30);
+
+      let expectedTreeValues = [20, 10, 28, 5, 15, 25, 35, 1, 23, 27, 33, 40];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
+      expect(result.value).toBe(30);
+      expect(myTree).toEqual(expectedTree);
+    });
+    it('removes right sub tree root, when replacement is in left tree, 2 deep, replacement causes no rotation', ()=>{
+      let myTree = new AVLTree();
+  
+      let values = [20, 10, 30, 5, 15, 25, 35, 1, 23, 27, 33, 40, 32];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
+      let result = myTree.remove(30);
+
+      let expectedTreeValues = [20, 10, 32, 5, 15, 25, 35, 1, 23, 27, 33, 40];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
+      expect(result.value).toBe(30);
+      expect(myTree).toEqual(expectedTree);
+    });
+    it('removes right sub tree root, when replacement is in left tree, 2 deep, replacement causes no rotation', ()=>{
+      let myTree = new AVLTree();
+  
+      let values = [20, 10, 30, 5, 15, 25, 35, 1, 23, 27, 33, 40, 34];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
+      let result = myTree.remove(30);
+
+      let expectedTreeValues = [20, 10, 33, 5, 15, 25, 35, 1, 23, 27, 34, 40];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
+      expect(result.value).toBe(30);
+      expect(myTree).toEqual(expectedTree);
+    });
+    it('removes right sub tree root, when replacement is in left tree, 2 deep, replacement causes double right rotation', ()=>{
+      let myTree = new AVLTree();
+  
+      let values = [20, 10, 30, 5, 15, 25, 35, 1, 23, 27, 33, 40, 39];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
+      let result = myTree.remove(30);
+
+      let expectedTreeValues = [20, 10, 33, 5, 15, 25, 39, 1, 23, 27, 35, 40];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
+      expect(result.value).toBe(30);
+      expect(myTree).toEqual(expectedTree);
+    });
+    it('removes right sub tree root, when replacement is in left tree, 2 deep, replacement causes single right rotation', ()=>{
+      let myTree = new AVLTree();
+  
+      let values = [20, 10, 30, 5, 15, 25, 35, 1, 23, 27, 33, 40, 41];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
+      let result = myTree.remove(30);
+
+      let expectedTreeValues = [20, 10, 33, 5, 15, 25, 40, 1, 23, 27, 35, 41];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
+      expect(result.value).toBe(30);
+      expect(myTree).toEqual(expectedTree);
+    });
+
+
+    // removed node is parent of imbalanced node
+    // removed node is 2+ removed from imbalanced node
+    // removed node is 1 below the imbalanced node
+    // removed node is 2 below the imbalanced node
+    // removed node is 3+ below the imbalanced node
+
+
+
+
+
+    it('removes left sub tree root, when replacement is in left tree, 3 deep, removal causes no rotation', ()=>{
+      let myTree = new AVLTree();
+  
+      let values = [52, 30, 81, 19, 42, 69, 91, 9, 25, 41, 48, 58, 80, 83, 94, 2, 16, 21, 37, 45, 49, 53, 60, 76, 82, 90, 93, 97, 17];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
+      let result = myTree.remove(19);
+
+      let expectedTreeValues = [52, 30, 81, 17, 42, 69, 91, 9, 25, 41, 48, 58, 80, 83, 94, 2, 16, 21, 37, 45, 49, 53, 60, 76, 82, 90, 93, 97];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
+      expect(result.value).toBe(19);
+      expect(myTree).toEqual(expectedTree);
+    });
+    it('removes left sub tree root, when replacement is in left tree, 2 deep, removal causes no rotation', ()=>{
+      let myTree = new AVLTree();
+  
+      let values = [52, 30, 81, 19, 42, 69, 91, 9, 25, 38, 48, 58, 80, 83, 94, 21, 37, 41, 45, 49, 53, 60, 76, 82, 90, 93, 97];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
+      let result = myTree.remove(19);
+
+      let expectedTreeValues = [52, 30, 81, 21, 42, 69, 91, 9, 25, 38, 48, 58, 80, 83, 94, 37, 41, 45, 49, 53, 60, 76, 82, 90, 93, 97];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
+      expect(result.value).toBe(19);
+      expect(myTree).toEqual(expectedTree);
+    });
+    it('removes left sub tree root, when replacement is in left tree, 1 deep, removal causes no rotation', ()=>{
+      let myTree = new AVLTree();
+  
+      let values = [52, 30, 81, 19, 42, 69, 91, 9, 58, 80, 83, 94];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
+      let result = myTree.remove(19);
+
+      let expectedTreeValues = [52, 30, 81, 9, 42, 69, 91, 58, 80, 83, 94];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
+      expect(result.value).toBe(19);
+      expect(myTree).toEqual(expectedTree);
+    });
+
+
   });
   
   describe('contains', () => {
@@ -1481,6 +1979,5 @@ describe('avl tree', () => {
     });
   });
 });
-
 
 
