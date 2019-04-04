@@ -1,13 +1,12 @@
 'use strict';
 
 const fs = require('fs');
-let now = require('performance-now');
 
 const AVLTree = require('../avl-tree/avl-tree.js');
 
 const BST = require ('../binary-search-tree/binary-search-tree.js');
 
-let n = 1000;
+let n = 100;
 let manyRandomNumbers = new Set();
 const numberOfRuns = 100;
 
@@ -41,8 +40,8 @@ function runTheTest_Variable_Tree_Size(){
     data: [],
   };
 
-  for(let i = 0; i < 1000; i++){
-    for(let j = 0; j < 50; j++){
+  for(let i = 0; i < 100; i++){
+    for(let j = 0; j < 100; j++){
       let treeSize = i;
 
       // const myTree = new BST();
@@ -61,12 +60,17 @@ function runTheTest_Variable_Tree_Size(){
       // pick a random one
       let randomIndex = Math.floor(Math.random() * randomNumbers.size);
       let randomNodeValue = numbers[randomIndex];
-    
-      // access it
-      myTree.contains(randomNodeValue);
 
-      // save the data
-      output.data.push({x: treeSize, y: myTree.containsComputations});
+      // perform operation and save data
+
+      // myTree.contains(randomNodeValue);
+      // output.data.push({x: treeSize, y: myTree.containsComputations});
+
+      // myTree.findMax();
+      // output.data.push({x: treeSize, y: myTree.findMaxComputations});
+
+      myTree.findMin();
+      output.data.push({x: treeSize, y: myTree.findMinComputations});
     }
   }
   return [output];

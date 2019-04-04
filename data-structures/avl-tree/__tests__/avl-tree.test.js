@@ -882,269 +882,337 @@ describe('avl tree', () => {
     });
   
     it('returns the node when it is present, and is the root, and has no children', ()=>{
+      // ~
       let myTree = new AVLTree();
   
-      myTree.insert(2);
-  
+      let values = [2];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
       let result = myTree.remove(2);
-  
-      expect(result).toBeInstanceOf(Node);
+
+      let expectedTreeValues = [];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
       expect(result.value).toBe(2);
-      expect(result.left).toBeNull();
-      expect(result.right).toBeNull();
-  
-      expect(myTree.root).toBeNull();
+      expect(myTree).toEqual(expectedTree);
+      // ~
     });
   
     it('returns the node when it is present, and is the root, and has 1 left child', ()=>{
+      // ~
       let myTree = new AVLTree();
-  
-      myTree.insert(2);
-      myTree.insert(1);
-  
+
+      let values = [2, 1];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
       let result = myTree.remove(2);
-  
+
+      let expectedTreeValues = [1];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
       expect(result.value).toBe(2);
-      
-      expect(myTree.root).toBeInstanceOf(Node);
-      expect(myTree.root.value).toBe(1);
-      expect(myTree.root.left).toBeNull();
-      expect(myTree.root.right).toBeNull();
+      expect(myTree).toEqual(expectedTree);
+      // ~
     });
   
     it('returns the node when it is present, and is the root, and has 1 right child', ()=>{
+      // ~
       let myTree = new AVLTree();
-  
-      myTree.insert(2);
-      myTree.insert(3);
-  
+
+      let values = [2, 3];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
       let result = myTree.remove(2);
-  
+
+      let expectedTreeValues = [3];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
       expect(result.value).toBe(2);
-      
-      expect(myTree.root).toBeInstanceOf(Node);
-      expect(myTree.root.value).toBe(3);
-      expect(myTree.root.left).toBeNull();
-      expect(myTree.root.right).toBeNull();
+      expect(myTree).toEqual(expectedTree);
+      // ~
     });
   
     it('returns the removed node, and is the root, from a tree that has two single-node children', ()=>{
+      // ~
       let myTree = new AVLTree();
-  
-      myTree.insert(2);
-      myTree.insert(1);
-      myTree.insert(3);
-  
+
+      let values = [2, 1, 3];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
       let result = myTree.remove(2);
-  
+
+      let expectedTreeValues = [3, 1];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
       expect(result.value).toBe(2);
-      
-      expect(myTree.root).toBeInstanceOf(Node);
-      expect(myTree.root.value).toBe(3);
-      expect(myTree.root.left.value).toBe(1);
-      expect(myTree.root.right).toBeNull();
+      expect(myTree).toEqual(expectedTree);
+      // ~
     });
   
     it('returns the removed leaf node', ()=>{
+      // ~
       let myTree = new AVLTree();
-  
-      myTree.insert(2);
-      myTree.insert(1);
-      myTree.insert(3);
-  
+
+      let values = [2, 1, 3];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
       let result = myTree.remove(1);
-  
+
+      let expectedTreeValues = [2, 3];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
       expect(result.value).toBe(1);
-      
-      expect(myTree.root).toBeInstanceOf(Node);
-      expect(myTree.root.value).toBe(2);
-      expect(myTree.root.left).toBeNull();
-      expect(myTree.root.right.value).toBe(3);
+      expect(myTree).toEqual(expectedTree);
+      // ~
     });
   
     it('removes left non leaf node from sub tree with only leaves', ()=>{
+      // ~
       let myTree = new AVLTree();
-  
-      myTree.insert(5);
-      myTree.insert(3);
-      myTree.insert(7);
-      myTree.insert(2);
-      myTree.insert(4);
-      myTree.insert(6);
-      myTree.insert(8);
-  
+
+      let values = [5, 3, 7, 2, 4, 6, 8];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
       let result = myTree.remove(3);
-  
+
+      let expectedTreeValues = [5, 4, 7, 2, 6 ,8];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
       expect(result.value).toBe(3);
-      
-      expect(myTree.root.value).toBe(5);
-      expect(myTree.root.left.value).toBe(4);
-      expect(myTree.root.left.left.value).toBe(2);
-      expect(myTree.root.left.right).toBeNull();
-  
-      expect(myTree.root.right.value).toBe(7);
-      expect(myTree.root.right.left.value).toBe(6);
-      expect(myTree.root.right.right.value).toBe(8);
+      expect(myTree).toEqual(expectedTree);
+      // ~
     });
     
     it('removes right non leaf node from sub tree with only leaves', ()=>{
+      // ~
       let myTree = new AVLTree();
-  
-      myTree.insert(5);
-      myTree.insert(3);
-      myTree.insert(7);
-      myTree.insert(2);
-      myTree.insert(4);
-      myTree.insert(6);
-      myTree.insert(8);
-  
+
+      let values = [5, 3, 7, 2, 4, 6, 8];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
       let result = myTree.remove(7);
-  
+
+      let expectedTreeValues = [5, 3, 8, 2, 4, 6];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
       expect(result.value).toBe(7);
-      
-      expect(myTree.root.value).toBe(5);
-      expect(myTree.root.left.value).toBe(3);
-      expect(myTree.root.left.left.value).toBe(2);
-      expect(myTree.root.left.right.value).toBe(4);
-  
-      expect(myTree.root.right.value).toBe(8);
-      expect(myTree.root.right.left.value).toBe(6);
-      expect(myTree.root.right.right).toBeNull();
+      expect(myTree).toEqual(expectedTree);
+      // ~
     });
   
     it('removes a leaf node causing a single left rotation', ()=>{
+      // ~
       let myTree = new AVLTree();
-  
-      myTree.insert(3);
-      myTree.insert(2);
-      myTree.insert(4);
-      myTree.insert(1);
-  
+
+      let values = [3, 2, 4, 1];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
       let result = myTree.remove(4);
-  
+
+      let expectedTreeValues = [2, 1, 3];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
       expect(result.value).toBe(4);
-      
-      expect(myTree.root.value).toBe(2);
-      expect(myTree.root.left.value).toBe(1);
-      expect(myTree.root.right.value).toBe(3);
+      expect(myTree).toEqual(expectedTree);
+      // ~
     });
   
     it('removes a leaf node causing a single right rotation', ()=>{
+      // ~
       let myTree = new AVLTree();
-  
-      myTree.insert(1);
-      myTree.insert(0);
-      myTree.insert(2);
-      myTree.insert(3);
-  
+
+      let values = [1, 0, 2, 3];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
       let result = myTree.remove(0);
-  
+
+      let expectedTreeValues = [2, 1, 3];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
       expect(result.value).toBe(0);
-      
-      expect(myTree.root.value).toBe(2);
-      expect(myTree.root.left.value).toBe(1);
-      expect(myTree.root.right.value).toBe(3);
+      expect(myTree).toEqual(expectedTree);
+      // ~
     });
   
     it('removes a leaf node causing a double left rotation', ()=>{
+      // ~
       let myTree = new AVLTree();
-  
-      myTree.insert(8);
-      myTree.insert(6);
-      myTree.insert(9);
-      myTree.insert(7);
-  
+
+      let values = [8, 6, 9, 7];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
       let result = myTree.remove(9);
-  
+
+      let expectedTreeValues = [7, 6, 8];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
       expect(result.value).toBe(9);
-      
-      expect(myTree.root.value).toBe(7);
-      expect(myTree.root.left.value).toBe(6);
-      expect(myTree.root.right.value).toBe(8);
+      expect(myTree).toEqual(expectedTree);
+      // ~
     });
     it('removes a leaf node causing a double right rotation', ()=>{
+      // ~
       let myTree = new AVLTree();
-  
-      myTree.insert(5);
-      myTree.insert(4);
-      myTree.insert(7);
-      myTree.insert(6);
-  
+
+      let values = [5, 4, 7, 6];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
       let result = myTree.remove(4);
-  
+
+      let expectedTreeValues = [6, 5, 7];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
       expect(result.value).toBe(4);
-      
-      expect(myTree.root.value).toBe(6);
-      expect(myTree.root.left.value).toBe(5);
-      expect(myTree.root.right.value).toBe(7);
+      expect(myTree).toEqual(expectedTree);
+      // ~
     });
   
     it('removes a leaf node causing a double left rotation', ()=>{
+      // ~
       let myTree = new AVLTree();
-  
-      myTree.insert(8);
-      myTree.insert(6);
-      myTree.insert(9);
-      myTree.insert(5);
-      myTree.insert(7);
-  
+
+      let values = [8, 6, 9, 5, 7];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
       let result = myTree.remove(9);
-  
+
+      let expectedTreeValues = [7, 6, 8, 5];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
       expect(result.value).toBe(9);
-      
-      expect(myTree.root.value).toBe(7);
-      expect(myTree.root.left.value).toBe(6);
-      expect(myTree.root.right.value).toBe(8);
-      
-      expect(myTree.root.left.left.value).toBe(5);
+      expect(myTree).toEqual(expectedTree);
+      // ~
     });
     it('removes a leaf node causing a double right rotation', ()=>{
+      // ~
       let myTree = new AVLTree();
-  
-      myTree.insert(5);
-      myTree.insert(4);
-      myTree.insert(7);
-      myTree.insert(6);
-      myTree.insert(8);
-  
+
+      let values = [5, 4, 7, 6, 8];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
       let result = myTree.remove(4);
-  
+
+      let expectedTreeValues = [6, 5, 7, 8];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
       expect(result.value).toBe(4);
-      
-      expect(myTree.root.value).toBe(6);
-      expect(myTree.root.left.value).toBe(5);
-      expect(myTree.root.right.value).toBe(7);
-  
-      expect(myTree.root.right.right.value).toBe(8);
+      expect(myTree).toEqual(expectedTree);
+      // ~
     });
   
     it('removes a leaf node causing a double left rotation with larger sub trees', ()=>{
+      // ~
       let myTree = new AVLTree();
-  
-      myTree.insert(85);
-      myTree.insert(62);
-      myTree.insert(88);
-      myTree.insert(42);
-      myTree.insert(66);
-      myTree.insert(86);
-      myTree.insert(0);
-      myTree.insert(65);
-  
+
+      let values = [85, 62, 88, 42, 66, 86, 0, 65];
+      for(let i = 0; i < values.length; i++){
+        myTree.insert(values[i]);
+      }
       let result = myTree.remove(86);
-  
+
+      let expectedTreeValues = [66, 62, 85, 42, 65, 88, 0];
+      let expectedTree = new AVLTree();
+      for(let i = 0; i < expectedTreeValues.length; i++){
+        expectedTree.insert(expectedTreeValues[i]);
+      }
+
+      setCountersToZero(myTree);
+      setCountersToZero(expectedTree);
+
       expect(result.value).toBe(86);
-      
-      expect(myTree.root.value).toBe(66);
-      expect(myTree.root.left.value).toBe(62);
-      expect(myTree.root.right.value).toBe(85);
-      
-      expect(myTree.root.left.left.value).toBe(42);
-      expect(myTree.root.left.right.value).toBe(65);
-      
-      expect(myTree.root.right.right.value).toBe(88);
-      expect(myTree.root.right.left).toBeNull();
-  
-      expect(myTree.root.left.left.left.value).toBe(0);
+      expect(myTree).toEqual(expectedTree);
+      // ~
     });
     it('removes a leaf node causing a double left rotation with full sub trees', ()=>{
       let myTree = new AVLTree();
@@ -1604,17 +1672,6 @@ describe('avl tree', () => {
       expect(result.value).toBe(30);
       expect(myTree).toEqual(expectedTree);
     });
-
-
-    // removed node is parent of imbalanced node
-    // removed node is 2+ removed from imbalanced node
-    // removed node is 1 below the imbalanced node
-    // removed node is 2 below the imbalanced node
-    // removed node is 3+ below the imbalanced node
-
-
-
-
 
     it('removes left sub tree root, when replacement is in left tree, 3 deep, removal causes no rotation, no height change', ()=>{
       let myTree = new AVLTree();

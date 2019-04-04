@@ -564,12 +564,13 @@ class AVLTree {
   }
 
   findMin(){
-    
     if (this.treeIsEmpty()){ return undefined; }
+    this.findMinComputations = 0;
     
     let current = this.root;
 
     while(current.left){
+      this.findMinComputations++;
       current = current.left;
     }
 
@@ -577,12 +578,13 @@ class AVLTree {
   }
 
   findMax(){
-    
     if (this.treeIsEmpty()){ return undefined; }
+    this.findMaxComputations = 0;
     
     let current = this.root;
 
     while(current.right){
+      this.findMaxComputations++;
       current = current.right;
     }
 
