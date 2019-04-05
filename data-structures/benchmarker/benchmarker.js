@@ -125,8 +125,8 @@ function runSingleTest_Insert_Counter(){
 function runSingleTest_Remove_Counter(){
   let times = new Array(n);
 
-  // const myTree = new BST();
-  const myTree = new AVLTree();
+  const myTree = new BST();
+  // const myTree = new AVLTree();
   let numbers = [];
   
   // build tree with random numbers
@@ -204,8 +204,8 @@ function writeResultsToFile(data){
 function doStuff(){
 
   console.log(`running the test 🥕`);
-  // let output = runTheTest_Dependent_Tree_Size();
-  let output = runTheTest_Variable_Tree_Size();
+  let output = runTheTest_Dependent_Tree_Size();
+  // let output = runTheTest_Variable_Tree_Size();
 
   console.log(`Test complete, 🍌`);
   
