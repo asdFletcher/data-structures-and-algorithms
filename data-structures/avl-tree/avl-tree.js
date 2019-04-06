@@ -79,6 +79,13 @@ class AVLTree {
 
     this.removeComputations = 0;
 
+    if(this.root.value === value){
+      if(!this.root.left && !this.root.right){
+        let result = this.root;
+        this.root = null;
+        return result;
+      }
+    }
     const _go = (node) => {
       this.removeComputations++;
 
