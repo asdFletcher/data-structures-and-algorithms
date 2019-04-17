@@ -1,6 +1,6 @@
 /* eslint-disable no-plusplus */
 
-const AVLTree = require ('../avl-tree.js');
+const AVLTree = require('../avl-tree.js');
 const Node = require('../avl-tree-node.js');
 
 function setCountersToZero(tree) {
