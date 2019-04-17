@@ -1,7 +1,7 @@
 {
   "name": "data-structures-and-algorithms",
   "version": "1.0.0",
-  "description": "top level structure for all tests",
+  "description": "common datastructures, their tests, and code challenges",
   "main": "jest.config.js",
   "scripts": {
     "start": "node index.js",
@@ -14,14 +14,14 @@
     "url": "git+https://github.com/asdFletcher/data-structures-and-algorithms.git"
   },
   "author": "Fletcher LaRue",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/asdFletcher/data-structures-and-algorithms/issues"
   },
   "homepage": "https://github.com/asdFletcher/data-structures-and-algorithms#readme",
-  "dependencies": {
-    "eslint": "^5.10.0",
-    "jest": "^24.5.0",
-    "performance-now": "^2.1.0"
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "jest": "^24.7.1"
   }
 }
