@@ -100,7 +100,7 @@ class BinarySearchTree {
     return this.removeMinOrMax(root, replacementNodeDirection);
   }
 
-  static getOppositeDirection(direction) {
+  getOppositeDirection(direction) {
     let oppositeDirection;
     if (direction === 'left') {
       oppositeDirection = 'right';
@@ -132,14 +132,14 @@ class BinarySearchTree {
     return newRoot;
   }
 
-  static subTreeRootIsMax(node) {
+  subTreeRootIsMax(node) {
     if (!node.right) {
       return true;
     }
     return false;
   }
 
-  static subTreeRootIsMin(node) {
+  subTreeRootIsMin(node) {
     if (!node.left) {
       return true;
     }
@@ -225,7 +225,7 @@ class BinarySearchTree {
     return go(this.root);
   }
 
-  static isNumericInput(value) {
+  isNumericInput(value) {
     if (typeof value === 'boolean') { return false; }
 
     const numericalValue = Number(value);
@@ -236,7 +236,7 @@ class BinarySearchTree {
     return false;
   }
 
-  static pickASide() {
+  pickASide() {
     const roll = Math.random();
     if (roll > 0.5) {
       return 'left';

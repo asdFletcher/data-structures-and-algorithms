@@ -302,7 +302,7 @@ class AVLTree {
     }
   }
 
-  static getProblemNodeDirection(node, imbalancedNode) {
+  getProblemNodeDirection(node, imbalancedNode) {
     if (node && node.left && node.left.value === imbalancedNode.value) {
       return 'left';
     }
@@ -461,7 +461,7 @@ class AVLTree {
     this.setImbalancedNodeFromParent(newRoot);
   }
 
-  static getHeight(node) {
+  getHeight(node) {
     if (!node) { return -1; }
     return node.height;
   }
@@ -494,7 +494,7 @@ class AVLTree {
     return undefined;
   }
 
-  static updateNodeHeight(node) {
+  updateNodeHeight(node) {
     if (!node.left && !node.right) {
       node.height = 0;
       return;
@@ -517,7 +517,7 @@ class AVLTree {
     return false;
   }
 
-  static isNumericInput(value) {
+  isNumericInput(value) {
     if (typeof value === 'boolean') { return false; }
 
     const numericalValue = Number(value);
