@@ -15,7 +15,7 @@ class SplayTree {
 
     const newNode = new Node(value);
 
-    if (this.treeisEmpty()) {
+    if (this.treeIsEmpty()) {
       this.root = new Node();
       return newNode;
     }
@@ -56,7 +56,12 @@ class SplayTree {
     return result;
   }
 
+  zigzig(target, parent, grandParent) {
+    
+  }
+
   rightSingle(target, parent) {
+    // console.log(`in case right single target.value: ${target.value}, parent.value: ${parent.value}`);
     parent.left = target.right;
     target.right = parent;
     return target;
@@ -72,6 +77,7 @@ class SplayTree {
   }
 
   splay(path) {
+    console.log(`path: `, path);
     let targetIndex = path.length - 1;
     let target = path[targetIndex];
     
@@ -86,59 +92,99 @@ class SplayTree {
       //      R
       //    T
       if (parent === this.root && parent.left === target) {
-        this.root.left = this.rightSingle(target, parent);
+        console.log(`in case 🍎 target: ${target.value} parent: ${parent.value} this.root: ${this.root.value}`);
+        this.root = this.rightSingle(target, parent);
+        console.log(`after in case 🍎: `, this.root);
+        continue;
       }
       // case 
       //      R
       //        T
       if (parent === this.root && parent.right === target) {
-        this.root.right = this.leftSingle(target, parent);
+        console.log(`in case 🍊`);
+        this.root = this.leftSingle(target, parent);
+        continue;
       }
 
       // case 
       //      R
       //    P
       //  T
-      if (grandParent.left === parent && parent.left === target) {
-        grandParent.left = this.rightSingle(target, parent);
-        parentIndex -= 1;
-        parent = path[parentIndex];
-        grandParentIndex -= 1;
-        grandParent = path[grandParentIndex];
+      if (this.root === grandParent && grandParent.left === parent && parent.left === target) {
+          this.root = this.rightSingle(parent, grandParent);
+          this.root = this.rightSingle(target, parent);
+          continue;
       }
+
       // case 
       //      R
       //        P
       //          T
-      if (grandParent.right === parent && parent.right === target) {
-        grandParent.right = this.leftSingle(target, parent);
-        parentIndex -= 1;
-        parent = path[parentIndex];
-        grandParentIndex -= 1;
-        grandParent = path[grandParentIndex];
+      if (this.root === grandParent && grandParent.right === parent && parent.right === target) {
+        this.root = this.leftSingle(parent, grandParent);
+        this.root = this.leftSingle(target, parent);
+        continue;
       }
+
       // case 
-      //      G
+      //      R
       //    P
       //     T
       if (grandParent.left === parent && parent.right === target) {
+        console.log(`in case 🍎🍊`);
         grandParent.left = this.leftSingle(target, parent);
         parentIndex -= 1;
         parent = path[parentIndex];
         grandParentIndex -= 1;
         grandParent = path[grandParentIndex];
+        continue;
       }
       // case 
-      //      G
+      //      R
       //        P
       //       T
       if (grandParent.right === parent && parent.left === target) {
+        console.log(`in case 🍊🍎`);
         grandParent.right = this.rightSingle(target, parent, grandParent);
         parentIndex -= 1;
         parent = path[parentIndex];
         grandParentIndex -= 1;
         grandParent = path[grandParentIndex];
+        continue;
       }
+
+      // case 
+      //        GG
+      //      G
+      //    P
+      //  T
+      // if () {
+      //   ggp.left = this.rightSingle(parent, grandParent);
+      //   ggp.left = this.rightSingle(parent, grandParent);
+
+      //   console.log(`in case 🍎🍎`);
+      //   grandParent.left = this.rightSingle(target, parent);
+      //   parentIndex -= 1;
+      //   parent = path[parentIndex];
+      //   grandParentIndex -= 1;
+      //   grandParent = path[grandParentIndex];
+      //   console.log(`after case 🍎🍎: `, this.root);
+      //   continue;
+      // }
+      // case 
+      //      R
+      //        P
+      //          T
+      // if (grandParent.right === parent && parent.right === target) {
+      //   console.log(`in case 🍊🍊`);
+      //   grandParent.right = this.leftSingle(target, parent);
+      //   parentIndex -= 1;
+      //   parent = path[parentIndex];
+      //   grandParentIndex -= 1;
+      //   grandParent = path[grandParentIndex];
+      //   continue;
+      // }
+      
     }
 
 
