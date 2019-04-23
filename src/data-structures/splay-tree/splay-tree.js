@@ -61,7 +61,6 @@ class SplayTree {
   }
 
   rightSingle(target, parent) {
-    // console.log(`in case right single target.value: ${target.value}, parent.value: ${parent.value}`);
     parent.left = target.right;
     target.right = parent;
     return target;
@@ -77,7 +76,6 @@ class SplayTree {
   }
 
   splay(path) {
-    console.log(`path: `, path);
     let targetIndex = path.length - 1;
     let target = path[targetIndex];
     
@@ -87,21 +85,38 @@ class SplayTree {
     let grandParentIndex = path.length - 3;
     let grandParent = path[grandParentIndex];
     
+    let ggpIndex = path.length - 4;
+    let ggp = path[ggpIndex];
+
+    const reduceCounters = (num) => {
+      parentIndex -= num;
+      grandParentIndex -= num;
+      ggpIndex -= num;
+
+      parent = path[parentIndex];
+      grandParent = path[grandParentIndex];
+      ggp = path[ggpIndex];
+      updatePointers();
+    }
+
+    const updatePointers = () => {
+      parent = path[parentIndex];
+      grandParent = path[grandParentIndex];
+      ggp = path[ggpIndex];
+    }
+
     while (this.root !== target) {
       // case 
       //      R
       //    T
       if (parent === this.root && parent.left === target) {
-        console.log(`in case 🍎 target: ${target.value} parent: ${parent.value} this.root: ${this.root.value}`);
         this.root = this.rightSingle(target, parent);
-        console.log(`after in case 🍎: `, this.root);
         continue;
       }
       // case 
       //      R
       //        T
       if (parent === this.root && parent.right === target) {
-        console.log(`in case 🍊`);
         this.root = this.leftSingle(target, parent);
         continue;
       }
@@ -130,64 +145,87 @@ class SplayTree {
       //      R
       //    P
       //     T
-      if (grandParent.left === parent && parent.right === target) {
-        console.log(`in case 🍎🍊`);
+      if (this.root === grandParent && grandParent.left === parent && parent.right === target) {
         grandParent.left = this.leftSingle(target, parent);
-        parentIndex -= 1;
-        parent = path[parentIndex];
-        grandParentIndex -= 1;
-        grandParent = path[grandParentIndex];
+        reduceCounters(1);
         continue;
       }
       // case 
       //      R
       //        P
       //       T
-      if (grandParent.right === parent && parent.left === target) {
-        console.log(`in case 🍊🍎`);
-        grandParent.right = this.rightSingle(target, parent, grandParent);
-        parentIndex -= 1;
-        parent = path[parentIndex];
-        grandParentIndex -= 1;
-        grandParent = path[grandParentIndex];
+      if (this.root === grandParent && grandParent.right === parent && parent.left === target) {
+        grandParent.right = this.rightSingle(target, parent);
+        reduceCounters(1);
         continue;
       }
 
-      // case 
-      //        GG
-      //      G
-      //    P
-      //  T
-      // if () {
-      //   ggp.left = this.rightSingle(parent, grandParent);
-      //   ggp.left = this.rightSingle(parent, grandParent);
+      // cases 
+      //        GG            GG      
+      //      G                  G    
+      //    P                  P      
+      //  T                  T        
+      if (grandParent.left === parent && parent.left === target) {
 
-      //   console.log(`in case 🍎🍎`);
-      //   grandParent.left = this.rightSingle(target, parent);
-      //   parentIndex -= 1;
-      //   parent = path[parentIndex];
-      //   grandParentIndex -= 1;
-      //   grandParent = path[grandParentIndex];
-      //   console.log(`after case 🍎🍎: `, this.root);
-      //   continue;
-      // }
+        if (ggp.left === grandParent) {
+          ggp.left = this.rightSingle(parent, grandParent);
+          ggp.left = this.rightSingle(target, parent);
+        } else if (ggp.right === grandParent) {
+          ggp.right = this.rightSingle(parent, grandParent);
+          ggp.right = this.rightSingle(target, parent);
+        }
+        reduceCounters(2);
+        continue;
+      }
+      // cases 
+      //        GG          GG       
+      //      G                 G          
+      //    P                 P            
+      //     T                 T           
+      if (grandParent.left === parent && parent.right === target) {
+        if (ggp.left === grandParent) {
+          grandParent.left = this.leftSingle(target, parent);
+          ggp.left = this.rightSingle(target, grandParent);
+        } else if (ggp.right === grandParent) {
+          grandParent.right = this.leftSingle(target, parent);
+          ggp.right = this.rightSingle(target, grandParent);
+        }
+        reduceCounters(2);
+        continue;
+      }
+      // cases 
+      //        GG         GG    
+      //      G               G    
+      //        P               P    
+      //       T               T    
+      if (grandParent.right === parent && parent.left === target) {
+        if (ggp.left === grandParent) {
+          grandParent.right = this.rightSingle(target, parent);
+          ggp.left = this.leftSingle(target, grandParent);
+        } else if (ggp.right === grandParent) {
+          grandParent.right = this.rightSingle(target, parent);
+          ggp.right = this.leftSingle(target, grandParent);
+        }
+        reduceCounters(2);
+        continue;
+      }
       // case 
-      //      R
-      //        P
-      //          T
-      // if (grandParent.right === parent && parent.right === target) {
-      //   console.log(`in case 🍊🍊`);
-      //   grandParent.right = this.leftSingle(target, parent);
-      //   parentIndex -= 1;
-      //   parent = path[parentIndex];
-      //   grandParentIndex -= 1;
-      //   grandParent = path[grandParentIndex];
-      //   continue;
-      // }
-      
+      //        GG         GG       
+      //      G               G       
+      //        P               P       
+      //          T               T       
+      if (grandParent.right === parent && parent.right === target) {
+        if (ggp.left === grandParent) {
+          ggp.left = this.leftSingle(parent, grandParent);
+          ggp.left = this.leftSingle(target, parent);
+        } else if (ggp.right === grandParent) {
+          ggp.right = this.leftSingle(parent, grandParent);
+          ggp.right = this.leftSingle(target, parent);
+        }
+        reduceCounters(2);
+        continue;
+      }
     }
-
-
   }
 
 
