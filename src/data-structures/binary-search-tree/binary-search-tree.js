@@ -1,3 +1,5 @@
+'use strict';
+
 const Node = require('./binary-search-tree-node.js');
 
 class BinarySearchTree {

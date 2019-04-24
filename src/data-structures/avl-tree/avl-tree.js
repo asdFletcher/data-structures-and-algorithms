@@ -1,3 +1,5 @@
+'use strict';
+
 const Node = require('./avl-tree-node.js');
 
 class AVLTree {

@@ -16,11 +16,15 @@
       "request": "launch",
       "name": "Jest Test",
       // "program": "\\Users\\fletcher\\programming\\data-structures-and-algorithms\\node_modules\\jest\\bin\\jest",
-      "program": "${workspaceFolder}/../node_modules/jest/bin/jest",
+      
+      "program": "${workspaceFolder}/../../node_modules/jest/bin/jest.js",
+      
       // "args": ["--runInBand", "--config=${workspaceFolder}/jest.config.js"],
-      "args": ["--runInBand", "binary-search-tree.test.js"],
+      // "args": ["--runInBand", "binary-search-tree.test.js"],
+      "args": ["--runInBand", "/__tests__/splay-tree.test.js"],
       "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen"
+      "internalConsoleOptions": "neverOpen",
+      "disableOptimisticBPs": true
     },
   ]
 }
