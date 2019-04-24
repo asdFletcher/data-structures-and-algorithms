@@ -8,7 +8,15 @@ class SplayTree {
     this.root = null;
   }
 
+  insertWithoutSplay(rawValue) {
+    return this.communalInsertCode(rawValue, false)
+  }
+
   insert(rawValue) {
+    return this.communalInsertCode(rawValue, true);
+  }
+
+  communalInsertCode(rawValue, splay){
     if (!this.isNumericInput(rawValue)) { return undefined; }
     
     const value = Number(rawValue);
@@ -16,7 +24,7 @@ class SplayTree {
     const newNode = new Node(value);
 
     if (this.treeIsEmpty()) {
-      this.root = new Node();
+      this.root = newNode;
       return newNode;
     }
 
@@ -24,12 +32,12 @@ class SplayTree {
     let result = undefined;
 
     const go = (node) => {
-      path.push(node);
+      if (splay) { path.push(node); }
       if (value < node.value) {
         if (!node.left) { // base case
           node.left = newNode;
           result = newNode;
-          path.push(newNode);
+          if (splay) { path.push(newNode); }
           return;
         }
         go(node.left);
@@ -37,7 +45,7 @@ class SplayTree {
         if (!node.right) { // base case
           node.right = newNode;
           result = newNode;
-          path.push(newNode);
+          if (splay) { path.push(newNode); }
           return;
         }
         go(node.right);
@@ -50,14 +58,198 @@ class SplayTree {
 
     if (result === undefined) { return result; }
     
-    // perform splay
+    // conditionally perform splay
+    if (splay) { this.splay(path); }
+
+    return result;
+  }
+
+  remove(rawValue) {
+    if (!this.isNumericInput(rawValue)) { return undefined; }
+    
+    const value = Number(rawValue);
+
+    const path = [];
+    let result, deleteTarget, deleteTargetParent;
+    
+    let rootIsTarget = false;
+    if (this.root.value === value) { rootIsTarget = true; }
+
+    const go = (node) => {
+      // base case
+      if (node.value === value) {
+        deleteTarget = node;
+        result = node;
+        deleteTargetParent = path[path.length - 1];
+
+        let deleteDirection;
+        if (!rootIsTarget) {
+          if (deleteTargetParent.left === deleteTarget) {
+            deleteDirection = 'left';
+          } else {
+            deleteDirection = 'right';
+          }
+        }
+
+        // pick a side edge cases: leaf node, or only 1 child
+        let replacementNode;
+        if (!deleteTarget.left && !deleteTarget.right) {
+          if (rootIsTarget) {
+            this.root = null;
+          } else {
+            deleteTargetParent[deleteDirection] = null;
+          }
+          return;
+        }
+        if (!deleteTarget.left) {
+          if (rootIsTarget) {
+            this.root = deleteTarget.right;
+          } else {
+            replacementNode = this.removeMin(deleteTarget.right);
+            deleteTargetParent[deleteDirection] = replacementNode;
+          }
+          return;
+        }
+        if (!deleteTarget.right) {
+          if (rootIsTarget) {
+            this.root = deleteTarget.left;
+          } else {
+            replacementNode = this.removeMax(deleteTarget.left);
+            deleteTargetParent[deleteDirection] = replacementNode;
+          }
+          return;
+        }
+        // pick a side general case: 2 children
+        let replacementDirection = this.pickASide();
+
+        // remove min, or remove max
+        if (replacementDirection === 'left') {
+          if (this.hasNoChildren(deleteTarget.left)) {
+            replacementNode = deleteTarget.left;
+            replacementNode.right = deleteTarget.right;
+          } else {
+            // removeMax call will target sub tree root
+            if (!deleteTarget.left.right) {
+              replacementNode = deleteTarget.left;
+              replacementNode.right = deleteTarget.right;
+            } else {
+              replacementNode = this.removeMax(deleteTarget.left);
+              replacementNode.left = deleteTarget.left;
+              replacementNode.right = deleteTarget.right;
+            }
+          }
+        }
+        if (replacementDirection === 'right') {
+          if (this.hasNoChildren(deleteTarget.right)) {
+            replacementNode = deleteTarget.right;
+            replacementNode.left = deleteTarget.left;
+          } else {
+            // removeMin call will target sub tree root
+            if (!deleteTarget.right.left) {
+              replacementNode = deleteTarget.right;
+              replacementNode.left = deleteTarget.left;
+            } else {
+              replacementNode = this.removeMin(deleteTarget.right);
+              replacementNode.left = deleteTarget.left;
+              replacementNode.right = deleteTarget.right;
+            }
+          }
+        }
+        
+        // replace the target node
+        result = deleteTarget;
+        if (rootIsTarget) {
+          this.root = replacementNode;
+        } else {
+          deleteTargetParent[deleteDirection] = replacementNode;
+        }
+        return;
+      }
+
+      // recursive calls
+      if (node.left && value < node.value) {
+        path.push(node);
+        go(node.left);
+      }
+      if (node.right && value > node.value) {
+        path.push(node);
+        go(node.right);
+      }
+    }
+
+    go(this.root);
+
+    // don't splay if value isn't found
+    if (!result) { return undefined; }
+    
+    result.left = null;
+    result.right = null;
+
+    // don't splay if root was deleted
+    if (rootIsTarget) { return result; }
+    
+    // perform splay on parent of deleted node, not the deleted node replacement
     this.splay(path);
 
     return result;
   }
 
-  zigzig(target, parent, grandParent) {
-    
+  removeMin(node) {
+    let current = node;
+    let parent;
+    while (current.left) {
+      parent = current;
+      current = current.left;
+    }
+
+    // replacement node is a leaf node
+    if (!parent) { return node; }
+
+    if (current.right) {
+      parent.left = current.right;
+    } else {
+      parent.left = null;
+    }
+
+    current.left = null;
+    current.right = null;
+    return current;
+  }
+  removeMax(node) {
+    let current = node;
+    let parent;
+    while (current.right) {
+      parent = current;
+      current = current.right;
+    }
+
+    // replacement node is a leaf node
+    if (!parent) { return node; }
+
+    if (current.left) {
+      parent.right = current.left;
+    } else {
+      parent.right = null;
+    }
+
+    current.left = null;
+    current.right = null;
+    return current;
+  }
+
+  hasNoChildren(node) {
+    if(!node.left && !node.right) {
+      return true;
+    }
+    return false;
+  }
+
+  pickASide() {
+    const roll = Math.random();
+    if (roll > 0.5) {
+      return 'left';
+    }
+    return 'right';
   }
 
   rightSingle(target, parent) {
@@ -66,9 +258,6 @@ class SplayTree {
     return target;
   }
 
-  // case 
-  //      R
-  //        T
   leftSingle(target, parent) {
     parent.right = target.left;
     target.left = parent;
@@ -228,8 +417,6 @@ class SplayTree {
     }
   }
 
-
-
   treeIsEmpty() {
     if (!this.root) { return true; }
     return false;
@@ -246,6 +433,5 @@ class SplayTree {
     return false;
   }
 }
-
 
 module.exports = SplayTree;
