@@ -1,5 +1,7 @@
 /* eslint-disable no-plusplus */
 
+'use strict';
+
 const AVLTree = require('../avl-tree.js');
 const Node = require('../avl-tree-node.js');
 

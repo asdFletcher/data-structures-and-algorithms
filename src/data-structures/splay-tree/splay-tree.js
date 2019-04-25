@@ -229,6 +229,31 @@ class SplayTree {
     return result;
   }
 
+  findMax() {
+    return this.findMinMaxCommunalCode('right');
+  }
+
+  findMin() {
+    return this.findMinMaxCommunalCode('left');
+  }
+
+  findMinMaxCommunalCode(direction) {
+    if (this.treeIsEmpty()) { return undefined; }
+
+    const path = [];
+    let current = this.root;
+    path.push(this.root);
+
+    while (current[direction]) {
+      current = current[direction];
+      path.push(current);
+    }
+
+    const result = current.value;
+    this.splay(path);
+    return result;
+  }
+
   removeMin(node) {
     let current = node;
     let parent;
@@ -312,6 +337,9 @@ class SplayTree {
 
     let ggpIndex = path.length - 4;
     let ggp = path[ggpIndex];
+
+    let targetHasLeaf = false;
+    if (target.left || target.right) { targetHasLeaf = true; }
 
     const updatePointers = () => {
       parent = path[parentIndex];
@@ -466,6 +494,48 @@ class SplayTree {
 
     if (typeof numericalValue === 'number') { return true; }
     return false;
+  }
+
+  printPreOrder() {
+    const result = [];
+
+    function go(node) {
+      if (!node) { return; }
+      result.push(node.value);
+      go(node.left);
+      go(node.right);
+    }
+
+    go(this.root);
+    return result;
+  }
+
+  printInOrder() {
+    const result = [];
+
+    function go(node) {
+      if (!node) { return; }
+      go(node.left);
+      result.push(node.value);
+      go(node.right);
+    }
+
+    go(this.root);
+    return result;
+  }
+
+  printPostOrder() {
+    const result = [];
+
+    function go(node) {
+      if (!node) { return; }
+      go(node.left);
+      go(node.right);
+      result.push(node.value);
+    }
+
+    go(this.root);
+    return result;
   }
 }
 

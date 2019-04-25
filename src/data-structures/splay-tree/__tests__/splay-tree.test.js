@@ -1491,4 +1491,264 @@ describe('splay tree', () => {
       expect(myTree.root.right.right.value).toEqual(6);
     });
   });
+
+  describe('findMax', () => {
+    it('returns undefined given empty tree', () => {
+      const myTree = new SplayTree();
+
+      const result = myTree.findMax();
+
+      expect(result).toBeUndefined();
+      expect(myTree.root).toBe(null);
+    });
+    it('returns correctly single node tree', () => {
+      const myTree = new SplayTree();
+
+      myTree.insertWithoutSplay(2);
+
+      const result = myTree.findMax();
+
+      expect(result).toEqual(2);
+      expect(myTree.root.value).toEqual(2);
+    });
+    it('returns true on 2 node tree, left leaf', () => {
+      //     2
+      //    1
+      const myTree = new SplayTree();
+
+      myTree.insertWithoutSplay(2);
+      myTree.insertWithoutSplay(1);
+
+      const result = myTree.findMax();
+
+      expect(result).toEqual(2);
+      expect(myTree.root.value).toEqual(2);
+      expect(myTree.root.left.value).toEqual(1);
+      expect(myTree.root.right).toBeNull();
+    });
+    it('returns true on 3 node tree, right leaf, splays', () => {
+      //     2
+      //    1 3
+      const myTree = new SplayTree();
+
+      myTree.insertWithoutSplay(2);
+      myTree.insertWithoutSplay(1);
+      myTree.insertWithoutSplay(3);
+
+      const result = myTree.findMax();
+
+      expect(result).toEqual(3);
+      expect(myTree.root.value).toEqual(3);
+      expect(myTree.root.left.value).toEqual(2);
+      expect(myTree.root.left.left.value).toEqual(1);
+      expect(myTree.root.right).toBeNull();
+    });
+    it('returns true on 3 node tree, right leaf w/ left child, splays', () => {
+      const myTree = new SplayTree();
+      //       2                     5
+      //    1     3       =>       3
+      //             5           2   4
+      //            4          1
+      const values = [2, 1, 3, 5, 4];
+      for (let i = 0; i < values.length; i += 1) {
+        myTree.insertWithoutSplay(values[i]);
+      }
+
+      const expected = 5;
+      const result = myTree.findMax();
+
+      const expectedTree = new SplayTree();
+      const expectedTreeValues = [5, 3, 2, 4, 1];
+      for (let i = 0; i < expectedTreeValues.length; i += 1) {
+        expectedTree.insertWithoutSplay(expectedTreeValues[i]);
+      }
+
+      expect(myTree).toEqual(expectedTree);
+      expect(result).toEqual(expected);
+    });
+  });
+
+  describe('findMin', () => {
+    it('returns undefined given empty tree', () => {
+      const myTree = new SplayTree();
+
+      const result = myTree.findMin();
+
+      expect(result).toBeUndefined();
+      expect(myTree.root).toBe(null);
+    });
+    it('returns correctly single node tree', () => {
+      const myTree = new SplayTree();
+
+      myTree.insertWithoutSplay(2);
+
+      const result = myTree.findMin();
+
+      expect(result).toEqual(2);
+      expect(myTree.root.value).toEqual(2);
+    });
+    it('returns true on 2 node tree, right leaf', () => {
+      //     2
+      //       3
+      const myTree = new SplayTree();
+
+      myTree.insertWithoutSplay(2);
+      myTree.insertWithoutSplay(3);
+
+      const result = myTree.findMin();
+
+      expect(result).toEqual(2);
+      expect(myTree.root.value).toEqual(2);
+      expect(myTree.root.right.value).toEqual(3);
+      expect(myTree.root.left).toBeNull();
+    });
+    it('returns true on 3 node tree, left leaf, splays', () => {
+      //     2
+      //    1 3
+      const myTree = new SplayTree();
+
+      myTree.insertWithoutSplay(2);
+      myTree.insertWithoutSplay(1);
+      myTree.insertWithoutSplay(3);
+
+      const result = myTree.findMin();
+
+      expect(result).toEqual(1);
+      expect(myTree.root.value).toEqual(1);
+      expect(myTree.root.right.value).toEqual(2);
+      expect(myTree.root.right.right.value).toEqual(3);
+      expect(myTree.root.left).toBeNull();
+    });
+    it('returns true on 3 node tree, right leaf w/ left child, splays', () => {
+      const myTree = new SplayTree();
+      //       3                     0
+      //    2     4       =>           2
+      //  0                           1  3
+      //   1                               4
+      const values = [3, 2, 4, 0, 1];
+      for (let i = 0; i < values.length; i += 1) {
+        myTree.insertWithoutSplay(values[i]);
+      }
+
+      const expected = 0;
+      const result = myTree.findMin();
+
+      const expectedTree = new SplayTree();
+      const expectedTreeValues = [0, 2, 1, 3, 4];
+      for (let i = 0; i < expectedTreeValues.length; i += 1) {
+        expectedTree.insertWithoutSplay(expectedTreeValues[i]);
+      }
+
+      expect(myTree).toEqual(expectedTree);
+      expect(result).toEqual(expected);
+    });
+  });
+
+  describe('printPreOrder', () => {
+    it('returns empty array if tree is empty', () => {
+      const myTree = new SplayTree();
+
+      const result = myTree.printPreOrder();
+
+      expect(result).toEqual([]);
+    });
+
+    it('correctly returns pre order traversal, single node tree', () => {
+      const myTree = new SplayTree();
+      myTree.insertWithoutSplay(10);
+
+      const result = myTree.printPreOrder();
+      const expected = [10];
+
+      expect(result).toEqual(expected);
+    });
+
+    it('correctly returns pre order traversal, multi node tree', () => {
+      const myTree = new SplayTree();
+      myTree.insertWithoutSplay(10);
+      myTree.insertWithoutSplay(5);
+      myTree.insertWithoutSplay(15);
+      myTree.insertWithoutSplay(3);
+      myTree.insertWithoutSplay(7);
+      myTree.insertWithoutSplay(12);
+      myTree.insertWithoutSplay(17);
+
+      const result = myTree.printPreOrder();
+      const expected = [10, 5, 3, 7, 15, 12, 17];
+
+      expect(result).toEqual(expected);
+    });
+  });
+
+  describe('printInOrder', () => {
+    it('returns empty array if tree is empty', () => {
+      const myTree = new SplayTree();
+
+      const result = myTree.printInOrder();
+
+      expect(result).toEqual([]);
+    });
+
+    it('correctly returns in order traversal, single node tree', () => {
+      const myTree = new SplayTree();
+      myTree.insertWithoutSplay(10);
+
+      const result = myTree.printInOrder();
+      const expected = [10];
+
+      expect(result).toEqual(expected);
+    });
+
+    it('correctly returns in order traversal, multi node tree', () => {
+      const myTree = new SplayTree();
+      myTree.insertWithoutSplay(10);
+      myTree.insertWithoutSplay(5);
+      myTree.insertWithoutSplay(15);
+      myTree.insertWithoutSplay(3);
+      myTree.insertWithoutSplay(7);
+      myTree.insertWithoutSplay(12);
+      myTree.insertWithoutSplay(17);
+
+      const result = myTree.printInOrder();
+      const expected = [3, 5, 7, 10, 12, 15, 17];
+
+      expect(result).toEqual(expected);
+    });
+  });
+
+  describe('printPostOrder', () => {
+    it('returns empty array if tree is empty', () => {
+      const myTree = new SplayTree();
+
+      const result = myTree.printPostOrder();
+
+      expect(result).toEqual([]);
+    });
+
+    it('correctly returns post order traversal, single node tree', () => {
+      const myTree = new SplayTree();
+      myTree.insertWithoutSplay(10);
+
+      const result = myTree.printPostOrder();
+      const expected = [10];
+
+      expect(result).toEqual(expected);
+    });
+
+    it('correctly returns post order traversal, multi node tree', () => {
+      const myTree = new SplayTree();
+      myTree.insertWithoutSplay(10);
+      myTree.insertWithoutSplay(5);
+      myTree.insertWithoutSplay(15);
+      myTree.insertWithoutSplay(3);
+      myTree.insertWithoutSplay(7);
+      myTree.insertWithoutSplay(12);
+      myTree.insertWithoutSplay(17);
+
+      const result = myTree.printPostOrder();
+      const expected = [3, 7, 5, 12, 17, 15, 10];
+
+      expect(result).toEqual(expected);
+    });
+  });
 });
