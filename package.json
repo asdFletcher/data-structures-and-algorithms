@@ -1,6 +1,6 @@
 {
   "name": "data-structures-and-algorithms",
-  "version": "1.0.28",
+  "version": "1.0.30",
   "description": "common datastructures, their tests, and code challenges",
   "main": "./lib/index.js",
   "files": [
@@ -8,6 +8,8 @@
     "/lib/data-structures/avl-tree/avl-tree-node.js",
     "/lib/data-structures/binary-search-tree/binary-search-tree.js",
     "/lib/data-structures/binary-search-tree/binary-search-tree-node.js",
+    "/lib/data-structures/splay-tree/splay-tree.js",
+    "/lib/data-structures/splay-tree/splay-tree-node.js",
     "/lib/index.js"
   ],
   "scripts": {
