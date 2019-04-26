@@ -30,7 +30,7 @@ function getProdOfAllOther(arr) {
 
 // follow up: if we can't use division
 // naive solution
-function getProdOfAllOtherNoDivision(arr) {
+function getProdOfAllOtherNoDivision_Naive(arr) {
   let result = [];
 
   for(let i = 0; i < arr.length; i++) {
@@ -50,7 +50,7 @@ function getProdOfAllOtherNoDivision(arr) {
 // const input = [3,2,1];
 // const input = [1,2,3,4,5];
 // const input = [1,4,9,16,25];
-// const result = getProdOfAllOtherNoDivision(input);
+// const result = getProdOfAllOtherNoDivision_Naive(input);
 // console.log(`~~~~~~~~~~~~~~~~~`)
 // console.log(`result: `, result);
 // time: O(n^2), space: O(n)
