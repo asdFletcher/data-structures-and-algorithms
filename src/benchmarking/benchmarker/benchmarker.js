@@ -4,6 +4,7 @@ const fs = require('fs');
 
 const AVLTree = require('../../data-structures/avl-tree/avl-tree.js');
 const BST = require('../../data-structures/binary-search-tree/binary-search-tree.js');
+const SplayTree = require('../../data-structures/splay-tree/splay-tree.js');
 
 function getEmptyTree() {
   if (treeType === 'AVLTree') {
@@ -12,14 +13,17 @@ function getEmptyTree() {
   if (treeType === 'BST') {
     return new BST();
   }
+  if (treeType === 'SplayTree') {
+    return new SplayTree();
+  }
 }
 
 function runTheTest_Dependent_Tree_Size() {
   const dataset = createBlankDataset(numberOfRuns);
 
   for (let i = 0; i < numberOfRuns; i += 1) {
-    const times = runSingleTest_Insert_Counter();
-    // let times = runSingleTest_Remove_Counter();
+    // const times = runSingleTest_Insert_Counter();
+    let times = runSingleTest_Remove_Counter();
     // let times = runSingleTest_Contains_Counter();
 
     // dataset index is the arbitrary run number
@@ -113,13 +117,23 @@ function runSingleTest_Insert_Counter() {
   const myTree = getEmptyTree();
   let i = 0;
 
+  let sum = 0;
+  const counterCallback = () => { sum += 1; }
+
   // generate n random numbers
   const randomNumbers = generateRandomNumberSet(n);
   randomNumbers.forEach((val) => {
-    myTree.insert(val);
+    
     if (i % sampleRate === 0) {
+      sum = 0;
+      // console.log(`in the cb`)
+
+      myTree.insert(val, counterCallback);
       // times index correlates to tree size
-      times[i] = myTree.insertComputations;
+      // times[i] = myTree.insertComputations;
+      times[i] = sum;
+    } else {
+      myTree.insert(val, undefined);
     }
     i += 1;
   });
@@ -140,16 +154,22 @@ function runSingleTest_Remove_Counter() {
     numbers.push(val);
   });
 
+  let sum = 0;
+  const counterCallback = () => { sum += 1; }
+
   // remove them in a random order
   let i = 0;
   while (myTree.root) {
     const randomIndex = Math.floor(Math.random() * randomNumbers.size);
     const randomNodeValue = numbers[randomIndex];
 
-    const success = myTree.remove(randomNodeValue);
+    sum = 0;
+    const success = myTree.remove(randomNodeValue, counterCallback);
     if (success) {
       i += 1;
-      times[i] = myTree.removeComputations;
+      if (i % sampleRate === 0) {
+        times[i] = sum;
+      }
     }
   }
 
@@ -275,10 +295,11 @@ function writeResultsToFile(data, filename) {
 }
 
 function createLogNData() {
-  n = 100;
+  n = 1000;
   const data = [];
   for (let i = 1; i <= n; i += 1) {
-    data.push({ x: 100 - i, y: Math.log2(i) });
+    let y = 2 * Math.log2(i);
+    data.push({ x: 1000 - i, y: y });
   }
   // console.log(`data: `, data);
 
@@ -300,7 +321,7 @@ function createLogNData() {
 }
 
 function createDataRaw() {
-  n = 500000;
+  n = 1000;
   numberOfRuns = 100;
   const output = runTheTest_Dependent_Tree_Size();
   // let output = runTheTest_Variable_Tree_Size();
@@ -308,8 +329,8 @@ function createDataRaw() {
 }
 
 function createDataAverage() {
-  n = 100;
-  numberOfRuns = 1;
+  n = 1000;
+  numberOfRuns = 10000;
   const output = runTheTest_Dependent_Tree_Size();
   // let output = runTheTest_Variable_Tree_Size();
   const averageData = calculateAverageFromSingleDataSet(output);
@@ -320,11 +341,12 @@ let n;
 let numberOfRuns;
 const manyRandomNumbers = new Set();
 // let treeType = "AVLTree";
-let treeType = 'BST';
-let sampleRate = 1000;
+// let treeType = 'BST';
+let treeType = 'SplayTree';
+let sampleRate = 1;
 
 createDataRaw();
-// createDataAverage();
+createDataAverage();
 
 // createLogNData();
 

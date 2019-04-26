@@ -9,15 +9,15 @@ class SplayTree {
     this.root = null;
   }
 
+  insert(rawValue, cb) {
+    return this.communalInsertCode(rawValue, true, cb);
+  }
+
   insertWithoutSplay(rawValue) {
     return this.communalInsertCode(rawValue, false);
   }
 
-  insert(rawValue) {
-    return this.communalInsertCode(rawValue, true);
-  }
-
-  communalInsertCode(rawValue, splay) {
+  communalInsertCode(rawValue, splay, cb) {
     if (!this.isNumericInput(rawValue)) { return undefined; }
 
     const value = Number(rawValue);
@@ -33,6 +33,7 @@ class SplayTree {
     let result;
 
     const go = (node) => {
+      if (cb) { cb(); }
       if (splay) { path.push(node); }
       if (value < node.value) {
         if (!node.left) { // base case
@@ -58,12 +59,12 @@ class SplayTree {
     if (result === undefined) { return result; }
 
     // conditionally perform splay
-    if (splay) { this.splay(path); }
+    if (splay) { this.splay(path, cb); }
 
     return result;
   }
 
-  remove(rawValue) {
+  remove(rawValue, cb) {
     if (!this.isNumericInput(rawValue)) { return undefined; }
 
     const value = Number(rawValue);
@@ -77,6 +78,7 @@ class SplayTree {
     if (this.root.value === value) { rootIsTarget = true; }
 
     const go = (node) => {
+      if (cb) { cb(); }
       // base case
       if (node.value === value) {
         deleteTarget = node;
@@ -106,7 +108,7 @@ class SplayTree {
           if (rootIsTarget) {
             this.root = deleteTarget.right;
           } else {
-            replacementNode = this.removeMin(deleteTarget.right);
+            replacementNode = this.removeMin(deleteTarget.right, cb);
             deleteTargetParent[deleteDirection] = replacementNode;
           }
           return;
@@ -115,7 +117,7 @@ class SplayTree {
           if (rootIsTarget) {
             this.root = deleteTarget.left;
           } else {
-            replacementNode = this.removeMax(deleteTarget.left);
+            replacementNode = this.removeMax(deleteTarget.left, cb);
             deleteTargetParent[deleteDirection] = replacementNode;
           }
           return;
@@ -133,7 +135,7 @@ class SplayTree {
             replacementNode = deleteTarget.left;
             replacementNode.right = deleteTarget.right;
           } else {
-            replacementNode = this.removeMax(deleteTarget.left);
+            replacementNode = this.removeMax(deleteTarget.left, cb);
             replacementNode.left = deleteTarget.left;
             replacementNode.right = deleteTarget.right;
           }
@@ -147,7 +149,7 @@ class SplayTree {
             replacementNode = deleteTarget.right;
             replacementNode.left = deleteTarget.left;
           } else {
-            replacementNode = this.removeMin(deleteTarget.right);
+            replacementNode = this.removeMin(deleteTarget.right, cb);
             replacementNode.left = deleteTarget.left;
             replacementNode.right = deleteTarget.right;
           }
@@ -186,13 +188,21 @@ class SplayTree {
     if (rootIsTarget) { return result; }
 
     // perform splay on parent of deleted node, not the deleted node replacement
-    this.splay(path);
+    this.splay(path, cb);
 
     return result;
   }
 
   // donesn't splay if value is not found
-  contains(rawValue) {
+  contains(rawValue, cb) {
+    return this.communalContainsCode(rawValue, true, cb);
+  }
+
+  containsWithoutSplay(rawValue, cb) {
+    return this.communalContainsCode(rawValue, false, cb);
+  }
+
+  communalContainsCode(rawValue, splay, cb) {
     if (!this.isNumericInput(rawValue)) { return undefined; }
 
     const value = Number(rawValue);
@@ -203,6 +213,7 @@ class SplayTree {
     let result = false;
 
     const go = (node) => {
+      if (cb) { cb(); }
       path.push(node);
       if (value < node.value) {
         if (!node.left) { // base case, value does not exist
@@ -222,22 +233,22 @@ class SplayTree {
 
     go(this.root);
 
-    if (result) {
-      this.splay(path);
+    if (result && splay) {
+      this.splay(path, cb);
     }
 
     return result;
   }
 
-  findMax() {
-    return this.findMinMaxCommunalCode('right');
+  findMax(cb) {
+    return this.findMinMaxCommunalCode('right', cb);
   }
 
-  findMin() {
-    return this.findMinMaxCommunalCode('left');
+  findMin(cb) {
+    return this.findMinMaxCommunalCode('left', cb);
   }
 
-  findMinMaxCommunalCode(direction) {
+  findMinMaxCommunalCode(direction, cb) {
     if (this.treeIsEmpty()) { return undefined; }
 
     const path = [];
@@ -245,6 +256,7 @@ class SplayTree {
     path.push(this.root);
 
     while (current[direction]) {
+      if (cb) { cb(); }
       current = current[direction];
       path.push(current);
     }
@@ -254,10 +266,11 @@ class SplayTree {
     return result;
   }
 
-  removeMin(node) {
+  removeMin(node, cb) {
     let current = node;
     let parent;
     while (current.left) {
+      if (cb) { cb(); }
       parent = current;
       current = current.left;
     }
@@ -276,10 +289,11 @@ class SplayTree {
     return current;
   }
 
-  removeMax(node) {
+  removeMax(node, cb) {
     let current = node;
     let parent;
     while (current.right) {
+      if (cb) { cb(); }
       parent = current;
       current = current.right;
     }
@@ -325,7 +339,7 @@ class SplayTree {
     return target;
   }
 
-  splay(path) {
+  splay(path, cb) {
     const targetIndex = path.length - 1;
     const target = path[targetIndex];
 
@@ -356,6 +370,8 @@ class SplayTree {
     };
 
     while (this.root !== target) {
+      if (cb) { cb(); }
+
       // case
       //      R
       //    T
