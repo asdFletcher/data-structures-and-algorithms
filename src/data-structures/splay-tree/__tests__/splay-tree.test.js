@@ -514,18 +514,9 @@ describe('splay tree', () => {
         }).not.toThrow();
       }
     });
-
-    xit('throws on self loop', () => {
-      const myTree = new SplayTree();
-
-      let a = myTree.insertWithoutSplay(1);
-      a.left = a;
-      // console.log(`myTree.root: `, myTree.root);
-    });
-
   });
 
-  xdescribe('insertWithoutSplay', () => {
+  describe('insertWithoutSplay', () => {
     it('fails on no arguments', () => {
       const myTree = new SplayTree();
       const result = myTree.insert();
@@ -661,7 +652,7 @@ describe('splay tree', () => {
     });
   });
 
-  xdescribe('remove', () => {
+  describe('remove', () => {
     it('fails given no parameters', () => {
       const myTree = new SplayTree();
 
@@ -1402,7 +1393,7 @@ describe('splay tree', () => {
     });
   });
 
-  xdescribe('contains', () => {
+  describe('contains', () => {
     it('returns undefined given undefined', () => {
       const myTree = new SplayTree();
 
@@ -1521,7 +1512,7 @@ describe('splay tree', () => {
     });
   });
 
-  xdescribe('findMax', () => {
+  describe('findMax', () => {
     it('returns undefined given empty tree', () => {
       const myTree = new SplayTree();
 
@@ -1597,7 +1588,7 @@ describe('splay tree', () => {
     });
   });
 
-  xdescribe('findMin', () => {
+  describe('findMin', () => {
     it('returns undefined given empty tree', () => {
       const myTree = new SplayTree();
 
@@ -1673,7 +1664,7 @@ describe('splay tree', () => {
     });
   });
 
-  xdescribe('printPreOrder', () => {
+  describe('printPreOrder', () => {
     it('returns empty array if tree is empty', () => {
       const myTree = new SplayTree();
 
@@ -1709,7 +1700,7 @@ describe('splay tree', () => {
     });
   });
 
-  xdescribe('printInOrder', () => {
+  describe('printInOrder', () => {
     it('returns empty array if tree is empty', () => {
       const myTree = new SplayTree();
 
@@ -1745,7 +1736,7 @@ describe('splay tree', () => {
     });
   });
 
-  xdescribe('printPostOrder', () => {
+  describe('printPostOrder', () => {
     it('returns empty array if tree is empty', () => {
       const myTree = new SplayTree();
 

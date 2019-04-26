@@ -24,12 +24,6 @@ class SplayTree {
 
     const newNode = new Node(value);
 
-    // add to global list of all previously added nodes
-    if (!this.listOfValues.includes(value)) {
-      this.listOfNodes.push(newNode);
-      this.listOfValues.push(value);
-    }
-
     if (this.treeIsEmpty()) {
       this.root = newNode;
       return newNode;
@@ -67,52 +61,6 @@ class SplayTree {
     if (splay) { this.splay(path); }
 
     return result;
-  }
-
-  checkForLoops() {
-    // check all nodes for self references
-    for (let i = 0; i < this.listOfNodes.length; i++){
-      let current = this.listOfNodes[i];
-      if (current.left && current.left.value === current.value ||
-        current.right && current.right.value === current.value) {
-        console.log(`self loop detected`);
-        console.log(`problem value: ${current.value}`);
-        console.log(`insert order: `, this.listOfValues);
-      }
-    }
-
-    // visit each node once
-    for (let i = 0; i < this.listOfNodes.length; i++){
-      // add .left.value and .right.value to seen, store count
-      let currentNode = this.listOfNodes[i];
-      let leftVal = currentNode.left && currentNode.left.value;
-      let rightVal = currentNode.right && currentNode.right.value;
-      // let currentValue = this.listOfNodes[i].value;
-      if (leftVal !== null) {
-        if (!this.seen[leftVal]) {
-          this.seen[leftVal] = 1;
-        } else {
-          this.seen[leftVal] += 1;
-        }
-      }
-      if (rightVal !== null) {
-        if (!this.seen[rightVal]) {
-          this.seen[rightVal] = 1;
-        } else {
-          this.seen[rightVal] += 1;
-        }
-      }
-    }
-
-    console.log(`values `, this.listOfValues);
-    console.log(`this.seen `, this.seen);
-    
-    for (let key in this.seen) {
-      if (this.seen.key) {
-        console.log(`valuesL `, this.listOfValues);
-        console.log(`this.seen.key: `, this.seen.key);
-      }
-    }
   }
 
   remove(rawValue) {
