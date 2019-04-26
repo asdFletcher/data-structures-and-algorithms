@@ -338,9 +338,6 @@ class SplayTree {
     let ggpIndex = path.length - 4;
     let ggp = path[ggpIndex];
 
-    let targetHasLeaf = false;
-    if (target.left || target.right) { targetHasLeaf = true; }
-
     const updatePointers = () => {
       parent = path[parentIndex];
       grandParent = path[grandParentIndex];
@@ -439,7 +436,7 @@ class SplayTree {
           grandParent.left = this.leftSingle(target, parent);
           ggp.left = this.rightSingle(target, grandParent);
         } else if (ggp.right === grandParent) {
-          grandParent.right = this.leftSingle(target, parent);
+          grandParent.left = this.leftSingle(target, parent);
           ggp.right = this.rightSingle(target, grandParent);
         }
         reduceCounters(2);

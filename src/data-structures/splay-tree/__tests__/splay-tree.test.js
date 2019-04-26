@@ -2,6 +2,8 @@
 
 'use strict';
 
+const util = require('util');
+
 const SplayTree = require('../splay-tree.js');
 const Node = require('../splay-tree-node.js');
 
@@ -493,6 +495,24 @@ describe('splay tree', () => {
       expect(myTree.root.left.right.value).toEqual(8);
 
       expect(myTree.root.left.right.left.value).toEqual(7);
+    });
+
+    it('handles 100 random generic case', () => {
+      const myTree = new SplayTree();
+
+      for (let i = 0; i < 100; i += 1) {
+        expect(() => {
+          let insertValues = [];
+
+          for(let i = 0; i < 100; i++) {
+            let num = Math.floor(Math.random() * 10 * 10);
+            insertValues.push(num);
+            myTree.insert(num);
+          }
+
+          myTree.printInOrder();
+        }).not.toThrow();
+      }
     });
   });
 
