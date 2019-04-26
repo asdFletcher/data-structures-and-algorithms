@@ -2,6 +2,8 @@
 
 'use strict';
 
+const util = require('util');
+
 const SplayTree = require('../splay-tree.js');
 const Node = require('../splay-tree-node.js');
 
@@ -494,9 +496,36 @@ describe('splay tree', () => {
 
       expect(myTree.root.left.right.left.value).toEqual(7);
     });
+
+    it('handles 100 random generic case', () => {
+      const myTree = new SplayTree();
+
+      for (let i = 0; i < 100; i += 1) {
+        expect(() => {
+          let insertValues = [];
+
+          for(let i = 0; i < 100; i++) {
+            let num = Math.floor(Math.random() * 10 * 10);
+            insertValues.push(num);
+            myTree.insert(num);
+          }
+
+          myTree.printInOrder();
+        }).not.toThrow();
+      }
+    });
+
+    xit('throws on self loop', () => {
+      const myTree = new SplayTree();
+
+      let a = myTree.insertWithoutSplay(1);
+      a.left = a;
+      // console.log(`myTree.root: `, myTree.root);
+    });
+
   });
 
-  describe('insertWithoutSplay', () => {
+  xdescribe('insertWithoutSplay', () => {
     it('fails on no arguments', () => {
       const myTree = new SplayTree();
       const result = myTree.insert();
@@ -632,7 +661,7 @@ describe('splay tree', () => {
     });
   });
 
-  describe('remove', () => {
+  xdescribe('remove', () => {
     it('fails given no parameters', () => {
       const myTree = new SplayTree();
 
@@ -1373,7 +1402,7 @@ describe('splay tree', () => {
     });
   });
 
-  describe('contains', () => {
+  xdescribe('contains', () => {
     it('returns undefined given undefined', () => {
       const myTree = new SplayTree();
 
@@ -1492,7 +1521,7 @@ describe('splay tree', () => {
     });
   });
 
-  describe('findMax', () => {
+  xdescribe('findMax', () => {
     it('returns undefined given empty tree', () => {
       const myTree = new SplayTree();
 
@@ -1568,7 +1597,7 @@ describe('splay tree', () => {
     });
   });
 
-  describe('findMin', () => {
+  xdescribe('findMin', () => {
     it('returns undefined given empty tree', () => {
       const myTree = new SplayTree();
 
@@ -1644,7 +1673,7 @@ describe('splay tree', () => {
     });
   });
 
-  describe('printPreOrder', () => {
+  xdescribe('printPreOrder', () => {
     it('returns empty array if tree is empty', () => {
       const myTree = new SplayTree();
 
@@ -1680,7 +1709,7 @@ describe('splay tree', () => {
     });
   });
 
-  describe('printInOrder', () => {
+  xdescribe('printInOrder', () => {
     it('returns empty array if tree is empty', () => {
       const myTree = new SplayTree();
 
@@ -1716,7 +1745,7 @@ describe('splay tree', () => {
     });
   });
 
-  describe('printPostOrder', () => {
+  xdescribe('printPostOrder', () => {
     it('returns empty array if tree is empty', () => {
       const myTree = new SplayTree();
 
