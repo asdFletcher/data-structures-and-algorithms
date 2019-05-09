@@ -7,7 +7,75 @@ const util = require('util');
 const SplayTree = require('../splay-tree.js');
 const Node = require('../splay-tree-node.js');
 
-describe('splay tree', () => {
+describe('splay tree delete stress test', () => {
+  it('succeeds on many random deletes', () => {
+
+    // generate random numbers
+    console.log(`test`);
+    let nums = [];
+    while (nums.length < 10) {
+      let num = Math.floor(Math.random()*100);
+      if(!nums.includes(num)) {
+        nums.push(num);
+      }
+    }
+    console.log(`nums: `, nums);
+
+    // insert tree and keep track of insert order
+    const myTree = new SplayTree();
+    const values = nums;
+    let insertOrder = [];
+    while (insertOrder.length < 10) {
+      let randomIndex = Math.floor(Math.random()*10);
+      if (myTree.insertWithoutSplay(values[randomIndex])) {
+        insertOrder.push(values[randomIndex]);
+      }
+    }
+    console.log(`insert order: `, insertOrder);
+
+    expect( () => {
+      let removeCount = 0;
+      let removeOrder = [];
+      while (myTree.root) {
+        // pick a random value
+        let randomIndex = Math.floor(Math.random()*10);
+        let randomNumber = values[randomIndex];
+        // remove it
+        // if it doens't have the right amount of nodes, throw an error
+        const result = myTree.remove(randomNumber);
+        removeOrder.push(randomNumber);
+        removeCount++;
+        let inOrder = myTree.printInOrder();
+        if (inOrder.length !== values.length - removeCount) {
+          console.log(`insertOrder: `, insertOrder );
+          console.log(`removeOrder: `, removeOrder );
+          throw new Error;
+        }
+      }
+    }).not.toThrow();
+  });
+
+  it('succeeds on remove non-root, non-leaf, random left, has no left child', () => {
+    global.Math.random = () => 0.75;
+
+    const myTree = new SplayTree();
+    const values = [ 33, 51, 70, 5, 63, 20, 44, 36, 34, 80 ];
+    for (let i = 0; i < values.length; i += 1) {
+      myTree.insertWithoutSplay(values[i]);
+    }
+    console.log(`starter tree myTree.root: `, util.inspect(myTree.root, true, 10, true));
+
+    const removedValues = [36, 44, 34, 34];
+
+    for(let i = 0; i < removedValues.length; i++) {
+      myTree.remove(removedValues[i]);
+      console.log(`myTree.root: `, util.inspect(myTree.root, true, 10, true));
+    }
+  });
+
+})
+
+xdescribe('splay tree', () => {
   describe('constructor', () => {
     it('creates empty tree without error', () => {
       expect(() => {
@@ -1391,6 +1459,7 @@ describe('splay tree', () => {
       expect(myTree).toEqual(expectedTree);
       expect(result).toEqual(expected);
     });
+
   });
 
   describe('contains', () => {
