@@ -1,6 +1,7 @@
 /* eslint-disable class-methods-use-this */
 
 'use strict';
+const util = require('util');
 
 const Node = require('./splay-tree-node.js');
 
@@ -104,26 +105,16 @@ class SplayTree {
           }
           return;
         }
+
+        // pick a side general case: 2 children
+        let replacementDirection = this.pickASide();
+
         if (!deleteTarget.left) {
-          if (rootIsTarget) {
-            this.root = deleteTarget.right;
-          } else {
-            replacementNode = this.removeMin(deleteTarget.right, cb);
-            deleteTargetParent[deleteDirection] = replacementNode;
-          }
-          return;
+          replacementDirection = 'right';
         }
         if (!deleteTarget.right) {
-          if (rootIsTarget) {
-            this.root = deleteTarget.left;
-          } else {
-            replacementNode = this.removeMax(deleteTarget.left, cb);
-            deleteTargetParent[deleteDirection] = replacementNode;
-          }
-          return;
+          replacementDirection = 'left';
         }
-        // pick a side general case: 2 children
-        const replacementDirection = this.pickASide();
 
         // remove min, or remove max
         if (replacementDirection === 'left') {
