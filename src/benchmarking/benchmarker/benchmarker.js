@@ -18,7 +18,7 @@ function getEmptyTree() {
   }
 }
 
-function runTheTest_Dependent_Tree_Size() {
+function runTheTest_Dependent_Tree_Size(numberOfRuns) {
   const dataset = createBlankDataset(numberOfRuns);
 
   for (let i = 0; i < numberOfRuns; i += 1) {
@@ -322,23 +322,22 @@ function createLogNData() {
 
 function createDataRaw() {
   n = 1000;
-  numberOfRuns = 100;
-  const output = runTheTest_Dependent_Tree_Size();
+  let numberOfRuns = 100;
+  const output = runTheTest_Dependent_Tree_Size(numberOfRuns);
   // let output = runTheTest_Variable_Tree_Size();
   writeResultsToFile(output, 'data1.json');
 }
 
 function createDataAverage() {
   n = 1000;
-  numberOfRuns = 10000;
-  const output = runTheTest_Dependent_Tree_Size();
+  let numberOfRuns = 10000;
+  const output = runTheTest_Dependent_Tree_Size(numberOfRuns);
   // let output = runTheTest_Variable_Tree_Size();
   const averageData = calculateAverageFromSingleDataSet(output);
   writeResultsToFile(averageData, 'data2.json');
 }
 
 let n;
-let numberOfRuns;
 const manyRandomNumbers = new Set();
 // let treeType = "AVLTree";
 // let treeType = 'BST';
