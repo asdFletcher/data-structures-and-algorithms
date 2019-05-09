@@ -7,6 +7,66 @@ const util = require('util');
 const SplayTree = require('../splay-tree.js');
 const Node = require('../splay-tree-node.js');
 
+describe('splay tree delete stress test', () => {
+  it('succeeds on many random deletes', () => {
+    for(let j = 0; j < 100; j++) {
+      // generate random numbers
+      let nums = [];
+      while (nums.length < 10) {
+        let num = Math.floor(Math.random()*100);
+        if(!nums.includes(num)) {
+          nums.push(num);
+        }
+      }
+      // console.log(`nums: `, nums);
+
+      // insert tree and keep track of insert order
+      const myTree = new SplayTree();
+      const values = nums;
+      let insertOrder = [];
+      while (insertOrder.length < 10) {
+        let randomIndex = Math.floor(Math.random()*10);
+        if (myTree.insertWithoutSplay(values[randomIndex])) {
+          insertOrder.push(values[randomIndex]);
+        }
+      }
+      // console.log(`insert order: `, insertOrder);
+
+      // generate remove order
+      let removeOrder = [];
+      let count3 = 0;
+      while (removeOrder.length < 10 && count3 < 100){
+        let randomIndex = Math.floor(Math.random()*10);
+        let randomNumber = values[randomIndex];
+        if(!removeOrder.includes(randomNumber)) {
+          removeOrder.push(randomNumber);
+        }
+        count3++;
+      }
+      // console.log(`removeOrder: `, removeOrder);
+      let removedNumbers = [];
+      expect( () => {
+        for (let i = 0; i < removeOrder.length; i++) {
+          const result = myTree.remove(removeOrder[i]);
+          let inOrder = myTree.printInOrder();
+          removedNumbers.push(removeOrder[i]);
+          if (inOrder.length !== values.length - removedNumbers.length) {
+            // console.log(`🍅 inOrder.length: `, inOrder.length);
+            // console.log(`🍅 values.length: `, values.length);
+            // console.log(`🍅 insertOrder: `, insertOrder );
+            // console.log(`🍅 removeOrder: `, removeOrder );
+            // console.log(`🍅 removedNumbers: `, removedNumbers );
+            // console.log(`🍅 ${insertOrder.length} - ${removedNumbers.length} should = ${insertOrder.length - removedNumbers.length}, but we got ${inOrder.length}`);
+            throw new Error;
+          }
+        }
+      }).not.toThrow();
+    }
+
+  });
+});
+
+
 describe('splay tree', () => {
   describe('constructor', () => {
     it('creates empty tree without error', () => {
@@ -1391,6 +1451,59 @@ describe('splay tree', () => {
       expect(myTree).toEqual(expectedTree);
       expect(result).toEqual(expected);
     });
+
+    it('succeeds on delete target has no right child, random left', () => {
+      global.Math.random = () => 0.75;
+  
+      const myTree = new SplayTree();
+      const values = [73, 31, 5, 8, 39, 0, 68, 9, 54, 25];
+      for (let i = 0; i < values.length; i += 1) {
+        myTree.insertWithoutSplay(values[i]);
+      }
+      myTree.remove(8);
+      myTree.remove(25);
+  
+      let expectedTree = new SplayTree();
+      
+      const removedValue = 5;
+      const result = myTree.remove(removedValue);
+      const expected = new Node(removedValue);
+  
+      const expectedTreeValues = [9, 0, 31, 73, 39, 68, 54];
+      for (let i = 0; i < expectedTreeValues.length; i += 1) {
+        expectedTree.insertWithoutSplay(expectedTreeValues[i]);
+      }
+  
+      expect(myTree).toEqual(expectedTree);
+      expect(result).toEqual(expected);
+      expect(myTree.printInOrder().length).toEqual(7);
+    });
+
+    it('succeeds on delete target has no left child, random left', () => {
+      global.Math.random = () => 0.75;
+  
+      const myTree = new SplayTree();
+      const values = [9, 5, 31, 0, 73, 39, 65, 54];
+      for (let i = 0; i < values.length; i += 1) {
+        myTree.insertWithoutSplay(values[i]);
+      }
+  
+      let expectedTree = new SplayTree();
+      
+      const removedValue = 39;
+      const result = myTree.remove(removedValue);
+      const expected = new Node(removedValue);
+  
+      const expectedTreeValues = [73, 31, 9, 54, 5, 65, 0];
+      for (let i = 0; i < expectedTreeValues.length; i += 1) {
+        expectedTree.insertWithoutSplay(expectedTreeValues[i]);
+      }
+  
+      expect(myTree).toEqual(expectedTree);
+      expect(result).toEqual(expected);
+      expect(myTree.printInOrder().length).toEqual(7);
+    });
+  
   });
 
   describe('contains', () => {
