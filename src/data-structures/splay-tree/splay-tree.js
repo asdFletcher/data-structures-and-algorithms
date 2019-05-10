@@ -253,7 +253,7 @@ class SplayTree {
     }
 
     const result = current.value;
-    this.splay(path);
+    this.splay(path, cb);
     return result;
   }
 

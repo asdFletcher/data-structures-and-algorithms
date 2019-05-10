@@ -5,15 +5,10 @@ const Node = require('./binary-search-tree-node.js');
 class BinarySearchTree {
   constructor() {
     this.root = null;
-    this.insertComputations = 0;
-    this.removeComputations = 0;
     this.replacementNode = null;
-    this.containsComputations = 0;
   }
 
-  insert(value) {
-    this.insertComputations = 0;
-
+  insert(value, cb) {
     if (!this.isNumericInput(value)) { return undefined; }
     value = Number(value);
 
@@ -25,7 +20,7 @@ class BinarySearchTree {
     }
 
     const go = (node) => {
-      this.insertComputations += 1;
+      if (cb) { cb(); }
 
       if (node.value === value) { return undefined; } // already in tree
 
@@ -48,23 +43,20 @@ class BinarySearchTree {
     return go(this.root);
   }
 
-  remove(value) {
-    this.removeComputations = 0;
-
+  remove(value, cb) {
     if (this.treeIsEmpty()) { return undefined; }
     if (!this.isNumericInput(value)) { return undefined; }
     value = Number(value);
-
     if (this.root.value === value) {
       this.root = this.removeRootFromTree(this.root);
     } else {
-      const parentNode = this.findParent(value);
+      const parentNode = this.findParent(value, cb);
       if (!parentNode) { return undefined; } // value not in tree
 
       if (value < parentNode.value) {
-        parentNode.left = this.removeRootFromTree(parentNode.left);
+        parentNode.left = this.removeRootFromTree(parentNode.left, cb);
       } else {
-        parentNode.right = this.removeRootFromTree(parentNode.right);
+        parentNode.right = this.removeRootFromTree(parentNode.right, cb);
       }
     }
 
@@ -75,7 +67,7 @@ class BinarySearchTree {
     return result;
   }
 
-  removeRootFromTree(root) {
+  removeRootFromTree(root, cb) {
     this.deletedNode = root;
 
     if (!root.left && !root.right) { return null; }
@@ -85,7 +77,6 @@ class BinarySearchTree {
     const replacementNodeDirection = this.pickASide();
 
     let newRoot;
-
     // replacement side has 1 child
     if (replacementNodeDirection === 'left' && this.subTreeRootIsMax(root.left)) {
       newRoot = root[replacementNodeDirection];
@@ -99,7 +90,7 @@ class BinarySearchTree {
     }
 
     // replacement side has 2 children
-    return this.removeMinOrMax(root, replacementNodeDirection);
+    return this.removeMinOrMax(root, replacementNodeDirection, cb);
   }
 
   getOppositeDirection(direction) {
@@ -112,7 +103,7 @@ class BinarySearchTree {
     return oppositeDirection;
   }
 
-  removeMinOrMax(root, replacementDir) {
+  removeMinOrMax(root, replacementDir, cb) {
     let newRoot;
 
     const oppositeDir = this.getOppositeDirection(replacementDir);
@@ -120,6 +111,7 @@ class BinarySearchTree {
     // find max or min node and remove it from the subtree
     let current = root[replacementDir];
     while (current[oppositeDir][oppositeDir]) {
+      if (cb) { cb(); }
       current = current[oppositeDir];
     }
 
@@ -148,8 +140,8 @@ class BinarySearchTree {
     return false;
   }
 
-  remove_bad(value) {
-    this.removeComputations = 0;
+  remove_bad(value, cb) {
+    if (cb) { cb(); }
 
     if (this.treeIsEmpty()) { return undefined; }
 
@@ -162,7 +154,7 @@ class BinarySearchTree {
       this.root = newRoot;
     }
 
-    const parentNode = this.findParent(value);
+    const parentNode = this.findParent(value, cb);
     let deletedNode;
 
     if (!parentNode) { return undefined; }
@@ -186,12 +178,12 @@ class BinarySearchTree {
     const newRoot = node[replacementDirection];
 
     if (replacementDirection === 'left') {
-      const maxNodeOfLeftTree = this.findMaxNode(node.left);
+      const maxNodeOfLeftTree = this.findMaxNode(node.left, cb);
       maxNodeOfLeftTree.right = node.right;
     }
 
     if (replacementDirection === 'right') {
-      const minNodeOfRightTree = this.findMinNode(node.right);
+      const minNodeOfRightTree = this.findMinNode(node.right, cb);
       minNodeOfRightTree.left = node.left;
     }
 
@@ -199,24 +191,24 @@ class BinarySearchTree {
   }
 
   findMax() {
-    const node = this.findMaxNode(this.root);
+    const node = this.findMaxNode(this.root, cb);
     return node && node.value;
   }
 
   findMin() {
-    const node = this.findMinNode(this.root);
+    const node = this.findMinNode(this.root, cb);
     return node && node.value;
   }
 
-  contains(value) {
+  contains(value, cb) {
     if (this.treeIsEmpty()) { return false; }
     if (!this.isNumericInput(value)) { return false; }
-    this.containsComputations = 0;
+    if (cb) { cb(); }
 
     value = Number(value);
 
     const go = (node) => {
-      this.containsComputations += 1;
+      if (cb) { cb(); }
       if (!node) { return false; }
       if (node.value === value) { return true; }
       if (value > node.value) { return go(node.right); }
@@ -246,10 +238,10 @@ class BinarySearchTree {
     return 'right';
   }
 
-  findParent(value) {
+  findParent(value, cb) {
     const go = (node) => {
       if (!node) { return undefined; }
-      this.removeComputations += 1;
+      if (cb) { cb(); }
 
       if (node.left && node.left.value === value) { return node; }
       if (node.right && node.right.value === value) { return node; }
@@ -264,27 +256,27 @@ class BinarySearchTree {
     return go(this.root);
   }
 
-  findMaxNode(node) {
+  findMaxNode(node, cb) {
     if (!node) { return undefined; }
 
     let current = node;
 
     while (current.right) {
       current = current.right;
-      this.removeComputations += 1;
+      if (cb) { cb(); }
     }
 
     return current;
   }
 
-  findMinNode(node) {
+  findMinNode(node, cb) {
     if (!node) { return undefined; }
 
     let current = node;
 
     while (current.left) {
       current = current.left;
-      this.removeComputations += 1;
+      if (cb) { cb(); }
     }
 
     return current;

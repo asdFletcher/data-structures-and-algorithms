@@ -5,20 +5,11 @@ const Node = require('./avl-tree-node.js');
 class AVLTree {
   constructor() {
     this.root = null;
-    this.insertComputations = 0;
-    this.removeComputations = 0;
-    this.containsComputations = 0;
-    this.findMaxComputations = 0;
-    this.findMinComputations = 0;
-    this.printComputations = 0;
-
     this.imbalancedNode = null;
     this.imbalancedNodeParent = null;
   }
 
-  insert(value) {
-    this.insertComputations = 0;
-
+  insert(value, cb) {
     if (!this.isNumericInput(value)) { return undefined; }
     value = Number(value);
 
@@ -30,7 +21,7 @@ class AVLTree {
     }
 
     const go = (node) => {
-      this.insertComputations += 1;
+      if (cb){ cb(); }
       if (value === node.value) { return undefined; } // value already in tree
 
       // add right node
@@ -71,13 +62,13 @@ class AVLTree {
     return result;
   }
 
-  remove(value) {
+  remove(value, cb) {
     if (!this.isNumericInput(value)) { return undefined; }
     value = Number(value);
 
     if (this.treeIsEmpty()) { return undefined; }
 
-    this.removeComputations = 0;
+    if (cb){ cb(); }
 
     if (this.root.value === value) {
       if (!this.root.left && !this.root.right) {
@@ -87,7 +78,7 @@ class AVLTree {
       }
     }
     const go = (node) => {
-      this.removeComputations += 1;
+      if (cb){ cb(); }
 
       let result;
 
@@ -97,7 +88,7 @@ class AVLTree {
         result = new Node(node.value);
 
         // remove the node
-        this.root = this.removeNode(node);
+        this.root = this.removeNode(node, cb);
         this.fixImbalances(node);
         if (this.root) { this.updateNodeHeight(this.root); }
 
@@ -109,7 +100,7 @@ class AVLTree {
         result = new Node(node.right.value);
 
         // remove the node
-        node.right = this.removeNode(node.right);
+        node.right = this.removeNode(node.right, cb);
         if (node.right) { this.updateNodeHeight(node.right); }
         this.updateNodeHeight(node);
 
@@ -123,7 +114,7 @@ class AVLTree {
         result = new Node(node.left.value);
 
         // remove the node
-        node.left = this.removeNode(node.left);
+        node.left = this.removeNode(node.left, cb);
         if (node.left) { this.updateNodeHeight(node.left); }
         this.updateNodeHeight(node);
 
@@ -165,7 +156,7 @@ class AVLTree {
     return result;
   }
 
-  removeNode(node) {
+  removeNode(node, cb) {
     // if leaf, remove
     if (!node.left && !node.right) {
       return null;
@@ -173,7 +164,7 @@ class AVLTree {
 
     // if two children --> Find sub tree min or max --> replace that node
     if (node.left && node.right) {
-      return this.removeNodeWithTwoChildren(node);
+      return this.removeNodeWithTwoChildren(node, cb);
     }
 
     // if only one child, make that child the new node
@@ -183,12 +174,12 @@ class AVLTree {
     return node.right;
   }
 
-  removeNodeWithTwoChildren(node) {
+  removeNodeWithTwoChildren(node, cb) {
     let maxNodeValueOfSubTree;
     let minNodeValueOfSubTree;
 
     const deleteMin = (node) => {
-      this.removeComputations += 1;
+      if (cb){ cb(); }
       // base case
       if (!node.left) {
         minNodeValueOfSubTree = node.value;
@@ -213,8 +204,8 @@ class AVLTree {
       return true;
     };
 
-    const deleteMax = (node) => {
-      this.removeComputations += 1;
+    const deleteMax = (node, cb) => {
+      if (cb){ cb(); }
       // base case
       if (!node.right) {
         maxNodeValueOfSubTree = node.value;
@@ -224,7 +215,7 @@ class AVLTree {
         return node.left;
       }
 
-      const result = deleteMax(node.right);
+      const result = deleteMax(node.right, cb);
 
       if (result === true) {
         this.fixImbalances(node);
@@ -241,7 +232,7 @@ class AVLTree {
 
     let result;
     if (node.left.height > node.right.height) {
-      result = deleteMax(node.left);
+      result = deleteMax(node.left, cb);
       node.value = maxNodeValueOfSubTree;
       if (result === true) {
         this.fixImbalances(node);
@@ -530,17 +521,15 @@ class AVLTree {
     return false;
   }
 
-  contains(value) {
+  contains(value, cb) {
     if (!this.isNumericInput(value)) { return undefined; }
     value = Number(value);
 
     if (this.treeIsEmpty()) { return false; }
 
-    this.containsComputations = 0;
-
     const go = (node) => {
       // base case
-      this.containsComputations += 1;
+      if (cb){ cb(); }
       if (node.value === value) {
         return true;
       }
@@ -567,28 +556,26 @@ class AVLTree {
     return result;
   }
 
-  findMin() {
+  findMin(cb) {
     if (this.treeIsEmpty()) { return undefined; }
-    this.findMinComputations = 0;
 
     let current = this.root;
 
     while (current.left) {
-      this.findMinComputations += 1;
+      if (cb){ cb(); }
       current = current.left;
     }
 
     return current.value;
   }
 
-  findMax() {
+  findMax(cb) {
     if (this.treeIsEmpty()) { return undefined; }
-    this.findMaxComputations = 0;
 
     let current = this.root;
 
     while (current.right) {
-      this.findMaxComputations += 1;
+      if (cb){ cb(); }
       current = current.right;
     }
 
