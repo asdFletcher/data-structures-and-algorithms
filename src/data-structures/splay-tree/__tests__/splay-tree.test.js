@@ -9,11 +9,12 @@ const Node = require('../splay-tree-node.js');
 
 describe('splay tree delete stress test', () => {
   it('succeeds on many random deletes', () => {
-    for(let j = 0; j < 100; j++) {
+    for(let j = 0; j < 1; j++) {
       // generate random numbers
+      let n = 100;
       let nums = [];
-      while (nums.length < 10) {
-        let num = Math.floor(Math.random()*100);
+      while (nums.length < n) {
+        let num = Math.floor(Math.random() * n * 5);
         if(!nums.includes(num)) {
           nums.push(num);
         }
@@ -24,8 +25,8 @@ describe('splay tree delete stress test', () => {
       const myTree = new SplayTree();
       const values = nums;
       let insertOrder = [];
-      while (insertOrder.length < 10) {
-        let randomIndex = Math.floor(Math.random()*10);
+      while (insertOrder.length < n) {
+        let randomIndex = Math.floor(Math.random() * n);
         if (myTree.insertWithoutSplay(values[randomIndex])) {
           insertOrder.push(values[randomIndex]);
         }
@@ -34,14 +35,12 @@ describe('splay tree delete stress test', () => {
 
       // generate remove order
       let removeOrder = [];
-      let count3 = 0;
-      while (removeOrder.length < 10 && count3 < 100){
-        let randomIndex = Math.floor(Math.random()*10);
+      while (removeOrder.length < n){
+        let randomIndex = Math.floor(Math.random() * n);
         let randomNumber = values[randomIndex];
         if(!removeOrder.includes(randomNumber)) {
           removeOrder.push(randomNumber);
         }
-        count3++;
       }
       // console.log(`removeOrder: `, removeOrder);
       let removedNumbers = [];
@@ -50,22 +49,21 @@ describe('splay tree delete stress test', () => {
           const result = myTree.remove(removeOrder[i]);
           let inOrder = myTree.printInOrder();
           removedNumbers.push(removeOrder[i]);
+          
           if (inOrder.length !== values.length - removedNumbers.length) {
             // console.log(`🍅 inOrder.length: `, inOrder.length);
             // console.log(`🍅 values.length: `, values.length);
             // console.log(`🍅 insertOrder: `, insertOrder );
             // console.log(`🍅 removeOrder: `, removeOrder );
             // console.log(`🍅 removedNumbers: `, removedNumbers );
-            // console.log(`🍅 ${insertOrder.length} - ${removedNumbers.length} should = ${insertOrder.length - removedNumbers.length}, but we got ${inOrder.length}`);
+            // console.log(`🍅 ${insertOrder.length} - ${removedNumbers.length} should = ${inOrder.length - removedNumbers.length}, but we got ${inOrder.length}`);
             throw new Error;
           }
         }
       }).not.toThrow();
     }
-
   });
 });
-
 
 describe('splay tree', () => {
   describe('constructor', () => {
@@ -728,6 +726,31 @@ describe('splay tree', () => {
       const result = myTree.remove();
       expect(result).toBeUndefined();
       expect(myTree.root).toBeNull();
+    });
+    it('returns undefined if value is not in the tree', () => {
+      const myTree = new SplayTree();
+
+      myTree.insertWithoutSplay(5);
+      myTree.insertWithoutSplay(10);
+      myTree.insertWithoutSplay(2);
+      myTree.insertWithoutSplay(4);
+      myTree.insertWithoutSplay(12);
+
+      const result = myTree.remove(3);
+      expect(result).toBeUndefined();
+    });
+    it('returns undefined when value is not in the tree', () => {
+      const myTree = new SplayTree();
+
+      myTree.insertWithoutSplay(5);
+      myTree.insertWithoutSplay(10);
+      myTree.insertWithoutSplay(2);
+      myTree.insertWithoutSplay(4);
+      myTree.insertWithoutSplay(12);
+
+      myTree.remove(5);
+      const result = myTree.remove(5);
+      expect(result).toBeUndefined();
     });
     it('succeeds on remove root of 1 node tree', () => {
       const myTree = new SplayTree();

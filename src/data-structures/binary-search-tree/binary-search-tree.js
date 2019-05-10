@@ -85,7 +85,6 @@ class BinarySearchTree {
     const replacementNodeDirection = this.pickASide();
 
     let newRoot;
-
     // replacement side has 1 child
     if (replacementNodeDirection === 'left' && this.subTreeRootIsMax(root.left)) {
       newRoot = root[replacementNodeDirection];
