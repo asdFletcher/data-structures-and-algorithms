@@ -1,11 +1,12 @@
 'use strict';
 
-function singleRunRemove(n, sampleRate) {
-  const myTree = getEmptyTree(treeType);
+function singleRunRemove(sampleRate) {
+  const myTree = this.getEmptyTree(this.treeType);
   const numbers = [];
+  let times = [];
 
   // build tree with random numbers
-  const randomNumbers = generateRandomNumberSet(n);
+  const randomNumbers = this.getRandomNumberSet(this.n);
   randomNumbers.forEach((val) => {
     myTree.insert(val);
     numbers.push(val);
