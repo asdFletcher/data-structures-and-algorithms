@@ -7,7 +7,7 @@
 
 [![Build Status](https://www.travis-ci.com/asdFletcher/data-structures-and-algorithms.svg?branch=master)](https://www.travis-ci.com/asdFletcher/data-structures-and-algorithms)
 
-* [repo](https://github.com/asdFletcher/data-structures-and-algorithms/tree/master/data-structures/binary-search-tree)
+* [repo](https://github.com/asdFletcher/data-structures-and-algorithms/tree/master/src/data-structures/binary-search-tree)
 * [travis](https://www.travis-ci.com/asdFletcher/data-structures-and-algorithms)
 
 
@@ -21,7 +21,7 @@
 ##### Exported Values and Methods for the following files:
 
 #### `binary-search-tree.js`
-`binary-search-tree.js` exports the `BinarySearchTree` class, which has methods for adding and removing elements that follow the traditional data structure scheme for a binary serach tree. 
+`binary-search-tree.js` exports the `BinarySearchTree` class, which has methods for adding and removing elements that follow the traditional data structure scheme for a binary search tree. 
 
 A `Binary Search Tree` ('BST') is a binary tree that is "sorted", where the left nodes are less than their parents and the right nodes are greater than their parents. Knowing this, we can find values stored in this type of tree quickly. Access, search, insert, and remove time complexity for a binary search tree is O(log(n)), where n is the number of nodes in the tree. These methods compare the incoming value with the values in the tree and navigates left or right based on a comparison with the existing node values. Depending on the operation this is done until a leaf is found where a new node can inserted or the desired value is found.
 

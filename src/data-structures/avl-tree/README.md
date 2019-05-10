@@ -7,7 +7,7 @@
 
 [![Build Status](https://www.travis-ci.com/asdFletcher/data-structures-and-algorithms.svg?branch=master)](https://www.travis-ci.com/asdFletcher/data-structures-and-algorithms)
 
-* [repo](https://github.com/asdFletcher/data-structures-and-algorithms/tree/master/data-structures/avl-tree)
+* [repo](https://github.com/asdFletcher/data-structures-and-algorithms/tree/master/src/data-structures/avl-tree)
 * [travis](https://www.travis-ci.com/asdFletcher/data-structures-and-algorithms)
 
 
