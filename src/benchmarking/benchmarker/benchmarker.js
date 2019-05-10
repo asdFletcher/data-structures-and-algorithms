@@ -130,7 +130,7 @@ class Runner {
   
         // measure tree height and save data {x: tree size (number of nodes), y: average height}
         let maxDepth = getMaxNodeDepth(myTree);
-        let maxDepth = getAvgNodeDepth(myTree);
+        let avgDepth = getAvgNodeDepth(myTree);
         data[i] = maxDepth;
       }
       
