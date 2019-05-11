@@ -5,6 +5,8 @@ Created by: Fletcher LaRue
 
 [LinkedIn](https://www.linkedin.com/in/fletcher-larue/)
 
+[NPM package](https://www.npmjs.com/package/data-structures-and-algorithms)
+
 ### Binary Trees:
 
 - [Binary search tree (BST)](https://github.com/asdFletcher/data-structures-and-algorithms/tree/master/src/data-structures/binary-search-tree)
