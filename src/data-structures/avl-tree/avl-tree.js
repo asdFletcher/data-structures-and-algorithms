@@ -630,7 +630,6 @@ class AVLTree {
     return result;
   }
 
-
   containsDuplicates() {
     const seen = new Set();
     const inOrderArray = this.printInOrder();

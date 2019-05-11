@@ -10,7 +10,6 @@
 * [repo](https://github.com/asdFletcher/data-structures-and-algorithms/tree/master/src/data-structures/avl-tree)
 * [travis](https://www.travis-ci.com/asdFletcher/data-structures-and-algorithms)
 
-
 ---
 ### Files
 #### `avl-tree.js`
@@ -21,7 +20,7 @@
 ##### Exported Values and Methods for the following files:
 
 #### `avl-tree.js`
-`avl-tree.js` exports the `AVLTree` class, which has methods for adding and removing elements that follow the traditional data structure scheme for an AVL tree. [Wikipedia article on AVL trees](https://en.wikipedia.org/wiki/AVL_tree).
+`avl-tree.js` exports the `AVLTree` class, which has methods for adding and removing elements that follow the traditional data structure scheme for an AVL tree.
 
 An `AVL Tree` is similar to a Binary Search Tree in that it is a "sorted" tree, where the left nodes are less than their parents and the right nodes are greater than their parents. However, the AVL tree insert/remove methods modify the tree in order to maintain balance. If 2 children become too imbalanced (height difference greater than 1) then a re-balancing is performed. These are classified as either single or double rotations, and can occur to the "left" or the "right" depending on which side of the tree is lopsided.
 
@@ -31,21 +30,23 @@ This particular implementation requires that all values stored in the nodes are 
 
 Some trees are implemented where multiple nodes with the same value are allowed, and some have a node class that stores a counter. This particular implementation does not allow for duplicate values, nor does it keep track of a count for each value. One key difference from the Binary Search Tree is that the AVL tree stores height information about each node so that it can make decisioins on when to rebalance.
 
+Read more about the AVL Tree on [Wikipedia](https://en.wikipedia.org/wiki/AVL_tree).
 
 * `AVLTree` class
     * Methods:
         * `constructor()`
-        * `insert(<value>)`
-        * `remove(<value>)`
-        * `contains(<value>)`
-        * `findMax()`
-        * `findMin()`
+        * `insert(<value> [, <callback>])`
+        * `remove(<value> [, <callback>])`
+        * `contains(<value> [, <callback>])`
+        * `findMax([<callback>])`
+        * `findMin([<callback>])`
         * `printPreOrder()`
         * `printInOrder()`
         * `printPostOrder()`
 
----
+Note: parameters in square brackets i.e.:`[<parameter>]` are optional.
 
+---
 
 ##### Using the `AVLTree` class methods:
 
@@ -59,8 +60,9 @@ const myTree = new AVLTree();
 * If arguments are passed in they will be ignored
 * The `root` attribute of a new tree is `undefined`
 
+---
 
-#### `AVLTree.prototype.insert(<value>)`
+#### `AVLTree.prototype.insert(<value> [, <callback>])`
 ```JavaScript
 const myTree = new AVLTree();
 myTree.insert(5);
@@ -78,9 +80,11 @@ let result = myTree.insert(-1);
 ```
 * Inserts the value into the tree, at a leaf, to the left of all larger values, and to the right of all smaller values
 * If the value already exists in the tree it will not be inserted
-* Accepts 1 argument
-* If the method is called with no argument, the node will not be inserted
-* If the method is called with more than 1 argument, only the first argument will be accepted
+* Accepts 1 required argument, and 1 optional argument
+    * The first parameter is required: the value of the node to be inserted
+    * The second parameter is an optional callback that is called on all recursive functions and loops for the purposes of estimating the performance of the class (allows incrementing a counter)
+* If the method is called with no arguments, `undefined` is returned
+* If the method is called with additional arguments they will be ignored
 * Acceptable input includes:
     * Strings that can be converted to numbers
     * Negative numbers
@@ -90,7 +94,9 @@ let result = myTree.insert(-1);
 * Returns `undefined` on unsuccessfull insert
 * Returns a pointer to the inserted node if successful
 
-#### `AVLTree.prototype.remove(<value>)`
+---
+
+#### `AVLTree.prototype.remove(<value> [, <callback>])`
 ```JavaScript
 const myTree = new AVLTree();
 myTree.insert(5);
@@ -112,9 +118,11 @@ let result = myTree.remove(5);
 
 ```
 * Removes the value from the tree, if it exists
-* Accepts 1 argument
-* If the method is called with no argument, `undefined` is returned
-* If the method is called with more than 1 argument, only the first argument will be accepted
+* Accepts 1 required argument, and 1 optional argument
+    * The first parameter is required: the value of the node to be inserted
+    * The second parameter is an optional callback that is called on all recursive functions and loops for the purposes of estimating the performance of the class (allows incrementing a counter)
+* If the method is called with no arguments, `undefined` is returned
+* If the method is called with additional arguments they will be ignored
 * Acceptable input includes:
     * Strings that can be converted to numbers
     * Negative numbers
@@ -129,7 +137,7 @@ let result = myTree.remove(5);
 
 ---
 
-#### `AVLTree.prototype.contains(<value>)`
+#### `AVLTree.prototype.contains(<value> [, <callback>])`
 
 ```JavaScript
 const myTree = new AVLTree();
@@ -147,9 +155,11 @@ let result = myTree.contains(2); // true
 
 ```
 * Checks to see if the value is contained in the tree
-* Accepts 1 argument
-* If the method is called with no argument, `undefined` is returned
-* If the method is called with more than 1 argument, only the first argument will be accepted
+* Accepts 1 required argument, and 1 optional argument
+    * The first parameter is required: the value of the node to be inserted
+    * The second parameter is an optional callback that is called on all recursive functions and loops for the purposes of estimating the performance of the class (allows incrementing a counter)
+* If the method is called with no arguments, `undefined` is returned
+* If the method is called with additional arguments they will be ignored
 * Acceptable input includes:
     * Strings that can be converted to numbers
     * Negative numbers
@@ -158,7 +168,9 @@ let result = myTree.contains(2); // true
     * Any combination of the above
 * Returns `true` if the value exists in the tree, and `false` if it does not
 
-#### `AVLTree.prototype.findMax()`
+---
+
+#### `AVLTree.prototype.findMax([<callback>])`
 
 ```JavaScript
 const myTree = new AVLTree();
@@ -176,10 +188,13 @@ let result = myTree.findMax(); // 10
 
 ```
 * Returns the maximum value contained in the tree
-* Accepts no arguments
-* If the method is called with arguments, they are ignored
+* Accepts 1 optional argument
+    * An optional callback that is called on all recursive functions and loops for the purposes of estimating the performance of the class (allows incrementing a counter)
+* If the method is called with additional arguments they will be ignored
 
-#### `AVLTree.prototype.findMin()`
+---
+
+#### `AVLTree.prototype.findMin([<callback>])`
 
 ```JavaScript
 const myTree = new AVLTree();
@@ -197,10 +212,11 @@ let result = myTree.findMin(); // 2
 
 ```
 * Returns the minimum value contained in the tree
-* Accepts no arguments
-* If the method is called with arguments, they are ignored
+* Accepts 1 optional argument
+    * An optional callback that is called on all recursive functions and loops for the purposes of estimating the performance of the class (allows incrementing a counter)
+* If the method is called with additional arguments they will be ignored
 
-
+---
 
 #### `AVLTree.prototype.printPreOrder()`
 
@@ -223,6 +239,8 @@ let result = myTree.printPreOrder(); // [5, 2, 3, 10, 8]
 * Accepts no arguments
 * If the method is called with arguments, they are ignored
 
+---
+
 #### `AVLTree.prototype.printInOrder()`
 
 ```JavaScript
@@ -243,6 +261,8 @@ let result = myTree.printInOrder(); // [2, 3, 5, 8, 10]
 * Returns an array representing the in-order traversal of the tree
 * Accepts no arguments
 * If the method is called with arguments, they are ignored
+
+---
 
 #### `AVLTree.prototype.printPostOrder()`
 
