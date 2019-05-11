@@ -10,7 +10,6 @@
 * [repo](https://github.com/asdFletcher/data-structures-and-algorithms/tree/master/src/data-structures/splay-tree)
 * [travis](https://www.travis-ci.com/asdFletcher/data-structures-and-algorithms)
 
-
 ---
 ### Files
 #### `splay-tree.js`
@@ -27,12 +26,11 @@ A `Splay Tree` is a special type of binary search tree that changes the structur
 
 The specialty of the splay tree means that recently accessed items are brough to the root making subsequent accesses to the same elements much faster. Items are brought to the root of the tree though a series of `zig-zig` and `zig-zag` rotations, the `zig-zag` rotation is identical to the `AVL Tree` double rotation, and the `zig-zig` is similar to two `AVL Tree` single rotations, but not quite the same. Because every insert/access/remove to the tree changes its structure, it is difficult to know the state of the tree at any given time! This makes testing and writing examples.
 
-Read more about the Splay tree on [Wikipedia](https://en.wikipedia.org/wiki/Splay_tree).
-
 This particular implementation requires that all values stored in the nodes are numbers. Although presumably one could create a Splay Tree to store any data, as long as there was a consistent way of comparing any 2 node "values". Strings based on alphabetic order, for example. 
 
 Some trees are implemented where multiple nodes with the same value are allowed, and some have a node class that stores a counter. This particular implementation does not allow for duplicate values, nor does it keep track of a count for each value.
 
+Read more about the Splay tree on [Wikipedia](https://en.wikipedia.org/wiki/Splay_tree).
 
 * `SplayTree` class
     * Methods:
@@ -95,8 +93,8 @@ myTree.insert(7);
 * Accepts 1 required argument, and 1 optional argument
     * The first parameter is required: the value of the node to be inserted
     * The second parameter is an optional callback that is called on all recursive functions and loops for the purposes of estimating the performance of the class (allows incrementing a counter)
-* If the method is called with no argument, the node will not be inserted
-* If the method is called with more than 2 arguments, the 3rd+ will be ignored
+* If the method is called with no arguments, the node will not be inserted
+* If the method is called with additional arguments they will be ignored
 * Acceptable input includes:
     * Strings that can be converted to numbers
     * Negative numbers
