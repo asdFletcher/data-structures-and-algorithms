@@ -4,7 +4,7 @@ const fs = require('fs');
 const util = require('util');
 
 class Runner {
-  constructor(){
+  constructor(options){
     this.AVLTree = require('../../data-structures/avl-tree/avl-tree.js');
     this.BST = require('../../data-structures/binary-search-tree/binary-search-tree.js');
     this.SplayTree = require('../../data-structures/splay-tree/splay-tree.js');
@@ -19,6 +19,12 @@ class Runner {
     this.singleRunRemove = require('./singleRunRemove.js');
     this.getLogNData = require('./getLogNData.js');
     this.getExpData = require('./getExpData.js');
+
+    for (let key in options) { 
+      this[key] = options[key];
+    }
+
+    this.n = Math.abs(this.end - this.start);
   }
 
   runTheTest_Dependent_Tree_Size(numberOfRuns, sampleRate) {
@@ -190,13 +196,14 @@ class Runner {
     xValues.forEach((val, key) => {
       newDataSet.push({ x: key, y: val.yTotal / val.count });
     });
+    let { r, g, b, a } = this.avgColor;
   
     const formattedData = {
       label: 'Average',
-      pointBorderColor: 'rgba(255, 0, 0, 1)',
-      pointBackgroundColor: `rgba(255, 0, 0, ${100 / 100})`,
+      pointBorderColor: `rgba(${r}, ${g}, ${b}, ${a})`,
+      pointBackgroundColor: `rgba(${r}, ${g}, ${b}, ${a})`,
       pointRadius: '2',
-      borderColor: 'rgba(255, 0, 0, 1)',
+      borderColor: `rgba(${r}, ${g}, ${b}, ${a})`,
       showLine: true,
       fill: false,
       labels: {
@@ -229,35 +236,92 @@ class Runner {
     const averageData = this.calculateAverageFromSingleDataSet(output);
     return averageData;
   }
-
+  
   //
   // main runner
   // 
   createData() {
-    this.treeType = 'SplayTree'; // BST , AVLTree , SplayTree
-    this.method = 'remove'; // insert , remove
-    this.start = 100;
-    this.end = 0;
-    this.n = Math.abs(this.end - this.start);
-    this.fileName = 'data1.json';
-    // raw data params
-    this.rawRuns = 100;
-    this.rawSampleRate = 1;
-    // avg data params (use more runs to get smoother avg plot)
-    this.avgRuns = 1000;
-    this.avgSampleRate = 1;
+    // this.treeType = 'SplayTree'; // BST , AVLTree , SplayTree
+    // this.method = 'remove'; // insert , remove
+    // this.start = 100;
+    // this.end = 0;
+    // this.n = Math.abs(this.end - this.start);
+    // this.fileName = 'data1.json';
+    // // raw data params
+    // this.rawRuns = 100;
+    // this.rawSampleRate = 1;
+    // // avg data params (use more runs to get smoother avg plot)
+    // this.avgRuns = 1000;
+    // this.avgSampleRate = 1;
 
-    let datasets = [
+    const datasets = [
       ...this.createDataRaw(this.rawRuns, this.rawSampleRate),
       ...this.createDataAverage(this.avgRuns, this.avgSampleRate),
-      this.getLogNData(this.start, this.end, {r: 25, g:150, b:0, a:1}),
-      this.getExpData(this.start, this.end, {r: 150, g:25, b:0, a:1}, 0.5),
+      // this.getLogNData(this.start, this.end, {r: 25, g:150, b:0, a:1}),
+      // this.getExpData(this.start, this.end, {r: 150, g:25, b:0, a:1}, 0.5),
     ];
-  
-    this.writeResultsToFile(datasets, this.fileName);
+    return datasets;
+    // this.writeResultsToFile(datasets, this.fileName);
   }
 }
 
-let myRunner = new Runner();
-myRunner.createData();
+// BST , AVLTree , SplayTree
+// insert , remove
+let options1 = {
+  treeType: 'SplayTree', 
+  method: 'insert', 
+  start: 100,
+  end: 0,
+  rawRuns: 100,
+  rawSampleRate: 1,
+  avgRuns: 1000,
+  avgSampleRate: 1,
+  avgColor: {r:255, g:0, b:0, a:1},
+  ptColor: {r:255, g:0, b:0, a:0.05},
+};
 
+let myRunner1 = new Runner(options1);
+let datasets1 = myRunner1.createData();
+
+// ~~~~ 
+
+let options2 = {
+  treeType: 'BST', 
+  method: 'insert', 
+  start: 100,
+  end: 0,
+  rawRuns: 100,
+  rawSampleRate: 1,
+  avgRuns: 1000,
+  avgSampleRate: 1,
+  avgColor: {r:0, g:255, b:0, a:1},
+  ptColor: {r:0, g:255, b:0, a:0.05},
+};
+
+let myRunner2 = new Runner(options2);
+let datasets2 = myRunner2.createData();
+ 
+// ~~~~ 
+
+let options3 = {
+  treeType: 'AVLTree', 
+  method: 'insert', 
+  start: 100,
+  end: 0,
+  rawRuns: 100,
+  rawSampleRate: 1,
+  avgRuns: 1000,
+  avgSampleRate: 1,
+  avgColor: {r:0, g:0, b:255, a:1},
+  ptColor: {r:0, g:0, b:255, a:0.05},
+};
+
+let myRunner3 = new Runner(options3);
+let datasets3 = myRunner3.createData();
+
+// ~~~~ 
+let a = myRunner1.getLogNData(0, 100, {r: 25, g:150, b:0, a:1});
+let b = myRunner1.getExpData(0, 100, {r: 150, g:25, b:0, a:1}, 0.5);
+
+let allData = [...datasets1, ...datasets2, ...datasets3, a, b]
+myRunner1.writeResultsToFile(allData, `data1.json`);
