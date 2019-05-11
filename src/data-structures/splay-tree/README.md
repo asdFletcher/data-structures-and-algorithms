@@ -50,7 +50,7 @@ Note: parameters in square brackets i.e.:`[<parameter>]` are optional.
 
 ---
 
-##### Using the `BinarySearchTree` class methods:
+##### Using the `SplayTree` class methods:
 
 #### `SplayTree` `constructor()`
 ```JavaScript
