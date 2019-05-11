@@ -4,7 +4,6 @@ Implementation of data structures and various associated code challenges.
 Created by: Fletcher LaRue
 
 [LinkedIn](https://www.linkedin.com/in/fletcher-larue/)
-[![NPM version][npm-version-image]][npm-url] [![NPM downloads][npm-downloads-image]][downloads-url] [![MIT License][license-image]][license-url] [![Build Status][travis-image]][travis-url]
 
 ### Binary Trees:
 
