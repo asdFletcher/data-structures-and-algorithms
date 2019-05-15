@@ -51,6 +51,15 @@ describe('redblack tree', () => {
       expect(myTree.root).toBeNull();
       expect(result).toBeUndefined();
     });
+    it('returns undefined on duplicate value', () => {
+      const myTree = new RedBlackTree();
+      myTree.insert('string');
+      const a = myTree.insert(2);
+      const b = myTree.insert(3);
+      const c = myTree.insert(3);
+
+      expect(c).toBeUndefined();
+    });
   });
 
   describe('insert', () => {
@@ -384,7 +393,7 @@ describe('redblack tree', () => {
       expect(myTree.allParentPointersAreValid()).toBe(true);
     });
 
-    it('recolor causes single left rotation at root ', () => {
+    it('recolor causes single left rotation at root', () => {
       const myTree = new RedBlackTree();
       //          7b                                 14b
       //     4b        14r                        7r       16r
@@ -412,44 +421,92 @@ describe('redblack tree', () => {
       expect(myTree.allPathsAreValid()).toBe(true);
       expect(myTree.allParentPointersAreValid()).toBe(true);
     });
-    xit('recolor causes single left rotation at root ', () => {
+    it('recolor causes single right rotation at root', () => {
       const myTree = new RedBlackTree();
-      //          7b                                 14b
-      //     4b        14r                        7r       16r
-      //  3r   5r    12b   16b         =>      4b       15b   18b
-      //                  15r   18r          3r   5r           17r
-      //                       17r
-
-      let insertOrder = [4, 7, 12, 15, 3, 5, 14, 18, 16, 17];
+      //               20b                            15b                           
+      //        15r          25b                10r           20b                     
+      //     10b   17b    23r   27r    =>     8b   12b     17b    25b                
+      //   8r   12r                            9r              23r  27r                                
+      //     9r
+      let insertOrder = [20, 15, 25, 10, 17, 23, 27, 8, 12];
       for (let i = 0; i < insertOrder.length; i += 1) {
         myTree.insert(insertOrder[i]);
       }
+      myTree.insert(9);
 
-      expect(myTree.root.value).toEqual(14);
+      expect(myTree.root.value).toEqual(15);
       expect(myTree.root.color).toEqual('black');
-      expect(myTree.root.left.value).toEqual(7);
+      expect(myTree.root.left.value).toEqual(10);
       expect(myTree.root.left.color).toEqual('red');
-      expect(myTree.root.right.value).toEqual(16);
+      expect(myTree.root.right.value).toEqual(20);
       expect(myTree.root.right.color).toEqual('red');
 
-      expect(myTree.root.left.left.value).toEqual(4);
+      expect(myTree.root.left.left.value).toEqual(8);
       expect(myTree.root.left.left.color).toEqual('black');
-      expect(myTree.root.left.right).toBeNull();
-      expect(myTree.root.right.left.value).toEqual(15);
+      expect(myTree.root.left.right.value).toEqual(12);
+      expect(myTree.root.left.right.color).toEqual('black');
+      expect(myTree.root.right.left.value).toEqual(17);
       expect(myTree.root.right.left.color).toEqual('black');
-      expect(myTree.root.right.right.value).toEqual(18);
+      expect(myTree.root.right.right.value).toEqual(25);
       expect(myTree.root.right.right.color).toEqual('black');
-
-      expect(myTree.root.left.left.left.value).toEqual(3);
-      expect(myTree.root.left.left.left.color).toEqual('red');
-      expect(myTree.root.left.left.right.value).toEqual(5);
+      
+      expect(myTree.root.left.left.right.value).toEqual(9);
       expect(myTree.root.left.left.right.color).toEqual('red');
-      expect(myTree.root.right.right.right.value).toEqual(17);
+      expect(myTree.root.right.right.left.value).toEqual(23);
+      expect(myTree.root.right.right.left.color).toEqual('red');
+      expect(myTree.root.right.right.right.value).toEqual(27);
       expect(myTree.root.right.right.right.color).toEqual('red');
 
       expect(myTree.allPathsAreValid()).toBe(true);
       expect(myTree.allParentPointersAreValid()).toBe(true);
+    });
 
+    it('recolor causes single left rotation, non root', () => {
+      const myTree = new RedBlackTree();
+
+      let insertOrder = [50, 40, 60, 30, 45, 55, 70, 20, 35, 42, 48, 80, 46, 49];
+      for (let i = 0; i < insertOrder.length; i += 1) {
+        myTree.insert(insertOrder[i]);
+      }
+      myTree.insert(47);
+
+      expect(myTree.allPathsAreValid()).toBe(true);
+      expect(myTree.allParentPointersAreValid()).toBe(true);
+
+      expect(myTree.root.value).toEqual(50);
+      expect(myTree.root.color).toEqual('black');
+
+      expect(myTree.root.left.value).toEqual(45);
+      expect(myTree.root.left.color).toEqual('black');
+      expect(myTree.root.right.value).toEqual(60);
+      expect(myTree.root.right.color).toEqual('black');
+
+      expect(myTree.root.left.left.value).toEqual(40);
+      expect(myTree.root.left.left.color).toEqual('red');
+      expect(myTree.root.left.right.value).toEqual(48);
+      expect(myTree.root.left.right.color).toEqual('red');
+      expect(myTree.root.right.left.value).toEqual(55);
+      expect(myTree.root.right.left.color).toEqual('black');
+      expect(myTree.root.right.right.value).toEqual(70);
+      expect(myTree.root.right.right.color).toEqual('black');
+
+      expect(myTree.root.left.left.left.value).toEqual(30);
+      expect(myTree.root.left.left.left.color).toEqual('black');
+      expect(myTree.root.left.left.right.value).toEqual(42);
+      expect(myTree.root.left.left.right.color).toEqual('black');
+      expect(myTree.root.left.right.left.value).toEqual(46);
+      expect(myTree.root.left.right.left.color).toEqual('black');
+      expect(myTree.root.left.right.right.value).toEqual(49);
+      expect(myTree.root.left.right.right.color).toEqual('black');
+      expect(myTree.root.right.right.right.value).toEqual(80);
+      expect(myTree.root.right.right.right.color).toEqual('red');
+
+      expect(myTree.root.left.left.left.left.value).toEqual(20);
+      expect(myTree.root.left.left.left.left.color).toEqual('red');
+      expect(myTree.root.left.left.left.right.value).toEqual(35);
+      expect(myTree.root.left.left.left.right.color).toEqual('red');
+      expect(myTree.root.left.right.left.right.value).toEqual(47);
+      expect(myTree.root.left.right.left.right.color).toEqual('red');
     });
   });
 
@@ -633,6 +690,55 @@ describe('redblack tree', () => {
       const expected = false;
       expect(myTree.allPathsAreValid()).toBe(expected);
     });
+    it('correctly returns false on invalid tree, root is red', () => {
+      let myTree = new RedBlackTree();
+      //          7aR     
+      //        4bR   8cR  
+      //      1dB
+      let a = new Node(7);
+      let b = new Node(4);
+      let c = new Node(8);
+      let d = new Node(1);
+
+      a.color = 'red';
+      b.color = 'red';
+      c.color = 'red';
+      d.color = 'black';
+
+      myTree.root = a;
+      a.left = b;
+      a.right = c;
+      b.left = d;
+
+      const expected = false;
+      expect(myTree.allPathsAreValid()).toBe(expected);
+    });
+    it('correctly returns false on invalid tree, red left children must be black', () => {
+      let myTree = new RedBlackTree();
+      //          7aR     
+      //        4bR   8cR  
+      //      1dB  5eR
+      let a = new Node(7);
+      let b = new Node(4);
+      let c = new Node(8);
+      let d = new Node(1);
+      let e = new Node(5);
+
+      a.color = 'black';
+      b.color = 'red';
+      c.color = 'red';
+      d.color = 'red';
+      e.color = 'red';
+
+      myTree.root = a;
+      a.left = b;
+      a.right = c;
+      b.left = d;
+      b.right = e;
+
+      const expected = false;
+      expect(myTree.allPathsAreValid()).toBe(expected);
+    });
     it('returns true on valid tree', () => {
       let myTree = new RedBlackTree();
       //          7aB     
@@ -715,6 +821,33 @@ describe('redblack tree', () => {
 
       b.parent = d;
       c.parent = a;
+      d.parent = b;
+
+      const expected = false;
+      expect(myTree.allParentPointersAreValid()).toBe(expected);
+    });
+    it('returns false on invalid tree', () => {
+      let myTree = new RedBlackTree();
+      //          7aB     
+      //        4bR   8cR  
+      //      1dB
+      let a = new Node(7);
+      let b = new Node(4);
+      let c = new Node(8);
+      let d = new Node(1);
+
+      a.color = 'black';
+      b.color = 'black';
+      c.color = 'black';
+      d.color = 'red';
+
+      myTree.root = a;
+      a.left = b;
+      a.right = c;
+      b.left = d;
+
+      b.parent = d;
+      c.parent = b;
       d.parent = b;
 
       const expected = false;
