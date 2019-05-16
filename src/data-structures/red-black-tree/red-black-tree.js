@@ -217,42 +217,6 @@ class RedBlackTree {
     return outgoingNode;
   }
 
-  handleCase_2(n) {
-    // single rotation toward node at P, make P red, make S black
-    let {p, s, sl, sr} = this.getAncestors_Remove(n);
-    let nodeDir = this.getNodeDirection(n);
-    this.singleRotation(p, nodeDir);
-    p.color = 'red';
-    s.color = 'black';
-  }
-  handleCase_3(n) {
-    // make S red, new problem node is P
-    let {p, s, sl, sr} = this.getAncestors_Remove(n);
-    s.color = 'red';
-    this.handle_Six_Cases(p);
-  }
-  handleCase_4(n) {
-    // make P black, make S red
-    let {p, s, sl, sr} = this.getAncestors_Remove(n);
-    p.color = 'black';
-    s.color = 'red';
-  }
-  handleCase_5(n) {
-    // rotation at S away from N, make S red and sl black
-    let {p, s, sl, sr} = this.getAncestors_Remove(n);
-    let sibDir = this.getSiblingDirection(n);
-    this.singleRotation(s, sibDir);
-    sl.color = 'black';
-  }
-  handleCase_6(n) {
-    // rotation at P toward N, make S color of P, sr black
-    let {p, s, sl, sr} = this.getAncestors_Remove(n);
-    let nodeDir = this.getNodeDirection(n);
-    this.singleRotation(p, nodeDir);
-    s.color = p.color;
-    sr.color = 'black';
-  }
-
   handle_Six_Cases(target) {
     if (this.case1(target)) { // terminal
       // do nothing
@@ -268,6 +232,98 @@ class RedBlackTree {
       this.handleCase_6(target);
     }
   }
+
+  case1(n) {
+    // node is root, and root is black
+    return (n === this.root && this.root.color === 'black');
+  }
+  case2(n) {
+    // P is black, S is red w/ 2 black children
+    let {p, s, sl, sr} = this.getAncestors_Remove(n);
+    return (
+      this.getColor(p) === 'black' &&
+      this.getColor(s) === 'red' &&
+      this.getColor(sl) === 'black' &&
+      this.getColor(sr) === 'black');
+  }
+  case3(n) {
+    // P is black, S is black w/ 2 black children
+    let {p, s, sl, sr} = this.getAncestors_Remove(n);
+    return (
+      this.getColor(p) === 'black' &&
+      this.getColor(s) === 'black' &&
+      this.getColor(sl) === 'black' &&
+      this.getColor(sr) === 'black');
+  }
+  case4(n) {
+    // P is red, S is black w/ 2 black children
+    let {p, s, sl, sr} = this.getAncestors_Remove(n);
+    return (
+      this.getColor(p) === 'red' &&
+      this.getColor(s) === 'black' &&
+      this.getColor(sl) === 'black' &&
+      this.getColor(sr) === 'black');
+  }
+  case5(n) {
+    // P is black, S is black, S has red left child, black right child
+    let {p, s, sl, sr} = this.getAncestors_Remove(n);
+    return (
+      this.getColor(p) === 'black' &&
+      this.getColor(s) === 'black' &&
+      this.getColor(sl) === 'red' &&
+      this.getColor(sr) === 'black');
+  }
+  case6(n) {
+    // S is black, S has red right child
+    let {p, s, sl, sr} = this.getAncestors_Remove(n);
+    return (
+      this.getColor(s) === 'black' &&
+      this.getColor(sr) === 'red');
+  }
+
+  handleCase_2(n) {
+    // single rotation toward node at P, make P red, make S black
+    // rotate child: S
+    let {p, s, sl, sr} = this.getAncestors_Remove(n);
+    let nodeDir = this.getNodeDirection(n);
+    this.singleRotation(s, nodeDir);
+    p.color = 'red';
+    s.color = 'black';
+    this.handle_Six_Cases(n);
+  }
+  handleCase_3(n) {
+    // make S red, new problem node is P
+    let {p, s, sl, sr} = this.getAncestors_Remove(n);
+    s.color = 'red';
+    this.handle_Six_Cases(p);
+  }
+  handleCase_4(n) {
+    // make P black, make S red
+    let {p, s, sl, sr} = this.getAncestors_Remove(n);
+    p.color = 'black';
+    s.color = 'red';
+  }
+  handleCase_5(n) {
+    // rotation at S away from N, make S red and sl black
+    // rotate child: sl
+    let {p, s, sl, sr} = this.getAncestors_Remove(n);
+    let sibDir = this.getSiblingDirection(n);
+    this.singleRotation(sl, sibDir);
+    s.color = 'red';
+    sl.color = 'black';
+    this.handle_Six_Cases(n);
+  }
+  handleCase_6(n) {
+    // rotation at P toward N, make S color of P, sr black
+    // rotate child: s
+    let {p, s, sl, sr} = this.getAncestors_Remove(n);
+    let nodeDir = this.getNodeDirection(n);
+    this.singleRotation(s, nodeDir);
+    s.color = p.color;
+    sr.color = 'black';
+  }
+
+
 
   handleRemove(target) {
     // red w 0 child          <-- impossible
@@ -312,7 +368,6 @@ class RedBlackTree {
     }
   }
 
-
   remove(rawValue) {
     if (!this.isNumericInput(rawValue)) { return undefined; }
 
@@ -338,54 +393,6 @@ class RedBlackTree {
   }
   hasTwoChildren(node) {
     return (node.left && node.right);
-  }
-
-  case1(n) {
-    // node is root, and root is black
-    return (n === this.root && this.root.color === 'black');
-  }
-  case2(n) {
-    // P is black, S is red w/ 2 black children
-    let {p, s, sl, sr} = this.getAncestors_Remove(n);
-    return (
-      (p && p.color === 'black') &&
-      (s && s.color === 'red') &&
-      (sl && sl.color === 'black') &&
-      (sr && sr.color === 'black'));
-  }
-  case3(n) {
-    // P is black, S is black w/ 2 black children
-    let {p, s, sl, sr} = this.getAncestors_Remove(n);
-    return (
-      (p && p.color === 'black') &&
-      (s && s.color === 'black') &&
-      (sl && sl.color === 'black') &&
-      (sr && sr.color === 'black'));
-  }
-  case4(n) {
-    // P is red, S is black w/ 2 black children
-    let {p, s, sl, sr} = this.getAncestors_Remove(n);
-    return (
-      (p && p.color === 'red') &&
-      (s && s.color === 'black') &&
-      (sl && sl.color === 'black') &&
-      (sr && sr.color === 'black'));
-  }
-  case5(n) {
-    // P is black, S is black, S has red left child, black right child
-    let {p, s, sl, sr} = this.getAncestors_Remove(n);
-    return (
-      (p && p.color === 'black') &&
-      (s && s.color === 'black') &&
-      (sl && sl.color === 'red') &&
-      (sr && sr.color === 'black'));
-  }
-  case6(n) {
-    // S is black, S has black right child
-    let {p, s, sl, sr} = this.getAncestors_Remove(n);
-    return (
-      (s && s.color === 'black') &&
-      (sr && sr.color === 'black'));
   }
 
   pickASide() {
@@ -417,20 +424,20 @@ class RedBlackTree {
       //    P   U     |    U   P        
       //  N           |          N        
       if (g.right === p && g.left === u && p.right === n) {
-        this.singleLeft(n);
+        this.singleLeft_Insert(n);
       }
       if (g.left === p && g.right === u && p.left === n) {
-        this.singleRight(n);
+        this.singleRight_Insert(n);
       }
       // cases:
       //      G            |         G
       //    P   U          |      U    P
       //     N             |          N
       if (g.left === p && g.right === u && p.right === n) {
-        this.doubleLeft(n);
+        this.doubleLeft_Insert(n);
       }
       if (g.right === p && g.left === u && p.left === n) {
-        this.doubleRight(n);
+        this.doubleRight_Insert(n);
       }
     }
   }
@@ -445,23 +452,50 @@ class RedBlackTree {
 
   getAncestors_Remove(n) {
     let p = this.getParent(n);
-    // let u = this.getUncle(n);
-    // let g = this.getGrandParent(n);
-    // let ggp = this.getGreatGrandParent(n);
     let s = this.getSibling(n);
     let sl = this.getSiblingLeftChild(n);
     let sr = this.getSiblingRightChild(n);
     return {p, s, sl, sr};
   }
 
-  singleRotation(node,dir){
+  singleRotation(node, dir){
     if (dir === 'left') {
-      this.singleLeft(node);
+      return this.singleLeft_Remove(node);
     } else {
-      this.singleRight(node);
+      return this.singleRight_Remove(node);
     }
   }
-  singleLeft(n) {
+
+  singleLeft_Remove(n) {
+    let  {p, g, s} = this.getAncestors_Insert(n);
+    if ( p === this.root) {
+      this.root = this.left_rotation(n, p);
+      n.parent = null;
+    } else {
+      if (g.right === p) {
+        g.right = this.left_rotation(n, p);
+      } else {
+        g.left = this.left_rotation(n, p);
+      }
+      n.parent = g;
+    }
+  }
+  singleRight_Remove(n) {
+    let  {p, g, s} = this.getAncestors_Insert(n);
+    if ( p === this.root) {
+      this.root = this.right_rotation(n, p);
+      n.parent = null;
+    } else {
+      if (g.right === p) {
+        g.right = this.right_rotation(n, p);
+      } else {
+        g.left = this.right_rotation(n, p);
+      }
+      n.parent = g;
+    }
+  }
+
+  singleLeft_Insert(n) {
     let {p, u, g, ggp} = this.getAncestors_Insert(n);
     if (g === this.root) {
       this.root = this.left_rotation(p, g);
@@ -478,7 +512,7 @@ class RedBlackTree {
     p.color = 'black';
     g.color = 'red';
   }
-  singleRight(n) {
+  singleRight_Insert(n) {
     let {p, u, g, ggp} = this.getAncestors_Insert(n);
     if (g === this.root) {
       this.root = this.right_rotation(p,g);
@@ -495,7 +529,7 @@ class RedBlackTree {
     p.color = 'black';
     g.color = 'red';
   }
-  doubleLeft(n) {
+  doubleLeft_Insert(n) {
     let {p, u, g, ggp} = this.getAncestors_Insert(n);
     g.left = this.left_rotation(n, p);
     if (g === this.root) {
@@ -514,7 +548,7 @@ class RedBlackTree {
     n.color = 'black';
     g.color = 'red';
   }
-  doubleRight(n) {
+  doubleRight_Insert(n) {
     let {p, u, g, ggp} = this.getAncestors_Insert(n);
     g.right = this.right_rotation(n, p);
     if (g === this.root) {
@@ -538,6 +572,7 @@ class RedBlackTree {
     parent.left = node.right;
     if (node.right) { node.right.parent = parent; }
     node.right = parent;
+    parent.parent = node;
     return node;
   }
   
@@ -545,6 +580,7 @@ class RedBlackTree {
     parent.right = node.left;
     if (node.left) { node.left.parent = parent; }
     node.left = parent;
+    parent.parent = node;
     return node;
   }
 
@@ -609,8 +645,8 @@ class RedBlackTree {
     return node.parent[sibDir]; // could return null
   }
 
-  getSiblingLeftChild(node) { this.getSibling(node, 'left'); }
-  getSiblingRightChild(node) { this.getSibling(node, 'right'); }
+  getSiblingLeftChild(node) { return this.getSiblingChild(node, 'left'); }
+  getSiblingRightChild(node) { return this.getSiblingChild(node, 'right'); }
 
   getSiblingChild(node, childDir) {
     if (node === undefined || !node.parent) {
@@ -749,7 +785,7 @@ class RedBlackTree {
   constructTestTree(arr) {
     let nodes = [];
     for (let i = 0; i < arr.length; i++) {
-      let nodeVal = Number(arr[i].match(/\d+/)[0]);
+      let nodeVal = Number(arr[i].match(/-?\d+/)[0]);
       let nodeColor = this.getNodeColor(arr[i].slice(-1));
       let newNode = new Node(nodeVal);
       newNode.color = nodeColor;

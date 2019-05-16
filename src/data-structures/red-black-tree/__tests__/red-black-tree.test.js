@@ -550,6 +550,18 @@ describe('redblack tree', () => {
       const result = myTree.remove(3);
       expect(result).toBeUndefined();
     });
+    it('returns undefined if value is not in the tree', () => {
+      const myTree = new RedBlackTree();
+
+      myTree.insert(5);
+      myTree.insert(10);
+      myTree.insert(2);
+      myTree.insert(4);
+      myTree.insert(12);
+
+      const result = myTree.remove(20);
+      expect(result).toBeUndefined();
+    });
     xit('returns undefined when value is not in the tree', () => {
       const myTree = new RedBlackTree();
 
@@ -722,6 +734,142 @@ describe('redblack tree', () => {
       expect(myTree.allParentPointersAreValid()).toBe(true);
     });
 
+    it('removes black non-root node with 1 red child', () => {
+      global.Math.random = () => 0.75;
+
+      const myTree = new RedBlackTree();
+      //          10b                        10b                     
+      //      5r       15b      ->      5r        15b                 
+      //   2b   7b  12r   20r        2b   6b   12r   20r              
+      //      6r                                
+      let insertOrder = [10, 5, 15, 2, 7, 12, 20, 6];
+      for (let i = 0; i < insertOrder.length; i += 1) {
+        myTree.insert(insertOrder[i]);
+      }
+      const result = myTree.remove(7);
+
+      let expectedTree = new RedBlackTree();
+      let expectedTreeValues = ['10b', '5r', '15b', '2b', '6b', '12r', '20r'];
+      expectedTree.constructTestTree(expectedTreeValues);
+
+      expect(result).toEqual(7);
+      expect(myTree).toEqual(expectedTree);
+      expect(myTree.allPathsAreValid()).toBe(true);
+      expect(myTree.allParentPointersAreValid()).toBe(true);
+    });
+
+    
+    // case3: P is black, S is black w/ 2 black children
+    it('case 4', () => {
+      // P is red, S is black w/ 2 black children
+
+      //           10b                      10b                      
+      //        0b       30r      ->     0b       30b                  
+      //              20b   38b                      38r               
+      //
+      const myTree = new RedBlackTree();
+      let myTreeValues = ['10b', '0b', '30r', '20b', '38b'];
+      myTree.constructTestTree(myTreeValues);
+
+      const result = myTree.remove(20);
+
+      let expectedTree = new RedBlackTree();
+      let expectedTreeValues = ['10b', '0b', '30b', '38r'];
+      expectedTree.constructTestTree(expectedTreeValues);
+
+      expect(result).toEqual(20);
+      expect(myTree).toEqual(expectedTree);
+      expect(myTree.allPathsAreValid()).toBe(true);
+      expect(myTree.allParentPointersAreValid()).toBe(true);
+    });
+    it('case 6', () => {
+      //case 6: S is black, S has red right child
+      //           10b                      30b                      
+      //        0b       30b      ->     10b     40b                  
+      //              25r   40r             25r
+      const myTree = new RedBlackTree();
+      let myTreeValues = ['10b', '0b', '30b', '25r', '40r'];
+      myTree.constructTestTree(myTreeValues);
+
+      const result = myTree.remove(0);
+
+      let expectedTree = new RedBlackTree();
+      let expectedTreeValues = ['30b', '10b', '40b', '25r'];
+      expectedTree.constructTestTree(expectedTreeValues);
+
+      expect(result).toEqual(0);
+      expect(myTree).toEqual(expectedTree);
+      expect(myTree.allPathsAreValid()).toBe(true);
+      expect(myTree.allParentPointersAreValid()).toBe(true);
+    });
+    it('case 2 --> case 4, random right', () => {
+      // case2: P is black, S is red w/ 2 black children
+      global.Math.random = () => 0.25;
+
+      //         10b                             20b
+      //    -10b      40b          -->     -10b       60b
+      //  -20b -5b  20b    60r           -20b -5b  40b    80b
+      //                 50b    80b                  50r
+      const myTree = new RedBlackTree();
+      let myTreeValues = ['10b', '-10b', '40b', '-20b', '-5b', '20b', '60r', '50b', '80b'];
+      myTree.constructTestTree(myTreeValues);
+
+      const result = myTree.remove(10);
+
+      let expectedTree = new RedBlackTree();
+      let expectedTreeValues = ['20b', '-10b', '60b', '-20b', '-5b', '40b', '80b', '50r'];
+      expectedTree.constructTestTree(expectedTreeValues);
+
+      expect(result).toEqual(10);
+      expect(myTree).toEqual(expectedTree);
+      expect(myTree.allPathsAreValid()).toBe(true);
+      expect(myTree.allParentPointersAreValid()).toBe(true);
+    });
+    it('case 3 --> case 1, random right', () => {
+      // case 3: P is black, S is black w/ 2 black children
+      global.Math.random = () => 0.25;
+
+      //         10b                       10b
+      //    -10b      30b          -->          30b
+      const myTree = new RedBlackTree();
+      let myTreeValues = ['10b', '-10b', '30b'];
+      myTree.constructTestTree(myTreeValues);
+
+      const result = myTree.remove(-10);
+
+      let expectedTree = new RedBlackTree();
+      let expectedTreeValues = ['10b', '30r'];
+      expectedTree.constructTestTree(expectedTreeValues);
+
+      expect(result).toEqual(-10);
+      expect(myTree).toEqual(expectedTree);
+      expect(myTree.allPathsAreValid()).toBe(true);
+      expect(myTree.allParentPointersAreValid()).toBe(true);
+    });
+    it('case 3 --> case 5 --> case 6, random right', () => {
+      // case 3: P is black, S is black w/ 2 black children
+      global.Math.random = () => 0.25;
+      //           10b                           30b
+      //    -30b        50b      -->       10b           50b
+      //  -40b -20b  30r    70b       -30b     15b    40b    70b
+      //            15b 40b              -20r
+      const myTree = new RedBlackTree();
+      let myTreeValues = ['10b', '-30b', '50b', '-40b', '-20b', '30r', '70b', '15b', '40b'];
+      myTree.constructTestTree(myTreeValues);
+
+      const result = myTree.remove(-40);
+
+      let expectedTree = new RedBlackTree();
+      let expectedTreeValues = ['30b', '10b', '50b', '-30b', '15b', '40b', '70b', '-20r'];
+      expectedTree.constructTestTree(expectedTreeValues);
+
+      console.log(`myTree: `, myTree.printPreOrder());
+      console.log(`expectedTree: `, expectedTree.printPreOrder());
+      expect(result).toEqual(-40);
+      expect(myTree).toEqual(expectedTree);
+      expect(myTree.allPathsAreValid()).toBe(true);
+      expect(myTree.allParentPointersAreValid()).toBe(true);
+    });
   });
 
 
