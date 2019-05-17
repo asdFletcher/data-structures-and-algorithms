@@ -58,7 +58,7 @@ const myTree = new BST();
 * Creates a new tree that is empty
 * Accepts no arguments
 * If arguments are passed in they will be ignored
-* The `root` attribute of a new tree is `undefined`
+* The `root` attribute of a new tree is `null`
 
 ---
 
