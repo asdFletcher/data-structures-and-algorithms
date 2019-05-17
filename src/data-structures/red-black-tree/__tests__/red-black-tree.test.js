@@ -5,6 +5,8 @@
 const RedBlackTree = require('../red-black-tree.js');
 const Node = require('../red-black-tree-node.js');
 
+const generateRandomNumber = () => Math.floor(Math.random()*100);
+
 describe('redblack tree', () => {
   describe('constructor', () => {
     it('creates empty tree without error', () => {
@@ -716,6 +718,47 @@ describe('redblack tree', () => {
       expectedTree.constructTestTree(expectedTreeValues);
 
       expect(result).toEqual(10);
+      expect(myTree).toEqual(expectedTree);
+      expect(myTree.allPathsAreValid()).toBe(true);
+      expect(myTree.allParentPointersAreValid()).toBe(true);
+    });
+
+    it('remove root, single red left leaf, random left', () => {
+      global.Math.random = () => 0.75;
+      //         8b             4b
+      //    4r        -->
+      const myTree = new RedBlackTree();
+      const myTreeValues = ['8b', '4r'];
+      myTree.constructTestTree(myTreeValues);
+
+      const removedValue = 8;
+      const result = myTree.remove(removedValue);
+
+      const expectedTree = new RedBlackTree();
+      const expectedTreeValues = ['4b'];
+      expectedTree.constructTestTree(expectedTreeValues);
+
+      expect(result).toEqual(removedValue);
+      expect(myTree).toEqual(expectedTree);
+      expect(myTree.allPathsAreValid()).toBe(true);
+      expect(myTree.allParentPointersAreValid()).toBe(true);
+    });
+    it('remove root, single red right leaf, random left', () => {
+      global.Math.random = () => 0.75;
+      //         8b             9b
+      //             9r  -->
+      const myTree = new RedBlackTree();
+      const myTreeValues = ['8b', '9r'];
+      myTree.constructTestTree(myTreeValues);
+
+      const removedValue = 8;
+      const result = myTree.remove(removedValue);
+
+      const expectedTree = new RedBlackTree();
+      const expectedTreeValues = ['9b'];
+      expectedTree.constructTestTree(expectedTreeValues);
+
+      expect(result).toEqual(removedValue);
       expect(myTree).toEqual(expectedTree);
       expect(myTree.allPathsAreValid()).toBe(true);
       expect(myTree.allParentPointersAreValid()).toBe(true);
@@ -1692,5 +1735,43 @@ describe('redblack tree', () => {
       const expected = false;
       expect(myTree.allParentPointersAreValid()).toBe(expected);
     });
+  });
+});
+
+xdescribe('stress test insert and remove', () => {
+  it('can probabilistic error detection', () => {
+    for(let j = 0; j < 100; j++) {
+      let n = 100;
+
+      // generate n numbers
+      let insertOrder = [];
+      while (insertOrder.length < n) {
+        let num = generateRandomNumber();
+        if (!insertOrder.includes(num)) {
+          insertOrder.push(num);
+        }
+      }
+
+      // insert them into the tree
+      let myTree = new RedBlackTree();
+      for (let i = 0; i < insertOrder.length; i += 1) {
+        myTree.insert(insertOrder[i]);
+        expect(myTree.allPathsAreValid()).toBe(true);
+        expect(myTree.allParentPointersAreValid()).toBe(true);
+      }
+      
+      // remove them at random
+      let removeOrder = [];
+      while (removeOrder.length > 0) {
+        let randomIndex = Math.floor(Math.random() * removeOrder.length); // generate random index
+        let num = insertOrder[randomIndex];
+        myTree.remove(num); // remove the number from the tree
+        insertOrder.splice(randomIndex); // remove the number from the bucket of numbers
+        removeOrder.push(num); // add the remove order
+
+        expect(myTree.allPathsAreValid()).toBe(true);
+        expect(myTree.allParentPointersAreValid()).toBe(true);
+      }
+    }
   });
 });

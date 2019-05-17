@@ -65,6 +65,17 @@ describe('splay tree delete stress test', () => {
   });
 });
 
+describe('stress test insert and remove', () => {
+  it('can withstand punishment', () => {
+    let count = 0;
+    let myTree = new RedBlackTree();
+    for (let i = 0; i  <100; i += 1) {
+
+    }
+      
+  });
+});
+
 describe('splay tree', () => {
   describe('constructor', () => {
     it('creates empty tree without error', () => {
