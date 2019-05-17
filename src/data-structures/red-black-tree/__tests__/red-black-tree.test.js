@@ -1025,6 +1025,199 @@ describe('redblack tree', () => {
     });
   });
 
+  describe('contains', () => {
+    it('returns false on empty tree', () => {
+      const myTree = new RedBlackTree();
+
+      const result = myTree.contains(7);
+
+      expect(result).toEqual(false);
+    });
+    it('returns false when value isnt present in single node tree', () => {
+      const myTree = new RedBlackTree();
+      myTree.insert(2);
+
+      const result = myTree.contains(3);
+
+      expect(result).toEqual(false);
+    });
+    it('returns false when value isnt present in 3 node tree', () => {
+      const myTree = new RedBlackTree();
+      myTree.insert(2);
+      myTree.insert(1);
+      myTree.insert(4);
+
+      const result = myTree.contains(3);
+
+      expect(result).toEqual(false);
+    });
+    it('returns undefined no parameters', () => {
+      const myTree = new RedBlackTree();
+      myTree.insert(2);
+      myTree.insert(1);
+      myTree.insert(4);
+
+      const result = myTree.contains();
+
+      expect(result).toBeUndefined();
+    });
+    it('returns false on empty tree with valid input', () => {
+      const myTree = new RedBlackTree();
+
+      const result = myTree.contains(2);
+
+      expect(result).toBe(false);
+    });
+    it('returns true on single node tree', () => {
+      const myTree = new RedBlackTree();
+      myTree.insert(2);
+
+      const result = myTree.contains(2);
+
+      expect(result).toBe(true);
+    });
+    it('returns true on left leaf 3 node tree', () => {
+      const myTree = new RedBlackTree();
+      myTree.insert(2);
+      myTree.insert(1);
+      myTree.insert(4);
+
+      const result = myTree.contains(1);
+
+      expect(result).toBe(true);
+    });
+    it('returns true on right leaf 3 node tree', () => {
+      const myTree = new RedBlackTree();
+      myTree.insert(2);
+      myTree.insert(1);
+      myTree.insert(4);
+
+      const result = myTree.contains(4);
+
+      expect(result).toBe(true);
+    });
+  });
+
+  describe('findMax', () => {
+    it('returns undefined given empty tree', () => {
+      const myTree = new RedBlackTree();
+
+      const result = myTree.findMax();
+
+      expect(result).toBeUndefined();
+      expect(myTree.root).toBe(null);
+    });
+    it('returns correctly single node tree', () => {
+      const myTree = new RedBlackTree();
+
+      myTree.insert(2);
+
+      const result = myTree.findMax();
+
+      expect(result).toEqual(2);
+      expect(myTree.root.value).toEqual(2);
+    });
+    it('returns correctly on 2 node tree, left leaf', () => {
+      //     2
+      //    1
+      const myTree = new RedBlackTree();
+
+      myTree.insert(2);
+      myTree.insert(1);
+
+      const result = myTree.findMax();
+
+      expect(result).toEqual(2);
+    });
+    it('returns correctly on 3 node tree, right leaf', () => {
+      //     2
+      //    1 3
+      const myTree = new RedBlackTree();
+
+      myTree.insert(2);
+      myTree.insert(1);
+      myTree.insert(3);
+
+      const result = myTree.findMax();
+
+      expect(result).toEqual(3);
+    });
+    it('returns correctly on 4 node tree, right w/ left child', () => {
+      const myTree = new RedBlackTree();
+      //       2
+      //    1     4
+      //         3
+      const values = [2, 1, 4, 3];
+      for (let i = 0; i < values.length; i += 1) {
+        myTree.insert(values[i]);
+      }
+
+      const result = myTree.findMax();
+
+      expect(result).toEqual(4);
+    });
+  });
+
+  describe('findMin', () => {
+    it('returns undefined given empty tree', () => {
+      const myTree = new RedBlackTree();
+
+      const result = myTree.findMin();
+
+      expect(result).toBeUndefined();
+      expect(myTree.root).toBe(null);
+    });
+    it('returns correctly single node tree', () => {
+      const myTree = new RedBlackTree();
+
+      myTree.insert(2);
+
+      const result = myTree.findMin();
+
+      expect(result).toEqual(2);
+      expect(myTree.root.value).toEqual(2);
+    });
+    it('returns correctly on 2 node tree, right leaf', () => {
+      //     2
+      //       3
+      const myTree = new RedBlackTree();
+
+      myTree.insert(2);
+      myTree.insert(3);
+
+      const result = myTree.findMin();
+
+      expect(result).toEqual(2);
+    });
+    it('returns correctly on 3 node tree, right leaf', () => {
+      //     2
+      //    1 3
+      const myTree = new RedBlackTree();
+
+      myTree.insert(2);
+      myTree.insert(1);
+      myTree.insert(3);
+
+      const result = myTree.findMin();
+
+      expect(result).toEqual(1);
+    });
+    it('returns correctly on 4 node tree, right w/ left child', () => {
+      const myTree = new RedBlackTree();
+      //       2
+      //    1     4
+      //     1.5
+      const values = [2, 1, 4, 1.5];
+      for (let i = 0; i < values.length; i += 1) {
+        myTree.insert(values[i]);
+      }
+
+      const result = myTree.findMin();
+
+      expect(result).toEqual(1);
+    });
+  });
+
   describe('printPreOrder', () => {
     it('returns empty array if tree is empty', () => {
       const myTree = new RedBlackTree();

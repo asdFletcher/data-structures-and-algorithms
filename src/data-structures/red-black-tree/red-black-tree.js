@@ -32,13 +32,28 @@ class RedBlackTree {
 
   remove(rawValue) {
     if (!this.isNumericInput(rawValue)) { return undefined; }
-
     const value = Number(rawValue);
     const target = this.navigateToNode(value);
     if (!target) { return undefined; } // value doesn't exist
     const result = target.value;
     this.handleRemove(target);
     return result;
+  }
+
+  contains(rawValue){
+    if (!this.isNumericInput(rawValue)) { return undefined; }
+    const value = Number(rawValue);
+    return !!this.navigateToNode(value);
+  }
+
+  findMin(){
+    if (this.treeIsEmpty()) { return undefined; }
+    return this.getMinNode(this.root).value;
+  }
+
+  findMax(){
+    if (this.treeIsEmpty()) { return undefined; }
+    return this.getMaxNode(this.root).value;
   }
 
   handleRemove(target) {
