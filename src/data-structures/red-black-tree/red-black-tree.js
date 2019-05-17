@@ -186,8 +186,12 @@ class RedBlackTree {
       replacementNode = target.right;
     }
 
-    const nodeDir = this.getNodeDirection(target);
-    target.parent[nodeDir] = replacementNode;
+    if (target === this.root) {
+      this.root = replacementNode;
+    } else {
+      const nodeDir = this.getNodeDirection(target);
+      target.parent[nodeDir] = replacementNode;
+    }
 
     replacementNode.color = 'black';
     replacementNode.parent = target.parent;

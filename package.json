@@ -1,6 +1,6 @@
 {
   "name": "data-structures-and-algorithms",
-  "version": "1.0.34",
+  "version": "1.0.36",
   "description": "common datastructures, their tests, and code challenges",
   "main": "./lib/index.js",
   "files": [
@@ -10,6 +10,8 @@
     "/lib/data-structures/binary-search-tree/binary-search-tree-node.js",
     "/lib/data-structures/splay-tree/splay-tree.js",
     "/lib/data-structures/splay-tree/splay-tree-node.js",
+    "/lib/data-structures/red-black-tree/red-black-tree.js",
+    "/lib/data-structures/red-black-tree/red-black-tree-node.js",
     "/lib/index.js"
   ],
   "scripts": {
