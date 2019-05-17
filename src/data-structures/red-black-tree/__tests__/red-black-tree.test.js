@@ -40,6 +40,114 @@ describe('redblack tree', () => {
     });
   });
 
+  describe('printPreOrder', () => {
+    it('returns empty array if tree is empty', () => {
+      const myTree = new RedBlackTree();
+
+      const result = myTree.printPreOrder();
+
+      expect(result).toEqual([]);
+    });
+
+    it('correctly returns pre order traversal, single node tree', () => {
+      const myTree = new RedBlackTree();
+      myTree.insert(10);
+
+      const result = myTree.printPreOrder();
+      const expected = [10];
+
+      expect(result).toEqual(expected);
+    });
+
+    it('correctly returns pre order traversal, multi node tree', () => {
+
+      const myTree = new RedBlackTree();
+      let myTreeValues = ['10', '5', '15', '3', '7', '12', '17'];
+      myTree.constructTestTree(myTreeValues);
+
+      //               10
+      //            5      15
+      //          3   7  12   17
+
+      const result = myTree.printPreOrder();
+      const expected = [10, 5, 3, 7, 15, 12, 17];
+
+      expect(result).toEqual(expected);
+    });
+  });
+
+  describe('printInOrder', () => {
+    it('returns empty array if tree is empty', () => {
+      const myTree = new RedBlackTree();
+
+      const result = myTree.printInOrder();
+
+      expect(result).toEqual([]);
+    });
+
+    it('correctly returns pre order traversal, single node tree', () => {
+      const myTree = new RedBlackTree();
+      myTree.insert(10);
+
+      const result = myTree.printInOrder();
+      const expected = [10];
+
+      expect(result).toEqual(expected);
+    });
+
+    it('correctly returns pre order traversal, multi node tree', () => {
+
+      const myTree = new RedBlackTree();
+      let myTreeValues = ['10', '5', '15', '3', '7', '12', '17'];
+      myTree.constructTestTree(myTreeValues);
+
+      //               10
+      //            5      15
+      //          3   7  12   17
+
+      const result = myTree.printInOrder();
+      const expected = [3, 5, 7, 10, 12, 15, 17];
+
+      expect(result).toEqual(expected);
+    });
+  });
+
+  describe('printPostOrder', () => {
+    it('returns empty array if tree is empty', () => {
+      const myTree = new RedBlackTree();
+
+      const result = myTree.printPostOrder();
+
+      expect(result).toEqual([]);
+    });
+
+    it('correctly returns pre order traversal, single node tree', () => {
+      const myTree = new RedBlackTree();
+      myTree.insert(10);
+
+      const result = myTree.printPostOrder();
+      const expected = [10];
+
+      expect(result).toEqual(expected);
+    });
+
+    it('correctly returns pre order traversal, multi node tree', () => {
+
+      const myTree = new RedBlackTree();
+      let myTreeValues = ['10', '5', '15', '3', '7', '12', '17'];
+      myTree.constructTestTree(myTreeValues);
+
+      //               10
+      //            5      15
+      //          3   7  12   17
+
+      const result = myTree.printPostOrder();
+      const expected = [3, 7, 5, 12, 17, 15, 10];
+
+      expect(result).toEqual(expected);
+    });
+  });
+
   describe('insert', () => {
     it('fails on no arguments', () => {
       const myTree = new RedBlackTree();
@@ -734,7 +842,7 @@ describe('redblack tree', () => {
       expect(myTree.allParentPointersAreValid()).toBe(true);
     });
 
-    it('removes black non-root node with 1 red child', () => {
+    it('removes black non-root node with 1 red child to left', () => {
       global.Math.random = () => 0.75;
 
       const myTree = new RedBlackTree();
@@ -757,10 +865,31 @@ describe('redblack tree', () => {
       expect(myTree.allPathsAreValid()).toBe(true);
       expect(myTree.allParentPointersAreValid()).toBe(true);
     });
+    it('removes black non-root node with 1 red child to right', () => {
+      global.Math.random = () => 0.75;
 
-    
-    // case3: P is black, S is black w/ 2 black children
-    it('case 4', () => {
+      const myTree = new RedBlackTree();
+      //          10b                        10b                     
+      //      5r       15b      ->      5r        15b                 
+      //   2b   7b  12r   20r        2b   6b   12r   20r              
+      //          8r                                
+      let insertOrder = [10, 5, 15, 2, 7, 12, 20, 8];
+      for (let i = 0; i < insertOrder.length; i += 1) {
+        myTree.insert(insertOrder[i]);
+      }
+      const result = myTree.remove(7);
+
+      let expectedTree = new RedBlackTree();
+      let expectedTreeValues = ['10b', '5r', '15b', '2b', '8b', '12r', '20r'];
+      expectedTree.constructTestTree(expectedTreeValues);
+
+      expect(result).toEqual(7);
+      expect(myTree).toEqual(expectedTree);
+      expect(myTree.allPathsAreValid()).toBe(true);
+      expect(myTree.allParentPointersAreValid()).toBe(true);
+    });
+
+    it('case 4, left', () => {
       // P is red, S is black w/ 2 black children
 
       //           10b                      10b                      
@@ -782,7 +911,27 @@ describe('redblack tree', () => {
       expect(myTree.allPathsAreValid()).toBe(true);
       expect(myTree.allParentPointersAreValid()).toBe(true);
     });
-    it('case 6', () => {
+    it('case 4, right', () => {
+      // P is red, S is black w/ 2 black children
+      //           8b                       8b                      
+      //       5r     9b      ->         5r    9b           
+      //    1b   7b                   1r               
+      const myTree = new RedBlackTree();
+      let myTreeValues = ['8b', '5r', '9b', '1b', '7b'];
+      myTree.constructTestTree(myTreeValues);
+
+      const result = myTree.remove(7);
+
+      let expectedTree = new RedBlackTree();
+      let expectedTreeValues = ['8b', '5b', '9b', '1r'];
+      expectedTree.constructTestTree(expectedTreeValues);
+
+      expect(result).toEqual(7);
+      expect(myTree).toEqual(expectedTree);
+      expect(myTree.allPathsAreValid()).toBe(true);
+      expect(myTree.allParentPointersAreValid()).toBe(true);
+    });
+    it('case 6, rotate left, black parent, red niece', () => {
       //case 6: S is black, S has red right child
       //           10b                      30b                      
       //        0b       30b      ->     10b     40b                  
@@ -802,7 +951,71 @@ describe('redblack tree', () => {
       expect(myTree.allPathsAreValid()).toBe(true);
       expect(myTree.allParentPointersAreValid()).toBe(true);
     });
-    it('case 2 --> case 4, random right', () => {
+    it('case 6, rotate right, black parent, red niece', () => {
+      //case 6: S is black, S has red right child
+      //            8b                 5b                      
+      //         5b    9b     ->    4b     8b                  
+      //      4r   6r                     6r
+      const myTree = new RedBlackTree();
+      let myTreeValues = ['8b', '5b', '9b', '4r', '6r'];
+      myTree.constructTestTree(myTreeValues);
+
+      const result = myTree.remove(9);
+
+      let expectedTree = new RedBlackTree();
+      let expectedTreeValues = ['5b', '4b', '8b', '6r'];
+      expectedTree.constructTestTree(expectedTreeValues);
+
+
+      expect(result).toEqual(9);
+      expect(myTree).toEqual(expectedTree);
+      expect(myTree.allPathsAreValid()).toBe(true);
+      expect(myTree.allParentPointersAreValid()).toBe(true);
+    });
+    it('case 6, rotate left, red parent, red niece', () => {
+      //case 6: S is black, S has red right child
+      //             50b                             50b   
+      //     10r             70b              30r            70b           
+      //  0b     30b                  ->   10b     40b                  
+      //       25r  40r                       25r
+      const myTree = new RedBlackTree();
+      let myTreeValues = ['50b', '10r', '70b', '0b', '30b', '25r', '40r'];
+      myTree.constructTestTree(myTreeValues);
+
+      const result = myTree.remove(0);
+
+      let expectedTree = new RedBlackTree();
+      let expectedTreeValues = ['50b', '30r', '70b', '10b', '40b', '25r'];
+      expectedTree.constructTestTree(expectedTreeValues);
+
+
+      expect(result).toEqual(0);
+      expect(myTree).toEqual(expectedTree);
+      expect(myTree.allPathsAreValid()).toBe(true);
+      expect(myTree.allParentPointersAreValid()).toBe(true);
+    });
+    it('case 6, rotate right, red parent, red niece', () => {
+      //case 6: S is black, S has red right child
+      //         50b                          50b   
+      //   40b           70r           40b            60r           
+      //             60b     80b   ->             55b     70b
+      //           55r 65r                              65r
+      const myTree = new RedBlackTree();
+      let myTreeValues = ['50b', '40b', '70r', '60b', '80b', '55r', '65r'];
+      myTree.constructTestTree(myTreeValues);
+
+      const result = myTree.remove(80);
+
+      let expectedTree = new RedBlackTree();
+      let expectedTreeValues = ['50b', '40b', '60r', '55b', '70b', '65r'];
+      expectedTree.constructTestTree(expectedTreeValues);
+
+      expect(result).toEqual(80);
+      expect(myTree).toEqual(expectedTree);
+      expect(myTree.allPathsAreValid()).toBe(true);
+      expect(myTree.allParentPointersAreValid()).toBe(true);
+    });
+    it('case 2 --> case 4, random right (rotate left)', () => {
       // case2: P is black, S is red w/ 2 black children
       global.Math.random = () => 0.25;
 
@@ -825,12 +1038,33 @@ describe('redblack tree', () => {
       expect(myTree.allPathsAreValid()).toBe(true);
       expect(myTree.allParentPointersAreValid()).toBe(true);
     });
-    it('case 3 --> case 1, random right', () => {
-      // case 3: P is black, S is black w/ 2 black children
-      global.Math.random = () => 0.25;
+    it('case 2 --> case 4, random left (rotate right)', () => {
+      // case2: P is black, S is red w/ 2 black children
+      global.Math.random = () => 0.75;
+      //          10b                                 -5b
+      //     -10b      40b          -->       -20b           40b         
+      //   -20r -5b  20b    60r          -30b    -10b    20b    60r    
+      // -30b -15b         50b  80b            -15r           50b  80b
+      const myTree = new RedBlackTree();
+      let myTreeValues = ['10b','-10b','40b','-20r','-5b','20b','60r','-30b','-15b','50b','80b'];
+      myTree.constructTestTree(myTreeValues);
 
+      const result = myTree.remove(10);
+
+      let expectedTree = new RedBlackTree();
+      let expectedTreeValues = ['-5b', '-20b', '40b', '-30b', '-10b', '20b', '60r', '-15r', '50b', '80b'];
+      expectedTree.constructTestTree(expectedTreeValues);
+
+
+      expect(result).toEqual(10);
+      expect(myTree).toEqual(expectedTree);
+      expect(myTree.allPathsAreValid()).toBe(true);
+      expect(myTree.allParentPointersAreValid()).toBe(true);
+    });
+    it('case 3 --> case 1, remove left', () => {
+      // case 3: P is black, S is black w/ 2 black children
       //         10b                       10b
-      //    -10b      30b          -->          30b
+      //    -10b      30b          -->          30r
       const myTree = new RedBlackTree();
       let myTreeValues = ['10b', '-10b', '30b'];
       myTree.constructTestTree(myTreeValues);
@@ -846,9 +1080,27 @@ describe('redblack tree', () => {
       expect(myTree.allPathsAreValid()).toBe(true);
       expect(myTree.allParentPointersAreValid()).toBe(true);
     });
-    it('case 3 --> case 5 --> case 6, random right', () => {
+    it('case 3 --> case 1, remove right', () => {
       // case 3: P is black, S is black w/ 2 black children
-      global.Math.random = () => 0.25;
+      //         10b                    10b
+      //    -10b      30b    -->   -10r    
+      const myTree = new RedBlackTree();
+      let myTreeValues = ['10b', '-10b', '30b'];
+      myTree.constructTestTree(myTreeValues);
+
+      const result = myTree.remove(30);
+
+      let expectedTree = new RedBlackTree();
+      let expectedTreeValues = ['10b', '-10r'];
+      expectedTree.constructTestTree(expectedTreeValues);
+
+      expect(result).toEqual(30);
+      expect(myTree).toEqual(expectedTree);
+      expect(myTree.allPathsAreValid()).toBe(true);
+      expect(myTree.allParentPointersAreValid()).toBe(true);
+    });
+    it('case 3 --> case 5 --> case 6, regular case', () => {
+      // case 3: P is black, S is black w/ 2 black children
       //           10b                           30b
       //    -30b        50b      -->       10b           50b
       //  -40b -20b  30r    70b       -30b     15b    40b    70b
@@ -863,17 +1115,43 @@ describe('redblack tree', () => {
       let expectedTreeValues = ['30b', '10b', '50b', '-30b', '15b', '40b', '70b', '-20r'];
       expectedTree.constructTestTree(expectedTreeValues);
 
+
+      expect(result).toEqual(-40);
+      expect(myTree).toEqual(expectedTree);
+      expect(myTree.allPathsAreValid()).toBe(true);
+      expect(myTree.allParentPointersAreValid()).toBe(true);
+    });
+    it('case 3 --> case 5 --> case 6, mirror case', () => {
+      // case 3: P is black, S is black w/ 2 black children
+      //             30b                             30b                    
+      //     15b           45b     -->        20b           45b                  
+      //  10b    20r     40b  70b          15r   22b      40r                
+      //        18b 22b                 10b   18b                 
+
+      //                   20b        
+      // ... ->     15b              30b
+      //         10b   18b       22b     45b
+      //                                40r                  
+      const myTree = new RedBlackTree();
+      let myTreeValues = ['30b','15b','45b','10b','20r','40b','70b','18b','22b'];
+      myTree.constructTestTree(myTreeValues);
+
+      const result = myTree.remove(70);
+
+      let expectedTree = new RedBlackTree();
+      let expectedTreeValues = ['20b','15b','30b','10b','18b','22b','45b','40r'];
+      expectedTree.constructTestTree(expectedTreeValues);
+
       console.log(`myTree: `, myTree.printPreOrder());
       console.log(`expectedTree: `, expectedTree.printPreOrder());
-      expect(result).toEqual(-40);
+      expect(result).toEqual(70);
       expect(myTree).toEqual(expectedTree);
       expect(myTree.allPathsAreValid()).toBe(true);
       expect(myTree.allParentPointersAreValid()).toBe(true);
     });
   });
 
-
-  describe('parental helper functions', () => {
+  describe('get ancestor methods', () => {
     it('get uncle returns null when GP, but no uncle', () => {
       let myTree = new RedBlackTree();
       //          5          GP
