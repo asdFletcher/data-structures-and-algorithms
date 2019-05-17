@@ -40,18 +40,18 @@ class RedBlackTree {
     return result;
   }
 
-  contains(rawValue){
+  contains(rawValue) {
     if (!this.isNumericInput(rawValue)) { return undefined; }
     const value = Number(rawValue);
     return !!this.navigateToNode(value);
   }
 
-  findMin(){
+  findMin() {
     if (this.treeIsEmpty()) { return undefined; }
     return this.getMinNode(this.root).value;
   }
 
-  findMax(){
+  findMax() {
     if (this.treeIsEmpty()) { return undefined; }
     return this.getMaxNode(this.root).value;
   }
@@ -81,8 +81,9 @@ class RedBlackTree {
 
   addNodeToTree(newNode) {
     let current = this.root;
-    
+
     const val = newNode.value;
+
     while (true) {
       if (!current.left && val < current.value) { // base case
         current.left = newNode;
@@ -368,7 +369,7 @@ class RedBlackTree {
       this.root = this.leftRot(n, p);
       n.parent = null;
     } else {
-      let dir = this.getNodeDirection(p);
+      const dir = this.getNodeDirection(p);
       g[dir] = this.leftRot(n, p);
       n.parent = g;
     }
@@ -380,7 +381,7 @@ class RedBlackTree {
       this.root = this.rightRot(n, p);
       n.parent = null;
     } else {
-      let dir = this.getNodeDirection(p);
+      const dir = this.getNodeDirection(p);
       g[dir] = this.rightRot(n, p);
       n.parent = g;
     }

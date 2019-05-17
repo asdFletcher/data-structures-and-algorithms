@@ -1,7 +1,8 @@
+/* eslint-disable no-continue */
+/* eslint-disable no-param-reassign */
 /* eslint-disable class-methods-use-this */
 
 'use strict';
-const util = require('util');
 
 const Node = require('./splay-tree-node.js');
 
@@ -67,6 +68,8 @@ class SplayTree {
 
   remove(rawValue, cb) {
     if (!this.isNumericInput(rawValue)) { return undefined; }
+
+    if (this.treeIsEmpty()) { return undefined; }
 
     const value = Number(rawValue);
 
