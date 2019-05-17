@@ -1283,7 +1283,7 @@ describe('redblack tree', () => {
       const myTree = new RedBlackTree();
       expect(myTree.allPathsAreValid()).toBe(true);
     });
-    xit('correctly returns false on invalid tree', () => {
+    it('correctly throws on black lengths not equal', () => {
       const myTree = new RedBlackTree();
       //          7aB
       //        4bR   8cR
@@ -1303,10 +1303,11 @@ describe('redblack tree', () => {
       a.right = c;
       b.left = d;
 
-      const expected = false;
-      expect(myTree.allPathsAreValid()).toBe(expected);
+      expect( () => {
+        myTree.allPathsAreValid()
+      }).toThrow();
     });
-    xit('correctly returns false on invalid tree, root is red', () => {
+    it('correctly throws on invalid tree, root is red', () => {
       const myTree = new RedBlackTree();
       //          7aR
       //        4bR   8cR
@@ -1326,10 +1327,38 @@ describe('redblack tree', () => {
       a.right = c;
       b.left = d;
 
-      const expected = false;
-      expect(myTree.allPathsAreValid()).toBe(expected);
+      expect( () => {
+        myTree.allPathsAreValid()
+      }).toThrow();
     });
-    xit('correctly returns false on invalid tree, red left children must be black', () => {
+    it('correctly throws on invalid tree, red left children must be black', () => {
+      const myTree = new RedBlackTree();
+      //          7aR
+      //        4bR   8cR
+      //      1dR  5eB
+      const a = new Node(7);
+      const b = new Node(4);
+      const c = new Node(8);
+      const d = new Node(1);
+      const e = new Node(5);
+
+      a.color = 'black';
+      b.color = 'red';
+      c.color = 'red';
+      d.color = 'red';
+      e.color = 'black';
+
+      myTree.root = a;
+      a.left = b;
+      a.right = c;
+      b.left = d;
+      b.right = e;
+
+      expect( () => {
+        myTree.allPathsAreValid()
+      }).toThrow();
+    });
+    it('correctly throws on invalid tree, red right children must be black', () => {
       const myTree = new RedBlackTree();
       //          7aR
       //        4bR   8cR
@@ -1343,7 +1372,7 @@ describe('redblack tree', () => {
       a.color = 'black';
       b.color = 'red';
       c.color = 'red';
-      d.color = 'red';
+      d.color = 'black';
       e.color = 'red';
 
       myTree.root = a;
@@ -1352,8 +1381,9 @@ describe('redblack tree', () => {
       b.left = d;
       b.right = e;
 
-      const expected = false;
-      expect(myTree.allPathsAreValid()).toBe(expected);
+      expect( () => {
+        myTree.allPathsAreValid()
+      }).toThrow();
     });
     it('returns true on valid tree', () => {
       const myTree = new RedBlackTree();
