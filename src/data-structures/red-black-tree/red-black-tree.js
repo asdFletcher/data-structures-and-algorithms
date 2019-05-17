@@ -38,35 +38,36 @@ class RedBlackTree {
     if (!target) { return undefined; } // value doesn't exist
     const result = target.value;
     this.handleRemove(target);
-
     return result;
   }
 
-  handleRemove(target) {
-    // cases:
-    // red w 0 child          (case A)
-    // red w 2 child          (***6 base cases)
-    // black w 0 child        (***6 base cases)
-    // black w 1 red child    (case B)
-    // black w 2 child        (***6 base cases)
-    // red w 0 child          <-- impossible
-    // black w 1 black child  <-- impossible
+  handleEasyTerminalCases(target) {
     if (this.isRedWithNoChildren(target)) { // terminal
       this.deleteLeaf(target);
     } else if (this.isBlackWithOnlyOneRedChild(target)) { // terminal
       this.handleRemoveBlackWithOneRedChild(target);
-    } else if (this.hasTwoChildren(target)) {
-      const replacementDir = this.pickASide();
-      const replacementNode = this.getReplacementNode(target, replacementDir);
-      this.swapNodeValues(replacementNode, target);
-      if (this.isRedWithNoChildren(replacementNode)) { // terminal
-        this.deleteLeaf(replacementNode);
-      } else if (this.isBlackWithOnlyOneRedChild(replacementNode)) { // terminal
-        this.handleRemoveBlackWithOneRedChild(replacementNode);
-      } else {
-        this.handleSixCases(replacementNode);
-        this.cleanupFinalNode(replacementNode);
-      }
+    } else {
+      this.handleSixCases(target);
+      this.cleanupFinalNode(target);
+    }
+  }
+
+  reduceTwoChildProblem(target) {
+    const replacementDir = this.pickASide();
+    const replacementNode = this.getReplacementNode(target, replacementDir);
+    this.swapNodeValues(replacementNode, target);
+    return replacementNode;
+  }
+
+  handleRemove(target) {
+    if (this.hasTwoChildren(target)) {
+      // reduce the 2-child problem to a 1 or 0 child problem, then re-run
+      const newTarget = this.reduceTwoChildProblem(target);
+      this.handleRemove(newTarget);
+    } else if (this.isRedWithNoChildren(target)) { // terminal
+      this.deleteLeaf(target);
+    } else if (this.isBlackWithOnlyOneRedChild(target)) { // terminal
+      this.handleRemoveBlackWithOneRedChild(target);
     } else {
       // black w 0 children
       this.handleSixCases(target);
