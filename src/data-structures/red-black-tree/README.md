@@ -1,4 +1,4 @@
-## Implementation of an `AVL tree` class
+## Implementation of a `red black tree` class
 
 ### Author: Fletcher LaRue 
 [LinkedIn](https://www.linkedin.com/in/fletcher-larue/)
@@ -7,32 +7,39 @@
 
 [![Build Status](https://www.travis-ci.com/asdFletcher/data-structures-and-algorithms.svg?branch=master)](https://www.travis-ci.com/asdFletcher/data-structures-and-algorithms)
 
-* [repo](https://github.com/asdFletcher/data-structures-and-algorithms/tree/master/src/data-structures/avl-tree)
+* [repo](https://github.com/asdFletcher/data-structures-and-algorithms/tree/master/src/data-structures/red-black-tree)
 * [travis](https://www.travis-ci.com/asdFletcher/data-structures-and-algorithms)
 
 ---
 ### Files
-#### `avl-tree.js`
-#### `avl-tree-node.js`
+#### `red-black-tree.js`
+#### `red-black-tree-node.js`
 
-#### `avl-tree.test.js`
+#### `red-black-tree.test.js`
+#### `red-black-tree-node.test.js`
 ---
 ##### Exported Values and Methods for the following files:
 
-#### `avl-tree.js`
-`avl-tree.js` exports the `AVLTree` class, which has methods for adding and removing elements that follow the traditional data structure scheme for an AVL tree.
+#### `red-black-tree.js`
+`red-black-tree.js` exports the `RedBlackTree` class, which has methods for adding and removing elements that follow the traditional data structure scheme for a binary search tree, with additional special rules.
 
-An `AVL Tree` is similar to a Binary Search Tree in that it is a "sorted" tree, where the left nodes are less than their parents and the right nodes are greater than their parents. However, the AVL tree insert/remove methods modify the tree in order to maintain balance. If 2 children become too imbalanced (height difference greater than 1) then a re-balancing is performed. These are classified as either single or double rotations, and can occur to the "left" or the "right" depending on which side of the tree is lopsided.
+A `Red Black Tree` (`RBT`) is a special type of self-balancing binary search tree that changes the structure of the tree when nodes are inserted or removed to maintain a relatively balanced tree. A regular binary search tree is "sorted", where the left nodes are less than their parents and the right nodes are greater than their parents. Knowing this, we can find values stored in this type of tree quickly. Access, search, insert, and remove time complexity for a binary search tree is O(log(n)), where n is the number of nodes in the tree. These methods compare the incoming value with the values in the tree and navigates left or right based on a comparison with the existing node values. Depending on the operation this is done until a leaf is found where a new node can inserted or the desired value is found.
 
-The stricter rules on tree structure that enforce balance lets us more easily predict the time complexity of all the tree operations. Because the tree is guaranteed to be balanced (or at least fairly well balanced). Insert, delete, contains, findMin, findMax, are all O(log(n)), where n is the number of nodes in the tree.
+The specialty of the `red-black-tree` is that it maintains balance, guaranteeing a worst case time complexity that is better than a regular `binary search tree` O(log n) vs O(n). However, on average a regular BST is still O(log n). The `red-black-tree` maintains balance through a set of rules that require classing each node with a color. In reality this can be coded as 1 bit true/false but for ease this implementation uses strings `red` and `black`.
 
-This particular implementation requires that all values stored in the nodes are numbers. Although presumably one could create a BST to store any data, as long as there was a consistent way of comparing any 2 node "values". Strings based on alphabetic order, for example. 
+Perhaps the biggest difference between an RBT and other trees is the importance of having a `parent` property on each node that stores a pointer to that node's parent, this greatly simplifies the coding of the class, which is an important factor that shouldn't be overlooked. Storing a parent pointer does increase the the required memory. Apparently it is possible to store node ancestor information on a call stack - but I would argue against this implementation due to complexity of implementation. Implementing all of the methods is much simpler with this parent pointer.
 
-Some trees are implemented where multiple nodes with the same value are allowed, and some have a node class that stores a counter. This particular implementation does not allow for duplicate values, nor does it keep track of a count for each value. One key difference from the Binary Search Tree is that the AVL tree stores height information about each node so that it can make decisioins on when to rebalance.
+The coloring rules for an RBT seem unclear when first encountered, but they are what enforce the tree balance - they key rule being that the black path length can't be different for any given node-to-leaf path. 
 
-Read more about the AVL Tree on [Wikipedia](https://en.wikipedia.org/wiki/AVL_tree).
+`Remove` Implementing the 8 main remove cases is fairly complex and would be very difficult to come up with without being shown.
 
-* `AVLTree` class
+This particular implementation requires that all values stored in the nodes are numbers. Although presumably one could create a Splay Tree to store any data, as long as there was a consistent way of comparing any 2 node "values". Strings based on alphabetic order, for example. 
+
+Some trees are implemented where multiple nodes with the same value are allowed, and some have a node class that stores a counter. This particular implementation does not allow for duplicate values, nor does it keep track of a count for each value.
+
+Read more about the `red-black-tree` tree on [Wikipedia](https://en.wikipedia.org/wiki/Splay_tree). However, I found this video to be much clearer: [helpful youtube video](https://www.youtube.com/watch?v=CTvfzU_uNKE).
+
+* `RedBlackTree` class
     * Methods:
         * `constructor()`
         * `insert(<value> [, <callback>])`
@@ -47,13 +54,12 @@ Read more about the AVL Tree on [Wikipedia](https://en.wikipedia.org/wiki/AVL_tr
 Note: parameters in square brackets i.e.:`[<parameter>]` are optional.
 
 ---
+##### Using the `RedBlackTree` class methods:
 
-##### Using the `AVLTree` class methods:
-
-#### `AVLTree` `constructor()`
+#### `RedBlackTree` `constructor()`
 ```JavaScript
-const AVLTree = require('<path to file exporting AVLTree>');
-const myTree = new AVLTree();
+const RedBlackTree = require('<path to file exporting RedBlackTree>');
+const myTree = new RedBlackTree();
 ```
 * Creates a new tree that is empty
 * Accepts no arguments
@@ -62,18 +68,34 @@ const myTree = new AVLTree();
 
 ---
 
-#### `AVLTree.prototype.insert(<value> [, <callback>])`
+#### `RedBlackTree.prototype.insert(<value> [, <callback>])`
 ```JavaScript
-const myTree = new AVLTree();
+const myTree = new RedBlackTree();
 myTree.insert(5);
+// gives tree:
+//           5b
+
 myTree.insert(10);
+// gives tree:
+//           5b
+//              10r
+
 myTree.insert(2.2);
+// gives tree:
+//           5b
+//     2.2r     10r
+
 myTree.insert("3");
+// gives tree:
+//           5b
+//     2.2b     10b
+//         3r
+
 let result = myTree.insert(-1); 
 // gives tree:
-//           5
-//     2.2      10
-//  -1    3
+//           5b
+//     2.2b      10b
+//  -1r    3r
 
 // result: a reference to the node with value of -1
 
@@ -96,23 +118,22 @@ let result = myTree.insert(-1);
 
 ---
 
-#### `AVLTree.prototype.remove(<value> [, <callback>])`
+#### `RedBlackTree.prototype.remove(<value> [, <callback>])`
 ```JavaScript
-const myTree = new AVLTree();
+const myTree = new RedBlackTree();
 myTree.insert(5);
 myTree.insert(10);
 myTree.insert(2);
 myTree.insert(3);
 // gives tree:
-//         5
-//     2       10
-//      3
+//         5b
+//     2b       10b
+//       3r
 
 let result = myTree.remove(5);
 // gives tree:
-//         10
-//     2      
-//       3
+//         3b
+//     2b      10b
 
 // result: a reference to the removed node
 
@@ -130,31 +151,31 @@ let result = myTree.remove(5);
     * Integers
     * Any combination of the above
 * Returns `undefined` on unsuccessfull remove
-* Returns a pointer to the removed node if successful
-* When a non-leaf node is removed, the replacement node comes from the child with greater height. If the child nodes have the same height the right child is chosen.
+* Returns the value of the removed node if successful
+* When a node with 2 children is removed, it is replaced with a node from one of the left or right sub trees, randomly selected. The replacement node is then removed and the tree-repair routine runs.
     * If chosen from the left child, the max value of that tree will take the place of the node.
     * If chosen from the right child, the min value of that tree will take the place of the node.
 
+Note: predicting the resulting tree due to rotations is difficult and can vary depending on the coin flip.
 ---
 
-#### `AVLTree.prototype.contains(<value> [, <callback>])`
+#### `RedBlackTree.prototype.contains(<value> [, <callback>])`
 
 ```JavaScript
-const myTree = new AVLTree();
+const myTree = new RedBlackTree();
 myTree.insert(5);
 myTree.insert(10);
 myTree.insert(2);
-myTree.insert(3);
-myTree.insert(8);
+
 // gives tree:
-//         5
-//     2       10
-//      3     8
+//         5b
+//     2r       10r
 
 let result = myTree.contains(2); // true
 
 ```
 * Checks to see if the value is contained in the tree
+* Returns `true` if the value exists in the tree, and `false` if it does not
 * Accepts 1 required argument, and 1 optional argument
     * The first parameter is required: the value of the node to be inserted
     * The second parameter is an optional callback that is called on all recursive functions and loops for the purposes of estimating the performance of the class (allows incrementing a counter)
@@ -166,23 +187,22 @@ let result = myTree.contains(2); // true
     * Floats
     * Integers
     * Any combination of the above
-* Returns `true` if the value exists in the tree, and `false` if it does not
 
 ---
 
-#### `AVLTree.prototype.findMax([<callback>])`
+#### `RedBlackTree.prototype.findMax([<callback>])`
 
 ```JavaScript
-const myTree = new AVLTree();
+const myTree = new RedBlackTree();
 myTree.insert(5);
 myTree.insert(10);
 myTree.insert(2);
 myTree.insert(3);
 myTree.insert(8);
 // gives tree:
-//         5
-//     2       10
-//      3     8
+//         5b
+//     2b       10b
+//       3r    8r
 
 let result = myTree.findMax(); // 10
 
@@ -194,19 +214,19 @@ let result = myTree.findMax(); // 10
 
 ---
 
-#### `AVLTree.prototype.findMin([<callback>])`
+#### `RedBlackTree.prototype.findMin([<callback>])`
 
 ```JavaScript
-const myTree = new AVLTree();
+const myTree = new RedBlackTree();
 myTree.insert(5);
 myTree.insert(10);
 myTree.insert(2);
 myTree.insert(3);
 myTree.insert(8);
 // gives tree:
-//         5
-//     2       10
-//      3     8
+//         5b
+//     2b       10b
+//       3r    8r
 
 let result = myTree.findMin(); // 2
 
@@ -218,19 +238,19 @@ let result = myTree.findMin(); // 2
 
 ---
 
-#### `AVLTree.prototype.printPreOrder()`
+#### `RedBlackTree.prototype.printPreOrder()`
 
 ```JavaScript
-const myTree = new AVLTree();
+const myTree = new RedBlackTree();
 myTree.insert(5);
 myTree.insert(10);
 myTree.insert(2);
 myTree.insert(3);
 myTree.insert(8);
 // gives tree:
-//         5
-//     2       10
-//      3     8
+//         5b
+//     2b       10b
+//       3r    8r
 
 let result = myTree.printPreOrder(); // [5, 2, 3, 10, 8]
 
@@ -241,19 +261,19 @@ let result = myTree.printPreOrder(); // [5, 2, 3, 10, 8]
 
 ---
 
-#### `AVLTree.prototype.printInOrder()`
+#### `RedBlackTree.prototype.printInOrder()`
 
 ```JavaScript
-const myTree = new AVLTree();
+const myTree = new RedBlackTree();
 myTree.insert(5);
 myTree.insert(10);
 myTree.insert(2);
 myTree.insert(3);
 myTree.insert(8);
 // gives tree:
-//         5
-//     2       10
-//      3     8
+//         5b
+//     2b       10b
+//       3r    8r
 
 let result = myTree.printInOrder(); // [2, 3, 5, 8, 10]
 
@@ -264,19 +284,19 @@ let result = myTree.printInOrder(); // [2, 3, 5, 8, 10]
 
 ---
 
-#### `AVLTree.prototype.printPostOrder()`
+#### `RedBlackTree.prototype.printPostOrder()`
 
 ```JavaScript
-const myTree = new AVLTree();
+const myTree = new RedBlackTree();
 myTree.insert(5);
 myTree.insert(10);
 myTree.insert(2);
 myTree.insert(3);
 myTree.insert(8);
 // gives tree:
-//         5
-//     2       10
-//      3     8
+//         5b
+//     2b       10b
+//       3r    8r
 
 let result = myTree.printInOrder(); // [3, 2, 8, 10, 5]
 
