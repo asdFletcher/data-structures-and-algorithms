@@ -25,7 +25,7 @@ Select data structures are included in an NPM package:
   - Includes tests
   - Includes [readme](https://github.com/asdFletcher/data-structures-and-algorithms/tree/master/src/data-structures/splay-tree)
 
-- [Splay Tree](https://github.com/asdFletcher/data-structures-and-algorithms/tree/master/src/data-structures/red-black-tree)
+- [Red Black Tree](https://github.com/asdFletcher/data-structures-and-algorithms/tree/master/src/data-structures/red-black-tree)
   - A self-balancing binary search tree, which doesn't save height information, and has parent pointers
   - Includes tests
   - Includes [readme](https://github.com/asdFletcher/data-structures-and-algorithms/tree/master/src/data-structures/red-black-tree)
