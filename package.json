@@ -1,6 +1,6 @@
 {
   "name": "data-structures-and-algorithms",
-  "version": "1.0.37",
+  "version": "1.0.38",
   "description": "common datastructures, their tests, and code challenges",
   "main": "./lib/index.js",
   "files": [

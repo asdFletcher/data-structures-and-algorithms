@@ -1,4 +1,5 @@
-runTheTest_Variable_Tree_Size() {
+
+function runTheTest_Variable_Tree_Size() {
   const output = {
     // label: i,
     pointBorderColor: 'rgba(0, 0, 0, 0)',

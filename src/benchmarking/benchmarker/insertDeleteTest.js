@@ -1,4 +1,5 @@
-compositeTest_Ins_Del(numberOfRuns) {
+
+function compositeTest_Ins_Del(numberOfRuns) {
   // empty data container
   const opacity = 50;
   const dataset = createBlankDataset(numberOfRuns, opacity);
