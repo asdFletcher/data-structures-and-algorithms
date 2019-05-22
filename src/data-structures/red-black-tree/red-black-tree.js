@@ -11,7 +11,7 @@ class RedBlackTree {
     this.root = null;
   }
 
-  insert(rawValue) {
+  insert(rawValue, cb) {
     if (!this.isNumericInput(rawValue)) { return undefined; }
     const value = Number(rawValue);
     const newNode = new Node(value);
@@ -23,27 +23,27 @@ class RedBlackTree {
     }
 
     // insert node reguarly
-    const success = this.addNodeToTree(newNode);
+    const success = this.addNodeToTree(newNode, cb);
     if (!success) { return undefined; }
 
     this.fixAfterInsertion(newNode);
     return newNode;
   }
 
-  remove(rawValue) {
+  remove(rawValue, cb) {
     if (!this.isNumericInput(rawValue)) { return undefined; }
     const value = Number(rawValue);
-    const target = this.navigateToNode(value);
+    const target = this.navigateToNode(value, cb);
     if (!target) { return undefined; } // value doesn't exist
     const result = target.value;
-    this.handleRemove(target);
+    this.handleRemove(target, cb);
     return result;
   }
 
-  contains(rawValue) {
+  contains(rawValue, cb) {
     if (!this.isNumericInput(rawValue)) { return undefined; }
     const value = Number(rawValue);
-    return !!this.navigateToNode(value);
+    return !!this.navigateToNode(value, cb);
   }
 
   findMin() {
@@ -56,35 +56,39 @@ class RedBlackTree {
     return this.getMaxNode(this.root).value;
   }
 
-  handleRemove(target) {
+  handleRemove(target, cb) {
     if (this.hasTwoChildren(target)) {
       // reduce the 2-child problem to a 1 or 0 child problem, then re-run
-      const newTarget = this.reduceTwoChildProblem(target);
-      this.handleRemove(newTarget);
+      // happens maximum once per removal
+      const newTarget = this.reduceTwoChildProblem(target, cb);
+      this.handleRemove(newTarget, cb);
     } else if (this.isRedWithNoChildren(target)) { // terminal
+      if (cb) { cb(); }
       this.deleteLeaf(target);
     } else if (this.isBlackWithOnlyOneRedChild(target)) { // terminal
+      if (cb) { cb(); }
       this.handleRemoveBlackWithOneRedChild(target);
     } else {
       // black w 0 children
-      this.handleSixCases(target);
+      this.handleSixCases(target, cb);
       this.cleanupFinalNode(target);
     }
   }
 
-  reduceTwoChildProblem(target) {
+  reduceTwoChildProblem(target, cb) {
     const replacementDir = this.pickASide();
-    const replacementNode = this.getReplacementNode(target, replacementDir);
+    const replacementNode = this.getReplacementNode(target, replacementDir, cb);
     this.swapNodeValues(replacementNode, target);
     return replacementNode;
   }
 
-  addNodeToTree(newNode) {
+  addNodeToTree(newNode, cb) {
     let current = this.root;
 
     const val = newNode.value;
 
     while (true) {
+      if (cb) { cb(); }
       if (!current.left && val < current.value) { // base case
         current.left = newNode;
         newNode.parent = current;
@@ -104,13 +108,14 @@ class RedBlackTree {
     return newNode;
   }
 
-  navigateToNode(value) {
+  navigateToNode(value, cb) {
     let current = this.root;
 
     if (this.treeIsEmpty()) {
       return undefined;
     }
     while (true) {
+      if (cb) { cb(); }
       if (value < current.value) {
         if (current.left) {
           current = current.left;
@@ -129,7 +134,8 @@ class RedBlackTree {
     }
   }
 
-  fixAfterInsertion(n) {
+  fixAfterInsertion(n, cb) {
+    if (cb) { cb(); }
     const { p, u, g } = this.getAncestors(n);
 
     if (n === this.root && this.getColor(this.root) === 'red') {
@@ -199,11 +205,11 @@ class RedBlackTree {
     return replacementNode;
   }
 
-  getReplacementNode(target, replacementDir) {
+  getReplacementNode(target, replacementDir, cb) {
     if (replacementDir === 'left') {
-      return this.getMaxNode(target.left);
+      return this.getMaxNode(target.left, cb);
     }
-    return this.getMinNode(target.right);
+    return this.getMinNode(target.right, cb);
   }
 
   swapNodeValues(incomingNode, outgoingNode) {
@@ -211,17 +217,18 @@ class RedBlackTree {
     outgoingNode.value = incomingVal;
   }
 
-  handleSixCases(target) {
+  handleSixCases(target, cb) {
+    if (cb) { cb(); }
     if (this.removeCase1(target)) { // terminal
       // do nothing
     } else if (this.removeCase2(target)) {
-      this.handleCase2(target);
+      this.handleCase2(target, cb);
     } else if (this.removeCase3(target)) {
-      this.handleCase3(target);
+      this.handleCase3(target, cb);
     } else if (this.removeCase4(target)) { // terminal
       this.handleCase4(target);
     } else if (this.removeCase5(target)) {
-      this.handleCase5(target);
+      this.handleCase5(target, cb);
     } else if (this.removeCase6(target)) { // terminal
       this.handleCase6(target);
     }
@@ -263,15 +270,15 @@ class RedBlackTree {
   }
 
   removeCase5(n) {
-    // P is black, S is black, S has red left child, black right child
-    const { p, s } = this.getAncestors(n);
+    // P is any, S is black, S has red child near to node, black right child
+    const { s } = this.getAncestors(n);
 
     const nodeDir = this.getNodeDirection(n);
     const sibDir = this.getSiblingDirection(n);
 
+    if (!s) { return false; }
     return (
-      this.getColor(p) === 'black'
-      && this.getColor(s) === 'black'
+      this.getColor(s) === 'black'
       && this.getColor(s[nodeDir]) === 'red'
       && this.getColor(s[sibDir]) === 'black');
   }
@@ -285,12 +292,13 @@ class RedBlackTree {
     const { s } = this.getAncestors(n);
 
     const sibDir = this.getSiblingDirection(n);
+    if (!s) { return false; }
     return (
       this.getColor(s) === 'black'
       && this.getColor(s[sibDir]) === 'red');
   }
 
-  handleCase2(n) {
+  handleCase2(n, cb) {
     // single rotation toward node at P, make P red, make S black
     // rotate child: S
     const { p, s } = this.getAncestors(n);
@@ -298,14 +306,14 @@ class RedBlackTree {
     this.singleRotation(s, nodeDir);
     p.color = 'red';
     s.color = 'black';
-    this.handleSixCases(n);
+    this.handleSixCases(n, cb);
   }
 
-  handleCase3(n) {
+  handleCase3(n, cb) {
     // make S red, new problem node is P
     const { p, s } = this.getAncestors(n);
     s.color = 'red';
-    this.handleSixCases(p);
+    this.handleSixCases(p, cb);
   }
 
   handleCase4(n) {
@@ -315,7 +323,7 @@ class RedBlackTree {
     s.color = 'red';
   }
 
-  handleCase5(n) {
+  handleCase5(n, cb) {
     // rotation at S away from N, make S red and sl black
     // rotate child: sl
     const { s, sl, sr } = this.getAncestors(n);
@@ -332,7 +340,7 @@ class RedBlackTree {
     } else {
       sr.color = 'black';
     }
-    this.handleSixCases(n);
+    this.handleSixCases(n, cb);
   }
 
   handleCase6(n) {
@@ -479,17 +487,19 @@ class RedBlackTree {
     return node;
   }
 
-  getMaxNode(node) {
+  getMaxNode(node, cb) {
     let current = node;
     while (current && current.right) {
+      if (cb) { cb(); }
       current = current.right;
     }
     return current;
   }
 
-  getMinNode(node) {
+  getMinNode(node, cb) {
     let current = node;
     while (current.left) {
+      if (cb) { cb(); }
       current = current.left;
     }
     return current;
@@ -782,6 +792,22 @@ class RedBlackTree {
         this.addNodeToTree(nodes[i]);
       }
     }
+  }
+
+  containsDuplicates() {
+    let seen = new Set();
+
+    let values = this.printInOrder();
+
+    for (let i = 0; i < values.length; i++) {
+      let num = values[i];
+      if (seen.has(num)) {
+        return true;
+      } else {
+        seen.add(num);
+      }
+    }
+    return false;
   }
 }
 

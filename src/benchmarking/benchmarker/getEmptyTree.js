@@ -10,6 +10,9 @@ function getEmptyTree(treeType) {
   if (treeType === 'SplayTree') {
     return new this.SplayTree();
   }
+  if (treeType === 'RedBlackTree') {
+    return new this.RedBlackTree();
+  }
 }
 
 module.exports = getEmptyTree;
