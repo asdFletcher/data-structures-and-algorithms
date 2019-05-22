@@ -7,6 +7,68 @@ const Node = require('../red-black-tree-node.js');
 
 const generateRandomNumber = () => Math.floor(Math.random()*100);
 
+describe('stress test insert and remove', () => {
+  it('can withstand probabilistic error detection', () => {
+    // global.Math.random = () => Math.random();
+    for(let j = 0; j < 100; j++) {
+      let n = 100;
+
+      // generate n numbers
+      let insertOrder = [];
+      while (insertOrder.length < n) {
+        let num = generateRandomNumber();
+        if (!insertOrder.includes(num)) {
+          insertOrder.push(num);
+        }
+      }
+
+      // insert them into the tree
+      let myTree = new RedBlackTree();
+      for (let i = 0; i < insertOrder.length; i += 1) {
+        myTree.insert(insertOrder[i]);
+        expect(myTree.allPathsAreValid()).toBe(true);
+        expect(myTree.allParentPointersAreValid()).toBe(true);
+        expect(myTree.containsDuplicates()).toBe(false);
+      }
+      
+      // remove them at random
+      let removeOrder = [];
+      while (removeOrder.length > 0) {
+        let randomIndex = Math.floor(Math.random() * removeOrder.length); // generate random index
+        let num = insertOrder[randomIndex];
+        myTree.remove(num); // remove the number from the tree
+        insertOrder.splice(randomIndex); // remove the number from the bucket of numbers
+        removeOrder.push(num); // add the remove order
+
+        expect(myTree.allPathsAreValid()).toBe(true);
+        expect(myTree.allParentPointersAreValid()).toBe(true);
+        expect(myTree.containsDuplicates()).toBe(false);
+      }
+    }
+  });
+
+  it('can withstand probabilistic error detection', () => {
+    for(let j = 0; j < 100; j++) {
+      let n = 50;
+
+      let insertOrder = [];
+      
+      // generate non unique number set
+      let myTree = new RedBlackTree();
+      for (let i = 0; i < n; i += 1) {
+        let num = generateRandomNumber();
+        if (myTree.insert(num)) {
+          insertOrder.push(num);
+        }
+        expect(myTree.allPathsAreValid()).toBe(true);
+        expect(myTree.allParentPointersAreValid()).toBe(true);
+        expect(myTree.containsDuplicates()).toBe(false);
+      }
+    }
+  });
+
+});
+
 describe('redblack tree', () => {
   describe('constructor', () => {
     it('creates empty tree without error', () => {
@@ -1735,43 +1797,5 @@ describe('redblack tree', () => {
       const expected = false;
       expect(myTree.allParentPointersAreValid()).toBe(expected);
     });
-  });
-});
-
-xdescribe('stress test insert and remove', () => {
-  it('can probabilistic error detection', () => {
-    for(let j = 0; j < 100; j++) {
-      let n = 100;
-
-      // generate n numbers
-      let insertOrder = [];
-      while (insertOrder.length < n) {
-        let num = generateRandomNumber();
-        if (!insertOrder.includes(num)) {
-          insertOrder.push(num);
-        }
-      }
-
-      // insert them into the tree
-      let myTree = new RedBlackTree();
-      for (let i = 0; i < insertOrder.length; i += 1) {
-        myTree.insert(insertOrder[i]);
-        expect(myTree.allPathsAreValid()).toBe(true);
-        expect(myTree.allParentPointersAreValid()).toBe(true);
-      }
-      
-      // remove them at random
-      let removeOrder = [];
-      while (removeOrder.length > 0) {
-        let randomIndex = Math.floor(Math.random() * removeOrder.length); // generate random index
-        let num = insertOrder[randomIndex];
-        myTree.remove(num); // remove the number from the tree
-        insertOrder.splice(randomIndex); // remove the number from the bucket of numbers
-        removeOrder.push(num); // add the remove order
-
-        expect(myTree.allPathsAreValid()).toBe(true);
-        expect(myTree.allParentPointersAreValid()).toBe(true);
-      }
-    }
   });
 });

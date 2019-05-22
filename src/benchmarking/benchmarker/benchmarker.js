@@ -1,26 +1,46 @@
+/* eslint-disable class-methods-use-this */
+/* eslint-disable camelcase */
 'use strict';
 
 const fs = require('fs');
 const util = require('util');
 
-class Runner {
-  constructor(options){
-    this.AVLTree = require('../../data-structures/avl-tree/avl-tree.js');
-    this.BST = require('../../data-structures/binary-search-tree/binary-search-tree.js');
-    this.SplayTree = require('../../data-structures/splay-tree/splay-tree.js');
-    this.getEmptyTree = require('./getEmptyTree.js');
-    this.getRandomNumberSet = require('./getRandomNumberSet.js');
-    this.getRandomNumberArray = require('./getRandomNumberArray.js');
-    this.getBlankDataset = require('./getBlankDataset.js');
-    this.removeUndef = require('./removeUndef.js');
-    this.getMaxNodeDepth = require('./getMaxNodeDepth.js');
-    this.getAvgNodeDepth = require('./getAvgNodeDepth.js');
-    this.singleRunInsert = require('./singleRunInsert.js');
-    this.singleRunRemove = require('./singleRunRemove.js');
-    this.getLogNData = require('./getLogNData.js');
-    this.getExpData = require('./getExpData.js');
+const AVLTree = require('../../data-structures/avl-tree/avl-tree.js');
+const BST = require('../../data-structures/binary-search-tree/binary-search-tree.js');
+const SplayTree = require('../../data-structures/splay-tree/splay-tree.js');
+const RedBlackTree = require('../../data-structures/red-black-tree/red-black-tree.js');
+const getEmptyTree = require('./getEmptyTree.js');
+const getRandomNumberSet = require('./getRandomNumberSet.js');
+const getRandomNumberArray = require('./getRandomNumberArray.js');
+const getBlankDataset = require('./getBlankDataset.js');
+const removeUndef = require('./removeUndef.js');
+const getMaxNodeDepth = require('./getMaxNodeDepth.js');
+const getAvgNodeDepth = require('./getAvgNodeDepth.js');
+const singleRunInsert = require('./singleRunInsert.js');
+const singleRunRemove = require('./singleRunRemove.js');
+const getLogNData = require('./getLogNData.js');
+const getExpData = require('./getExpData.js');
 
-    for (let key in options) { 
+
+class Runner {
+  constructor(options) {
+    this.AVLTree = AVLTree;
+    this.BST = BST;
+    this.SplayTree = SplayTree;
+    this.RedBlackTree = RedBlackTree;
+    this.getEmptyTree = getEmptyTree;
+    this.getRandomNumberSet = getRandomNumberSet;
+    this.getRandomNumberArray = getRandomNumberArray;
+    this.getBlankDataset = getBlankDataset;
+    this.removeUndef = removeUndef;
+    this.getMaxNodeDepth = getMaxNodeDepth;
+    this.getAvgNodeDepth = getAvgNodeDepth;
+    this.singleRunInsert = singleRunInsert;
+    this.singleRunRemove = singleRunRemove;
+    this.getLogNData = getLogNData;
+    this.getExpData = getExpData;
+
+    for (const key in options) {
       this[key] = options[key];
     }
 
@@ -28,7 +48,7 @@ class Runner {
   }
 
   runTheTest_Dependent_Tree_Size(numberOfRuns, sampleRate) {
-    let opacity = 5;
+    const opacity = 5;
     const dataset = this.getBlankDataset(numberOfRuns, opacity);
     let times = [];
     for (let i = 0; i < numberOfRuns; i += 1) {
@@ -38,151 +58,52 @@ class Runner {
       if (this.method === 'remove') {
         times = this.singleRunRemove(sampleRate);
       }
-  
+
       // dataset index is the arbitrary run number
       dataset[i].data = this.removeUndef(times);
     }
-  
+
     return dataset;
   }
-  
-  runTheTest_Variable_Tree_Size() {
-    const output = {
-      // label: i,
-      pointBorderColor: 'rgba(0, 0, 0, 0)',
-      pointBackgroundColor: `rgba(0, 0, 0, ${5 / 100})`,
-      pointRadius: '2',
-      showLine: false,
-      labels: {
-        display: false,
-      },
-      data: [],
-    };
-  
-    for (let i = 0; i < 100; i += 1) {
-      for (let j = 0; j < 1000; j += 1) {
-        const treeSize = i;
-  
-        const myTree = getEmptyTree(treeType);
-  
-        // generate random number set
-        const randomNumbers = this.getRandomNumberSet(treeSize);
-        const numbers = [];
-  
-        // build tree with random numbers
-        randomNumbers.forEach((val) => {
-          myTree.insert(val);
-          numbers.push(val);
-        });
-  
-        // pick a random one
-        const randomIndex = Math.floor(Math.random() * randomNumbers.size);
-        const randomNodeValue = numbers[randomIndex];
-  
-        // perform operation and save data
-  
-        myTree.contains(randomNodeValue);
-        output.data.push({ x: treeSize, y: myTree.containsComputations });
-  
-        // myTree.findMax();
-        // output.data.push({x: treeSize, y: myTree.findMaxComputations});
-  
-        // myTree.findMin();
-        // output.data.push({x: treeSize, y: myTree.findMinComputations});
-      }
-    }
-    return [output];
-  }
-  
-  compositeTest_Ins_Del(numberOfRuns) {
-    // empty data container
-    let opacity = 50;
-    const dataset = createBlankDataset(numberOfRuns, opacity);
-  
-    for(let r = 0; r < numberOfRuns; r++){
-      let myTree = getEmptyTree(treeType);
-      let treeSize = 0;
-      // generate random numbers
-      let numArray = getRandomNumberArray(1000000);
-      let data = [];
-      let numbersInTree = [];
-  
-      // build tree
-      let n = 100;
-      for (let i = 0; i < n; i++){
-        let randomNumber = numArray.shift();
-        myTree.insert(randomNumber);
-        numbersInTree.push(randomNumber);
-        treeSize++;
-      }
-  
-      for (let i = 0; i < n * n; i++){
-        for(let j = 0; j < 1; j++){
-          // select a random number
-          let randomNumber = numArray.shift();
-          myTree.insert(randomNumber);
-          numbersInTree.push(randomNumber);
-          treeSize++;
-        }
-        for(let k = 0; k < 1; k++){
-          //generate random number between 1 and numbersInTree.length
-          let randomIndex = Math.floor(Math.random() * numbersInTree.length);
-          let randomNumber = numbersInTree[randomIndex];
-          myTree.remove(randomNumber);
-          numArray.push(randomNumber);
-          numbersInTree.splice(randomIndex, 1);
-          treeSize--;
-        }
-  
-        // measure tree height and save data {x: tree size (number of nodes), y: average height}
-        let maxDepth = getMaxNodeDepth(myTree);
-        let avgDepth = getAvgNodeDepth(myTree);
-        data[i] = maxDepth;
-      }
-      
-      dataset[r].data = removeUndef(data);
-    }
-    return dataset;
-  }
-  
+
   runSingleTest_Contains_Counter(treesize) {
     const times = new Array(n);
     const myTree = getEmptyTree(treeType);
     const numbers = [];
-  
+
     const randomNumbers = this.getRandomNumberSet(n);
-  
+
     // build tree with random numbers
     randomNumbers.forEach((val) => {
       myTree.insert(val);
       numbers.push(val);
     });
-  
+
     // access them in a random order
     let i = 0;
     while (i < n) {
       const randomIndex = Math.floor(Math.random() * randomNumbers.size);
       const randomNodeValue = numbers[randomIndex];
-  
+
       const success = myTree.contains(randomNodeValue);
       if (success) {
         times[treesize] = myTree.containsComputations;
         i += 1;
       }
     }
-  
+
     return times;
   }
-  
+
   calculateAverageFromSingleDataSet(dataset) {
     const xValues = new Map();
-  
+
     for (let i = 0; i < dataset.length; i += 1) {
       const subData = dataset[i];
-      const {data} = subData;
-  
+      const { data } = subData;
+
       for (let j = 0; j < data.length; j += 1) {
-        const {x} = data[j];
+        const { x } = data[j];
         if (xValues.has(x)) {
           const oldYTotal = xValues.get(x).yTotal;
           const oldCount = xValues.get(x).count;
@@ -196,8 +117,8 @@ class Runner {
     xValues.forEach((val, key) => {
       newDataSet.push({ x: key, y: val.yTotal / val.count });
     });
-    let { r, g, b, a } = this.avgColor;
-  
+    const { r, g, b, a } = this.avgColor;
+
     const formattedData = {
       label: 'Average',
       pointBorderColor: `rgba(${r}, ${g}, ${b}, ${a})`,
@@ -213,99 +134,61 @@ class Runner {
     };
     return [formattedData];
   }
-  
-  writeResultsToFile(data, filename) {
+
+  static writeResultsToFile(data, filename) {
     const stringData = JSON.stringify(data);
-  
+
     fs.writeFile(filename, stringData, (err, data) => {
       if (err) console.log(err);
     });
   }
-  
-  createDataRaw(rawRuns, rawSampleRate) {
-    const output = this.runTheTest_Dependent_Tree_Size(rawRuns, rawSampleRate);
-    // let output = runTheTest_Variable_Tree_Size(runs);
-    // let output = compositeTest_Ins_Del(runs);
-    // writeResultsToFile(output, 'data1.json');
-    return output;
-  }
-  
-  createDataAverage(avgRuns, avgSampleRate) {
-    const output = this.runTheTest_Dependent_Tree_Size(avgRuns, avgSampleRate);
-    // let output = runTheTest_Variable_Tree_Size(runs);
-    const averageData = this.calculateAverageFromSingleDataSet(output);
-    return averageData;
-  }
-  
-  //
-  // main runner
-  // 
-  createData() {
-    // this.treeType = 'SplayTree'; // BST , AVLTree , SplayTree
-    // this.method = 'remove'; // insert , remove
-    // this.start = 100;
-    // this.end = 0;
-    // this.n = Math.abs(this.end - this.start);
-    // this.fileName = 'data1.json';
-    // // raw data params
-    // this.rawRuns = 100;
-    // this.rawSampleRate = 1;
-    // // avg data params (use more runs to get smoother avg plot)
-    // this.avgRuns = 1000;
-    // this.avgSampleRate = 1;
 
+  createDataRaw() {
     const datasets = [
-      ...this.createDataRaw(this.rawRuns, this.rawSampleRate),
-      ...this.createDataAverage(this.avgRuns, this.avgSampleRate),
-      // this.getLogNData(this.start, this.end, {r: 25, g:150, b:0, a:1}),
-      // this.getExpData(this.start, this.end, {r: 150, g:25, b:0, a:1}, 0.5),
+      ...this.runTheTest_Dependent_Tree_Size(this.rawRuns, this.rawSampleRate),
     ];
     return datasets;
-    // this.writeResultsToFile(datasets, this.fileName);
+  }
+
+  createDataAvg() {
+    let data = this.runTheTest_Dependent_Tree_Size(this.avgRuns, this.rawSampleRate);
+    let avg = this.calculateAverageFromSingleDataSet(data);
+    const datasets = [
+      ...avg,
+    ];
+    return datasets;
   }
 }
 
-// BST , AVLTree , SplayTree
+// BST , AVLTree , SplayTree, RedBlackTree
 // insert , remove
-let options1 = {
-  treeType: 'SplayTree', 
-  method: 'insert', 
+const options1 = {
+  treeType: 'RedBlackTree',
+  method: 'remove',
   start: 100,
   end: 0,
   rawRuns: 100,
   rawSampleRate: 1,
-  avgRuns: 1000,
+  avgRuns: 10000,
   avgSampleRate: 1,
   avgColor: {r:255, g:0, b:0, a:1},
-  ptColor: {r:255, g:0, b:0, a:0.05},
+  ptColor: {r:0, g:0, b:255, a:0.05},
 };
-
-let myRunner1 = new Runner(options1);
-let datasets1 = myRunner1.createData();
-
-// ~~~~ 
-
-let options2 = {
-  treeType: 'BST', 
-  method: 'insert', 
-  start: 100,
+const options2 = {
+  treeType: 'BST',
+  method: 'insert',
+  start: 10,
   end: 0,
-  rawRuns: 100,
+  rawRuns: 2,
   rawSampleRate: 1,
-  avgRuns: 1000,
+  avgRuns: 2,
   avgSampleRate: 1,
   avgColor: {r:0, g:255, b:0, a:1},
   ptColor: {r:0, g:255, b:0, a:0.05},
 };
-
-let myRunner2 = new Runner(options2);
-let datasets2 = myRunner2.createData();
- 
-// ~~~~ 
-
-let options3 = {
-  treeType: 'AVLTree', 
-  method: 'insert', 
+const options3 = {
+  treeType: 'AVLTree',
+  method: 'insert',
   start: 100,
   end: 0,
   rawRuns: 100,
@@ -316,12 +199,20 @@ let options3 = {
   ptColor: {r:0, g:0, b:255, a:0.05},
 };
 
-let myRunner3 = new Runner(options3);
-let datasets3 = myRunner3.createData();
+// ~~~~
 
-// ~~~~ 
-let a = myRunner1.getLogNData(0, 100, {r: 25, g:150, b:0, a:1});
-let b = myRunner1.getExpData(0, 100, {r: 150, g:25, b:0, a:1}, 0.5);
+let runners = [
+  new Runner(options1),
+  // new Runner(options2),
+  // new Runner(options3),
+];
+const allData = [];
+for (let i = 0; i < runners.length; i++) {
+  allData.push(...runners[i].createDataRaw());
+  allData.push(...runners[i].createDataAvg());
+}
 
-let allData = [...datasets1, ...datasets2, ...datasets3, a, b]
-myRunner1.writeResultsToFile(allData, `data1.json`);
+allData.push(runners[0].getLogNData(100, 0, {r: 25, g:150, b:0, a:1}));
+allData.push(runners[0].getExpData(100, 0, {r: 150, g:25, b:0, a:1}, 0.5));
+
+Runner.writeResultsToFile(allData, `data1.json`);

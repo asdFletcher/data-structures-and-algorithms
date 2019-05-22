@@ -11,7 +11,6 @@ function singleRunRemove(sampleRate) {
     myTree.insert(val);
     numbers.push(val);
   });
-
   let sum = 0;
   const counterCallback = () => { sum += 1; }
 

@@ -7,6 +7,12 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "benchmarker",
+      "program": "${workspaceFolder}/src/benchmarking/benchmarker/benchmarker.js"
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "Launch Program",
       "program": "${workspaceFolder}/jest.config.js"
     },
