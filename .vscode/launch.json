@@ -8,7 +8,7 @@
       "type": "node",
       "request": "launch",
       "name": "random",
-      "program": "${workspaceFolder}/src/code-challenges/leetcode/medium/bst-from-preorder/bst-from-preorder.js"
+      "program": "${workspaceFolder}/src/code-challenges/leetcode/robot-plane/robot-plane.js"
     },
     {
       "type": "node",
