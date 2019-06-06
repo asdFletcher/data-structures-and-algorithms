@@ -5,15 +5,6 @@
 const AVLTree = require('../avl-tree.js');
 const Node = require('../avl-tree-node.js');
 
-function setCountersToZero(tree) {
-  tree.insertComputations = 0;
-  tree.removeComputations = 0;
-  tree.containsComputations = 0;
-  tree.findMaxComputations = 0;
-  tree.findMinComputations = 0;
-  tree.printComputations = 0;
-}
-
 describe('avl tree', () => {
   describe('constructor', () => {
     it('constructs a tree', () => {
@@ -176,7 +167,6 @@ describe('avl tree', () => {
       expect(myTree.root.left.left).toBeNull();
       expect(myTree.root.left.height).toBe(0);
 
-
       expect(myTree.root.right).toBeInstanceOf(Node);
       expect(myTree.root.right.value).toBe(6);
       expect(myTree.root.right.left).toBeNull();
@@ -255,7 +245,6 @@ describe('avl tree', () => {
       expect(myTree.root.left).toBeInstanceOf(Node);
       expect(myTree.root.left.value).toBe(5);
       expect(myTree.root.left.left).toBeNull();
-
 
       expect(myTree.root.right).toBeInstanceOf(Node);
       expect(myTree.root.right.value).toBe(7);
@@ -882,7 +871,6 @@ describe('avl tree', () => {
     });
 
     it('returns the node when it is present, and is the root, and has no children', () => {
-      // ~
       const myTree = new AVLTree();
 
       const values = [2];
@@ -897,16 +885,11 @@ describe('avl tree', () => {
         expectedTree.insert(expectedTreeValues[i]);
       }
 
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
-
       expect(result.value).toBe(2);
       expect(myTree).toEqual(expectedTree);
-      // ~
     });
 
     it('returns the node when it is present, and is the root, and has 1 left child', () => {
-      // ~
       const myTree = new AVLTree();
 
       const values = [2, 1];
@@ -921,16 +904,11 @@ describe('avl tree', () => {
         expectedTree.insert(expectedTreeValues[i]);
       }
 
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
-
       expect(result.value).toBe(2);
       expect(myTree).toEqual(expectedTree);
-      // ~
     });
 
     it('returns the node when it is present, and is the root, and has 1 right child', () => {
-      // ~
       const myTree = new AVLTree();
 
       const values = [2, 3];
@@ -945,16 +923,11 @@ describe('avl tree', () => {
         expectedTree.insert(expectedTreeValues[i]);
       }
 
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
-
       expect(result.value).toBe(2);
       expect(myTree).toEqual(expectedTree);
-      // ~
     });
 
     it('returns the removed node, and is the root, from a tree that has two single-node children', () => {
-      // ~
       const myTree = new AVLTree();
 
       const values = [2, 1, 3];
@@ -969,16 +942,11 @@ describe('avl tree', () => {
         expectedTree.insert(expectedTreeValues[i]);
       }
 
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
-
       expect(result.value).toBe(2);
       expect(myTree).toEqual(expectedTree);
-      // ~
     });
 
     it('returns the removed leaf node', () => {
-      // ~
       const myTree = new AVLTree();
 
       const values = [2, 1, 3];
@@ -993,16 +961,11 @@ describe('avl tree', () => {
         expectedTree.insert(expectedTreeValues[i]);
       }
 
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
-
       expect(result.value).toBe(1);
       expect(myTree).toEqual(expectedTree);
-      // ~
     });
 
     it('removes left non leaf node from sub tree with only leaves', () => {
-      // ~
       const myTree = new AVLTree();
 
       const values = [5, 3, 7, 2, 4, 6, 8];
@@ -1017,16 +980,11 @@ describe('avl tree', () => {
         expectedTree.insert(expectedTreeValues[i]);
       }
 
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
-
       expect(result.value).toBe(3);
       expect(myTree).toEqual(expectedTree);
-      // ~
     });
 
     it('removes right non leaf node from sub tree with only leaves', () => {
-      // ~
       const myTree = new AVLTree();
 
       const values = [5, 3, 7, 2, 4, 6, 8];
@@ -1041,16 +999,11 @@ describe('avl tree', () => {
         expectedTree.insert(expectedTreeValues[i]);
       }
 
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
-
       expect(result.value).toBe(7);
       expect(myTree).toEqual(expectedTree);
-      // ~
     });
 
     it('removes a leaf node causing a single left rotation', () => {
-      // ~
       const myTree = new AVLTree();
 
       const values = [3, 2, 4, 1];
@@ -1065,16 +1018,11 @@ describe('avl tree', () => {
         expectedTree.insert(expectedTreeValues[i]);
       }
 
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
-
       expect(result.value).toBe(4);
       expect(myTree).toEqual(expectedTree);
-      // ~
     });
 
     it('removes a leaf node causing a single right rotation', () => {
-      // ~
       const myTree = new AVLTree();
 
       const values = [1, 0, 2, 3];
@@ -1089,16 +1037,11 @@ describe('avl tree', () => {
         expectedTree.insert(expectedTreeValues[i]);
       }
 
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
-
       expect(result.value).toBe(0);
       expect(myTree).toEqual(expectedTree);
-      // ~
     });
 
     it('removes a leaf node causing a double left rotation', () => {
-      // ~
       const myTree = new AVLTree();
 
       const values = [8, 6, 9, 7];
@@ -1113,15 +1056,10 @@ describe('avl tree', () => {
         expectedTree.insert(expectedTreeValues[i]);
       }
 
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
-
       expect(result.value).toBe(9);
       expect(myTree).toEqual(expectedTree);
-      // ~
     });
     it('removes a leaf node causing a double right rotation', () => {
-      // ~
       const myTree = new AVLTree();
 
       const values = [5, 4, 7, 6];
@@ -1136,16 +1074,11 @@ describe('avl tree', () => {
         expectedTree.insert(expectedTreeValues[i]);
       }
 
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
-
       expect(result.value).toBe(4);
       expect(myTree).toEqual(expectedTree);
-      // ~
     });
 
     it('removes a leaf node causing a double left rotation', () => {
-      // ~
       const myTree = new AVLTree();
 
       const values = [8, 6, 9, 5, 7];
@@ -1160,15 +1093,10 @@ describe('avl tree', () => {
         expectedTree.insert(expectedTreeValues[i]);
       }
 
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
-
       expect(result.value).toBe(9);
       expect(myTree).toEqual(expectedTree);
-      // ~
     });
     it('removes a leaf node causing a double right rotation', () => {
-      // ~
       const myTree = new AVLTree();
 
       const values = [5, 4, 7, 6, 8];
@@ -1183,16 +1111,11 @@ describe('avl tree', () => {
         expectedTree.insert(expectedTreeValues[i]);
       }
 
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
-
       expect(result.value).toBe(4);
       expect(myTree).toEqual(expectedTree);
-      // ~
     });
 
     it('removes a leaf node causing a double left rotation with larger sub trees', () => {
-      // ~
       const myTree = new AVLTree();
 
       const values = [85, 62, 88, 42, 66, 86, 0, 65];
@@ -1207,12 +1130,8 @@ describe('avl tree', () => {
         expectedTree.insert(expectedTreeValues[i]);
       }
 
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
-
       expect(result.value).toBe(86);
       expect(myTree).toEqual(expectedTree);
-      // ~
     });
     it('removes a leaf node causing a double left rotation with full sub trees', () => {
       const myTree = new AVLTree();
@@ -1228,10 +1147,6 @@ describe('avl tree', () => {
       for (let i = 0; i < values.length; i++) {
         myExpectedTree.insert(expectedValues[i]);
       }
-
-      // ignore analyitics counters
-      setCountersToZero(myTree);
-      setCountersToZero(myExpectedTree);
 
       expect(myTree).toEqual(myExpectedTree);
     });
@@ -1263,9 +1178,6 @@ describe('avl tree', () => {
         expectedTree.insert(expectedTreeValues[i]);
       }
 
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
-
       expect(result.value).toBe(0);
       expect(myTree).toEqual(expectedTree);
     });
@@ -1283,9 +1195,6 @@ describe('avl tree', () => {
       for (let i = 0; i < expectedTreeValues.length; i++) {
         expectedTree.insert(expectedTreeValues[i]);
       }
-
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
 
       expect(result.value).toBe(7);
       expect(myTree).toEqual(expectedTree);
@@ -1306,9 +1215,6 @@ describe('avl tree', () => {
         expectedTree.insert(expectedTreeValues[i]);
       }
 
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
-
       expect(result.value).toBe(17);
       expect(myTree).toEqual(expectedTree);
     });
@@ -1326,9 +1232,6 @@ describe('avl tree', () => {
       for (let i = 0; i < expectedTreeValues.length; i++) {
         expectedTree.insert(expectedTreeValues[i]);
       }
-
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
 
       expect(result.value).toBe(12);
       expect(myTree).toEqual(expectedTree);
@@ -1350,9 +1253,6 @@ describe('avl tree', () => {
         expectedTree.insert(expectedTreeValues[i]);
       }
 
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
-
       expect(result.value).toBe(10);
       expect(myTree).toEqual(expectedTree);
     });
@@ -1370,9 +1270,6 @@ describe('avl tree', () => {
       for (let i = 0; i < expectedTreeValues.length; i++) {
         expectedTree.insert(expectedTreeValues[i]);
       }
-
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
 
       expect(result.value).toBe(10);
       expect(myTree).toEqual(expectedTree);
@@ -1392,9 +1289,6 @@ describe('avl tree', () => {
         expectedTree.insert(expectedTreeValues[i]);
       }
 
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
-
       expect(result.value).toBe(10);
       expect(myTree).toEqual(expectedTree);
     });
@@ -1412,9 +1306,6 @@ describe('avl tree', () => {
       for (let i = 0; i < expectedTreeValues.length; i++) {
         expectedTree.insert(expectedTreeValues[i]);
       }
-
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
 
       expect(result.value).toBe(10);
       expect(myTree).toEqual(expectedTree);
@@ -1434,9 +1325,6 @@ describe('avl tree', () => {
         expectedTree.insert(expectedTreeValues[i]);
       }
 
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
-
       expect(result.value).toBe(10);
       expect(myTree).toEqual(expectedTree);
     });
@@ -1454,9 +1342,6 @@ describe('avl tree', () => {
       for (let i = 0; i < expectedTreeValues.length; i++) {
         expectedTree.insert(expectedTreeValues[i]);
       }
-
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
 
       expect(result.value).toBe(10);
       expect(myTree).toEqual(expectedTree);
@@ -1476,9 +1361,6 @@ describe('avl tree', () => {
         expectedTree.insert(expectedTreeValues[i]);
       }
 
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
-
       expect(result.value).toBe(10);
       expect(myTree).toEqual(expectedTree);
     });
@@ -1496,9 +1378,6 @@ describe('avl tree', () => {
       for (let i = 0; i < expectedTreeValues.length; i++) {
         expectedTree.insert(expectedTreeValues[i]);
       }
-
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
 
       expect(result.value).toBe(10);
       expect(myTree).toEqual(expectedTree);
@@ -1518,9 +1397,6 @@ describe('avl tree', () => {
         expectedTree.insert(expectedTreeValues[i]);
       }
 
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
-
       expect(result.value).toBe(30);
       expect(myTree).toEqual(expectedTree);
     });
@@ -1538,9 +1414,6 @@ describe('avl tree', () => {
       for (let i = 0; i < expectedTreeValues.length; i++) {
         expectedTree.insert(expectedTreeValues[i]);
       }
-
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
 
       expect(result.value).toBe(30);
       expect(myTree).toEqual(expectedTree);
@@ -1560,9 +1433,6 @@ describe('avl tree', () => {
         expectedTree.insert(expectedTreeValues[i]);
       }
 
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
-
       expect(result.value).toBe(30);
       expect(myTree).toEqual(expectedTree);
     });
@@ -1580,9 +1450,6 @@ describe('avl tree', () => {
       for (let i = 0; i < expectedTreeValues.length; i++) {
         expectedTree.insert(expectedTreeValues[i]);
       }
-
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
 
       expect(result.value).toBe(30);
       expect(myTree).toEqual(expectedTree);
@@ -1602,9 +1469,6 @@ describe('avl tree', () => {
         expectedTree.insert(expectedTreeValues[i]);
       }
 
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
-
       expect(result.value).toBe(30);
       expect(myTree).toEqual(expectedTree);
     });
@@ -1622,9 +1486,6 @@ describe('avl tree', () => {
       for (let i = 0; i < expectedTreeValues.length; i++) {
         expectedTree.insert(expectedTreeValues[i]);
       }
-
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
 
       expect(result.value).toBe(30);
       expect(myTree).toEqual(expectedTree);
@@ -1644,9 +1505,6 @@ describe('avl tree', () => {
         expectedTree.insert(expectedTreeValues[i]);
       }
 
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
-
       expect(result.value).toBe(30);
       expect(myTree).toEqual(expectedTree);
     });
@@ -1664,9 +1522,6 @@ describe('avl tree', () => {
       for (let i = 0; i < expectedTreeValues.length; i++) {
         expectedTree.insert(expectedTreeValues[i]);
       }
-
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
 
       expect(result.value).toBe(30);
       expect(myTree).toEqual(expectedTree);
@@ -1687,9 +1542,6 @@ describe('avl tree', () => {
         expectedTree.insert(expectedTreeValues[i]);
       }
 
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
-
       expect(result.value).toBe(19);
       expect(myTree).toEqual(expectedTree);
     });
@@ -1708,9 +1560,6 @@ describe('avl tree', () => {
         expectedTree.insert(expectedTreeValues[i]);
       }
 
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
-
       expect(result.value).toBe(19);
       expect(myTree).toEqual(expectedTree);
     });
@@ -1728,10 +1577,6 @@ describe('avl tree', () => {
       for (let i = 0; i < expectedTreeValues.length; i++) {
         expectedTree.insert(expectedTreeValues[i]);
       }
-
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
-
       expect(result.value).toBe(19);
       expect(myTree).toEqual(expectedTree);
     });
@@ -1751,9 +1596,6 @@ describe('avl tree', () => {
         expectedTree.insert(expectedTreeValues[i]);
       }
 
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
-
       expect(result.value).toBe(19);
       expect(myTree).toEqual(expectedTree);
     });
@@ -1771,10 +1613,7 @@ describe('avl tree', () => {
       for (let i = 0; i < expectedTreeValues.length; i++) {
         expectedTree.insert(expectedTreeValues[i]);
       }
-
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
-
+      
       expect(result.value).toBe(19);
       expect(myTree).toEqual(expectedTree);
     });
@@ -1792,9 +1631,6 @@ describe('avl tree', () => {
       for (let i = 0; i < expectedTreeValues.length; i++) {
         expectedTree.insert(expectedTreeValues[i]);
       }
-
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
 
       expect(result.value).toBe(19);
       expect(myTree).toEqual(expectedTree);
@@ -1816,9 +1652,6 @@ describe('avl tree', () => {
         expectedTree.insert(expectedTreeValues[i]);
       }
 
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
-
       expect(result.value).toBe(14);
       expect(myTree).toEqual(expectedTree);
     });
@@ -1836,9 +1669,6 @@ describe('avl tree', () => {
       for (let i = 0; i < expectedTreeValues.length; i++) {
         expectedTree.insert(expectedTreeValues[i]);
       }
-
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
 
       expect(result.value).toBe(14);
       expect(myTree).toEqual(expectedTree);
@@ -1858,9 +1688,6 @@ describe('avl tree', () => {
         expectedTree.insert(expectedTreeValues[i]);
       }
 
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
-
       expect(result.value).toBe(14);
       expect(myTree).toEqual(expectedTree);
     });
@@ -1879,9 +1706,6 @@ describe('avl tree', () => {
         expectedTree.insert(expectedTreeValues[i]);
       }
 
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
-
       expect(result.value).toBe(13);
       expect(myTree).toEqual(expectedTree);
     });
@@ -1899,9 +1723,6 @@ describe('avl tree', () => {
       for (let i = 0; i < expectedTreeValues.length; i++) {
         expectedTree.insert(expectedTreeValues[i]);
       }
-
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
 
       expect(result.value).toBe(21);
       expect(myTree).toEqual(expectedTree);
@@ -1923,9 +1744,6 @@ describe('avl tree', () => {
         expectedTree.insert(expectedTreeValues[i]);
       }
 
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
-
       expect(result.value).toBe(42);
       expect(myTree).toEqual(expectedTree);
     });
@@ -1944,8 +1762,6 @@ describe('avl tree', () => {
         expectedTree.insert(expectedTreeValues[i]);
       }
 
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
 
       expect(result.value).toBe(4);
       expect(myTree).toEqual(expectedTree);
@@ -1964,9 +1780,6 @@ describe('avl tree', () => {
       for (let i = 0; i < expectedTreeValues.length; i++) {
         expectedTree.insert(expectedTreeValues[i]);
       }
-
-      setCountersToZero(myTree);
-      setCountersToZero(expectedTree);
 
       expect(result.value).toBe(4);
       expect(myTree).toEqual(expectedTree);
