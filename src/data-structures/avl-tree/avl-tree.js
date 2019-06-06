@@ -454,6 +454,15 @@ class AVLTree {
     this.setImbalancedNodeFromParent(newRoot);
   }
 
+  handleRotation(node) {
+    // cases:
+    // single left
+    // single right
+    // double left
+    // double right
+    // mirror of all depending on parent
+  }
+
   getHeight(node) {
     if (!node) { return -1; }
     return node.height;
