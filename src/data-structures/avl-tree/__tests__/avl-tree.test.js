@@ -1613,7 +1613,7 @@ describe('avl tree', () => {
       for (let i = 0; i < expectedTreeValues.length; i++) {
         expectedTree.insert(expectedTreeValues[i]);
       }
-      
+
       expect(result.value).toBe(19);
       expect(myTree).toEqual(expectedTree);
     });
