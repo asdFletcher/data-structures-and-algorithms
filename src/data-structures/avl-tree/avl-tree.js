@@ -7,6 +7,7 @@ class AVLTree {
     this.root = null;
     this.imbalancedNode = null;
     this.imbalancedNodeParent = null;
+    this.problemNodeDirection = null;
   }
 
   insert(value, cb) {
@@ -134,11 +135,13 @@ class AVLTree {
         result = go(node.left);
       }
 
-      // done with recursion
+      // done with recursion, call stack collapsing
+      // if imbalanced node was set in previous function call
+      // this.imbalancedNode will be defined, and is fixed here
+      // if there remains an imbalance afterwards, this.imbalancedNode 
+      // is then assigned for the next function call to handle
       this.fixImbalances(node);
       this.setImbalancedNode(node);
-
-      // this.imbalancedNode = null;
 
       this.updateNodeHeight(node);
       return result;
@@ -278,189 +281,168 @@ class AVLTree {
     }
   }
 
-  fixImbalances(node) {
+  fixImbalances(parent) {
     if (this.imbalancedNode) {
-      const problemNodeDirection = this.getProblemNodeDirection(node, this.imbalancedNode);
-      this.performRotations(this.imbalancedNode, node, problemNodeDirection);
+      this.imbalancedNodeParent = parent;
+      this.setProblemNodeDirection();
+      this.performRotations();
 
       while (this.imbalancedNode) {
-        const node = this.imbalancedNode;
-        const parent = this.imbalancedNodeParent;
-        const problemNodeDirection = this.getProblemNodeDirection(parent, node);
-        this.performRotations(node, parent, problemNodeDirection);
+        this.setProblemNodeDirection();
+        this.performRotations();
       }
 
       this.imbalancedNode = null;
       this.imbalancedNodeParent = null;
+      this.problemNodeDirection = null;
+    }
+  }
+  
+  performRotations() {
+    let heavySide = this.getTallerSubTree();
+    let rotationType = this.getRotationType(heavySide);
+
+    if (rotationType === 'single') {
+      this.handleSingleRotation(heavySide);
+    } else {
+      this.handleDoubleRotation(heavySide);
     }
   }
 
-  getProblemNodeDirection(node, imbalancedNode) {
-    if (node && node.left && node.left.value === imbalancedNode.value) {
-      return 'left';
+  setProblemNodeDirection() {
+    let parent = this.imbalancedNodeParent;
+    if (parent && parent.left && parent.left.value === this.imbalancedNode.value) {
+      this.problemNodeDirection = 'left';
+    } else {
+      this.problemNodeDirection = 'right';
     }
-    if (node && node.right && node.right.value === imbalancedNode.value) {
-      return 'right';
-    }
-    return undefined;
   }
 
-  performRotations(originalRoot, parentNode, problemNodeDirection) {
-    const leftHeight = this.getHeight(originalRoot.left);
-    const rightHeight = this.getHeight(originalRoot.right);
+  getRotationType(heavySide) {
+    // if heavy side is left, we need to check for a right rotation and vice versa
+    if (heavySide === 'left') {
+      if (this.isSingleRightRotation()) {
+        return 'single'
+      }
+      return 'double';
+    } else {
+      if (this.isSingleLeftRotation()) {
+        return 'single'
+      }
+      return 'double';
+    }
+  }
+
+  getTallerSubTree() {
+    const leftHeight = this.getHeight(this.imbalancedNode.left);
+    const rightHeight = this.getHeight(this.imbalancedNode.right);
 
     if (leftHeight - rightHeight >= 2) {
-      this.handleLeftImbalance(originalRoot, parentNode, problemNodeDirection);
-    }
-
-    if (rightHeight - leftHeight >= 2) {
-      this.handleRightImbalance(originalRoot, parentNode, problemNodeDirection);
+      return 'left';
+    } else {
+      return 'right';
     }
   }
 
-  handleRightImbalance(originalRoot, parentNode, problemNodeDirection) {
-    const rightChild = originalRoot.right;
+  handleDoubleRotation(heavySide) {
+    let newRoot;
+    if (heavySide === 'left') {
+      newRoot = this.handleDoubleRightRotation();
+    } else {
+      newRoot = this.handleDoubleLeftRotation();
+    }
+    let parentNode = this.imbalancedNodeParent;
+    if (!parentNode) {
+      this.root = newRoot;
+    } else {
+      parentNode[this.problemNodeDirection] = newRoot;
+    }
+
+    this.updateNodeHeightAndBothChildren(newRoot);
+    this.imbalancedNode = null;
+    this.imbalancedNodeParent = null;
+    this.setImbalancedNodeFromParent(newRoot);
+  }
+
+  handleSingleRotation(heavySide) {
+    let newRoot;
+    if (heavySide === 'left') {
+      newRoot = this.handleSingleRightRotation();
+    } else {
+      newRoot = this.handleSingleLeftRotation();
+    }
+    let parentNode = this.imbalancedNodeParent;
+    if (!parentNode) {
+      this.root = newRoot;
+    } else {
+      parentNode[this.problemNodeDirection] = newRoot;
+    }
+
+    this.updateNodeHeightAndBothChildren(newRoot);
+    this.imbalancedNode = null;
+    this.imbalancedNodeParent = null;
+    this.setImbalancedNodeFromParent(newRoot);
+  }
+
+  isSingleLeftRotation() {
+    const rightChild = this.imbalancedNode.right;
     const rightChildLeftHeight = this.getHeight(rightChild.left);
     const rightChildRightHeight = this.getHeight(rightChild.right);
-
     if (rightChildRightHeight > rightChildLeftHeight) {
-      this.handleSingleRightRotation(originalRoot, parentNode, problemNodeDirection);
-    } else {
-      this.handleDoubleRightRotation(originalRoot, parentNode, problemNodeDirection);
+      return true;
     }
+    return false;
   }
-
-  handleLeftImbalance(originalRoot, parentNode, problemNodeDirection) {
-    const leftChild = originalRoot.left;
+  isSingleRightRotation() {
+    const leftChild = this.imbalancedNode.left;
     const leftChildLeftHeight = this.getHeight(leftChild.left);
     const leftChildRightHeight = this.getHeight(leftChild.right);
-
     if (leftChildLeftHeight > leftChildRightHeight) {
-      this.handleSingleLeftRotation(originalRoot, parentNode, problemNodeDirection);
-    } else {
-      this.handleDoubleLeftRotation(originalRoot, parentNode, problemNodeDirection);
+      return true;
     }
+    return false;
   }
 
-  handleDoubleLeftRotation(originalRoot, parentNode, problemNodeDirection) {
-    let leftSubTree;
-    let rightSubTree;
+  handleSingleLeftRotation() {
+    let originalRoot = this.imbalancedNode;
+    const newRoot = this.singleLeft(originalRoot);
+    return newRoot;
+  }
+
+  handleSingleRightRotation() {
+    let originalRoot = this.imbalancedNode;
+    const newRoot = this.singleRight(originalRoot);
+    return newRoot;
+  }
+
+  handleDoubleRightRotation() {
     let newRoot;
-
-    if (!parentNode) {
-      rightSubTree = this.root;
-      leftSubTree = originalRoot.left;
-      newRoot = leftSubTree.right;
-
-      leftSubTree.right = newRoot.left;
-      rightSubTree.left = newRoot.right;
-      newRoot.left = leftSubTree;
-      newRoot.right = rightSubTree;
-      this.root = newRoot;
-    } else {
-      rightSubTree = originalRoot;
-      leftSubTree = originalRoot.left;
-      newRoot = leftSubTree.right;
-
-      leftSubTree.right = newRoot.left;
-      rightSubTree.left = newRoot.right;
-      newRoot.left = leftSubTree;
-      newRoot.right = rightSubTree;
-      parentNode[problemNodeDirection] = newRoot;
-    }
-
-    this.updateNodeHeight(leftSubTree);
-    this.updateNodeHeight(rightSubTree);
-    this.updateNodeHeight(newRoot);
-
-    this.imbalancedNode = null;
-    this.imbalancedNodeParent = null;
-    this.setImbalancedNodeFromParent(newRoot);
+    let originalRoot = this.imbalancedNode;
+    originalRoot.left = this.singleLeft(originalRoot.left);
+    newRoot = this.singleRight(originalRoot);
+    return newRoot;
   }
 
-  handleDoubleRightRotation(originalRoot, parentNode, problemNodeDirection) {
-    let leftSubTree;
-    let rightSubTree;
+  handleDoubleLeftRotation() {
     let newRoot;
-
-    if (!parentNode) {
-      leftSubTree = this.root;
-      rightSubTree = originalRoot.right;
-      newRoot = rightSubTree.left;
-
-      leftSubTree.right = newRoot.left;
-      rightSubTree.left = newRoot.right;
-      newRoot.left = leftSubTree;
-      newRoot.right = rightSubTree;
-      this.root = newRoot;
-    } else {
-      leftSubTree = originalRoot;
-      rightSubTree = originalRoot.right;
-      newRoot = rightSubTree.left;
-
-      leftSubTree.right = newRoot.left;
-      rightSubTree.left = newRoot.right;
-      newRoot.left = leftSubTree;
-      newRoot.right = rightSubTree;
-      parentNode[problemNodeDirection] = newRoot;
-    }
-
-    this.updateNodeHeight(leftSubTree);
-    this.updateNodeHeight(rightSubTree);
-    this.updateNodeHeight(newRoot);
-
-    this.imbalancedNode = null;
-    this.imbalancedNodeParent = null;
-    this.setImbalancedNodeFromParent(newRoot);
+    let originalRoot = this.imbalancedNode;
+    originalRoot.right = this.singleRight(originalRoot.right);
+    newRoot = this.singleLeft(originalRoot);
+    return newRoot;
   }
 
-  handleSingleLeftRotation(originalRoot, parentNode, problemNodeDirection) {
-    const newRoot = originalRoot.left;
-    originalRoot.left = newRoot.right;
-    newRoot.right = originalRoot;
-
-    if (!parentNode) {
-      this.root = newRoot;
-    } else {
-      parentNode[problemNodeDirection] = newRoot;
-    }
-
-    this.updateNodeHeight(newRoot.left);
-    this.updateNodeHeight(newRoot.right);
-    this.updateNodeHeight(newRoot);
-
-    this.imbalancedNode = null;
-    this.imbalancedNodeParent = null;
-    this.setImbalancedNodeFromParent(newRoot);
+  singleRight(node) {
+    const newRoot = node.left;
+    node.left = newRoot.right;
+    newRoot.right = node;
+    return newRoot;
   }
 
-  handleSingleRightRotation(originalRoot, parentNode, problemNodeDirection) {
-    const newRoot = originalRoot.right;
-    originalRoot.right = newRoot.left;
-    newRoot.left = originalRoot;
-
-    if (!parentNode) {
-      this.root = newRoot;
-    } else {
-      parentNode[problemNodeDirection] = newRoot;
-    }
-
-    this.updateNodeHeight(newRoot.left);
-    this.updateNodeHeight(newRoot.right);
-    this.updateNodeHeight(newRoot);
-
-    this.imbalancedNode = null;
-    this.imbalancedNodeParent = null;
-    this.setImbalancedNodeFromParent(newRoot);
-  }
-
-  handleRotation(node) {
-    // cases:
-    // single left
-    // single right
-    // double left
-    // double right
-    // mirror of all depending on parent
+  singleLeft(node) {
+    const newRoot = node.right;
+    node.right = newRoot.left;
+    newRoot.left = node;
+    return newRoot;
   }
 
   getHeight(node) {
@@ -512,6 +494,12 @@ class AVLTree {
     if (node.left && node.right) {
       node.height = Math.max(node.left.height, node.right.height) + 1;
     }
+  }
+
+  updateNodeHeightAndBothChildren(node) {
+    this.updateNodeHeight(node.left)
+    this.updateNodeHeight(node.right)
+    this.updateNodeHeight(node)
   }
 
   treeIsEmpty() {
