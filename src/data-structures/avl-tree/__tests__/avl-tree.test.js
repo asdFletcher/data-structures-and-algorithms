@@ -173,7 +173,7 @@ describe('avl tree', () => {
       expect(myTree.root.right.height).toBe(0);
     });
 
-    it('can insert 3 nodes with a single left root rotation', () => {
+    it('can insert 3 nodes with a single right root rotation', () => {
       const myTree = new AVLTree();
       myTree.insert(5);
       myTree.insert(4);
@@ -192,7 +192,7 @@ describe('avl tree', () => {
       expect(myTree.root.right.left).toBeNull();
     });
 
-    it('can insert 3 nodes with a single left root rotation, with correct height maintenance', () => {
+    it('can insert 3 nodes with a single right root rotation, with correct height maintenance', () => {
       const myTree = new AVLTree();
       myTree.insert(5);
       myTree.insert(4);
@@ -203,7 +203,7 @@ describe('avl tree', () => {
       expect(myTree.root.right.height).toBe(0);
     });
 
-    it('can insert 3 nodes with a single right root rotation', () => {
+    it('can insert 3 nodes with a single left root rotation', () => {
       const myTree = new AVLTree();
       myTree.insert(1);
       myTree.insert(2);
@@ -222,7 +222,7 @@ describe('avl tree', () => {
       expect(myTree.root.right.left).toBeNull();
     });
 
-    it('can insert 3 nodes with a single right root rotation, with correct height maintenance', () => {
+    it('can insert 3 nodes with a single left root rotation, with correct height maintenance', () => {
       const myTree = new AVLTree();
       myTree.insert(1);
       myTree.insert(2);
@@ -233,7 +233,7 @@ describe('avl tree', () => {
       expect(myTree.root.right.height).toBe(0);
     });
 
-    it('can insert 3 nodes with a double left root rotation, with no sub trees', () => {
+    it('can insert 3 nodes with a double right root rotation, with no sub trees', () => {
       const myTree = new AVLTree();
       myTree.insert(7);
       myTree.insert(5);
@@ -251,7 +251,7 @@ describe('avl tree', () => {
       expect(myTree.root.right.left).toBeNull();
     });
 
-    it('can insert 3 nodes with a double left root rotation, with correct height maintenance', () => {
+    it('can insert 3 nodes with a double right root rotation, with correct height maintenance', () => {
       const myTree = new AVLTree();
       myTree.insert(7);
       myTree.insert(5);
@@ -262,7 +262,7 @@ describe('avl tree', () => {
       expect(myTree.root.right.height).toBe(0);
     });
 
-    it('can insert 3 nodes with a double right root rotation, with no sub trees', () => {
+    it('can insert 3 nodes with a double left root rotation, with no sub trees', () => {
       const myTree = new AVLTree();
       myTree.insert(7);
       myTree.insert(9);
@@ -277,7 +277,7 @@ describe('avl tree', () => {
       expect(myTree.root.right.left).toBeNull();
     });
 
-    it('can insert 3 nodes with a double right root rotation, with correct height maintenance', () => {
+    it('can insert 3 nodes with a double left root rotation, with correct height maintenance', () => {
       const myTree = new AVLTree();
       myTree.insert(7);
       myTree.insert(9);
@@ -288,7 +288,7 @@ describe('avl tree', () => {
       expect(myTree.root.right.height).toBe(0);
     });
 
-    it('does a double left root rotation, with a single left child on new root', () => {
+    it('does a double right root rotation, with a single left child on new root', () => {
       const myTree = new AVLTree();
       myTree.insert(20);
       myTree.insert(10);
@@ -308,7 +308,7 @@ describe('avl tree', () => {
       expect(myTree.root.right.left).toBeNull();
     });
 
-    it('does a double left root rotation, with a single left child on new root, with correct height maintenance', () => {
+    it('does a double right root rotation, with a single left child on new root, with correct height maintenance', () => {
       const myTree = new AVLTree();
       myTree.insert(20);
       myTree.insert(10);
@@ -328,7 +328,7 @@ describe('avl tree', () => {
       expect(myTree.root.right.right.height).toBe(0);
     });
 
-    it('does a double left root rotation, with a single right child on new root', () => {
+    it('does a double right root rotation, with a single right child on new root', () => {
       const myTree = new AVLTree();
       myTree.insert(20);
       myTree.insert(10);
@@ -348,7 +348,7 @@ describe('avl tree', () => {
       expect(myTree.root.right.left.value).toBe(16);
     });
 
-    it('does a double left root rotation, with a single right child on new root, with correct height maintenance', () => {
+    it('does a double right root rotation, with a single right child on new root, with correct height maintenance', () => {
       const myTree = new AVLTree();
       myTree.insert(20);
       myTree.insert(10);
@@ -367,7 +367,7 @@ describe('avl tree', () => {
       expect(myTree.root.right.left.height).toBe(0);
     });
 
-    it('does a double right root rotation, with a single right child on new root', () => {
+    it('does a double left root rotation, with a single right child on new root', () => {
       const myTree = new AVLTree();
       myTree.insert(20);
       myTree.insert(10);
@@ -387,7 +387,7 @@ describe('avl tree', () => {
       expect(myTree.root.right.left.value).toBe(26);
     });
 
-    it('does a double right root rotation, with a single right child on new root, with correct height maintenance', () => {
+    it('does a double left root rotation, with a single right child on new root, with correct height maintenance', () => {
       const myTree = new AVLTree();
       myTree.insert(20);
       myTree.insert(10);
@@ -406,7 +406,7 @@ describe('avl tree', () => {
       expect(myTree.root.right.left.height).toBe(0);
     });
 
-    it('does a double right root rotation, with a single left child on new root', () => {
+    it('does a double left root rotation, with a single left child on new root', () => {
       const myTree = new AVLTree();
       myTree.insert(20);
       myTree.insert(10);
@@ -425,7 +425,7 @@ describe('avl tree', () => {
       expect(myTree.root.right.right.value).toBe(35);
       expect(myTree.root.right.left).toBeNull();
     });
-    it('does a double right root rotation, with a single left child on new root, with correct height maintenance', () => {
+    it('does a double left root rotation, with a single left child on new root, with correct height maintenance', () => {
       const myTree = new AVLTree();
       myTree.insert(20);
       myTree.insert(10);
@@ -444,7 +444,7 @@ describe('avl tree', () => {
       expect(myTree.root.right.right.height).toBe(0);
     });
 
-    it('does a single left non-root rotation', () => {
+    it('does a single right non-root rotation', () => {
       const myTree = new AVLTree();
       myTree.insert(7);
       myTree.insert(6);
@@ -464,7 +464,7 @@ describe('avl tree', () => {
       expect(myTree.root.right.left.value).toBe(8);
     });
 
-    it('does a single left non-root rotation, with correct height maintenance', () => {
+    it('does a single right non-root rotation, with correct height maintenance', () => {
       const myTree = new AVLTree();
       myTree.insert(7);
       myTree.insert(6);
@@ -483,7 +483,7 @@ describe('avl tree', () => {
       expect(myTree.root.right.left.height).toBe(0);
     });
 
-    it('does a single right non-root rotation', () => {
+    it('does a single left non-root rotation', () => {
       const myTree = new AVLTree();
       myTree.insert(3);
       myTree.insert(2);
@@ -503,7 +503,7 @@ describe('avl tree', () => {
       expect(myTree.root.right.left.value).toBe(5);
     });
 
-    it('does a single right non-root rotation, with correct height maintenance', () => {
+    it('does a single left non-root rotation, with correct height maintenance', () => {
       const myTree = new AVLTree();
       myTree.insert(3);
       myTree.insert(2);
@@ -522,7 +522,7 @@ describe('avl tree', () => {
       expect(myTree.root.right.left.height).toBe(0);
     });
 
-    it('does a double left non-root rotation', () => {
+    it('does a double right non-root rotation', () => {
       const myTree = new AVLTree();
       myTree.insert(7);
       myTree.insert(6);
@@ -542,7 +542,7 @@ describe('avl tree', () => {
       expect(myTree.root.right.left).toBeNull();
     });
 
-    it('does a double left non-root rotation, with correct height maintenance', () => {
+    it('does a double right non-root rotation, with correct height maintenance', () => {
       const myTree = new AVLTree();
       myTree.insert(7);
       myTree.insert(6);
@@ -561,7 +561,7 @@ describe('avl tree', () => {
       expect(myTree.root.right.right.height).toBe(0);
     });
 
-    it('does a double right non-root rotation', () => {
+    it('does a double left non-root rotation', () => {
       const myTree = new AVLTree();
       myTree.insert(3);
       myTree.insert(2);
@@ -581,7 +581,7 @@ describe('avl tree', () => {
       expect(myTree.root.right.left.value).toBe(6);
     });
 
-    it('does a double right non-root rotation, with correct height maintenance', () => {
+    it('does a double left non-root rotation, with correct height maintenance', () => {
       const myTree = new AVLTree();
       myTree.insert(3);
       myTree.insert(2);
@@ -600,7 +600,7 @@ describe('avl tree', () => {
       expect(myTree.root.right.left.height).toBe(0);
     });
 
-    it('does a double left non-root rotation, with a single left child on new root', () => {
+    it('does a double right non-root rotation, with a single left child on new root', () => {
       const myTree = new AVLTree();
       myTree.insert(20);
       myTree.insert(9);
@@ -630,7 +630,7 @@ describe('avl tree', () => {
       expect(myTree.root.right.left).toBeNull();
     });
 
-    it('does a double left non-root rotation, with a single left child on new root, with correct height maintenance', () => {
+    it('does a double right non-root rotation, with a single left child on new root, with correct height maintenance', () => {
       const myTree = new AVLTree();
       myTree.insert(20);
       myTree.insert(9);
@@ -658,7 +658,7 @@ describe('avl tree', () => {
       expect(myTree.root.right.right.height).toBe(0);
     });
 
-    it('does a double left non-root rotation, with a single right child on new root', () => {
+    it('does a double right non-root rotation, with a single right child on new root', () => {
       const myTree = new AVLTree();
       myTree.insert(20);
       myTree.insert(10);
@@ -688,7 +688,7 @@ describe('avl tree', () => {
       expect(myTree.root.right.left).toBeNull();
     });
 
-    it('does a double left non-root rotation, with a single right child on new root, with correct height maintenance', () => {
+    it('does a double right non-root rotation, with a single right child on new root, with correct height maintenance', () => {
       const myTree = new AVLTree();
       myTree.insert(20);
       myTree.insert(10);
@@ -716,7 +716,7 @@ describe('avl tree', () => {
       expect(myTree.root.right.right.height).toBe(0);
     });
 
-    it('does a double right non-root rotation, with a single left child on new root', () => {
+    it('does a double left non-root rotation, with a single left child on new root', () => {
       const myTree = new AVLTree();
       myTree.insert(10);
       myTree.insert(9);
@@ -747,7 +747,7 @@ describe('avl tree', () => {
       expect(myTree.root.right.left.right.value).toBe(15);
     });
 
-    it('does a double right non-root rotation, with a single left child on new root, with correct height maintenance', () => {
+    it('does a double left non-root rotation, with a single left child on new root, with correct height maintenance', () => {
       const myTree = new AVLTree();
       myTree.insert(10);
       myTree.insert(9);
@@ -776,7 +776,7 @@ describe('avl tree', () => {
       expect(myTree.root.right.left.right.height).toBe(0);
     });
 
-    it('does a double right non-root rotation, with a single right child on new root', () => {
+    it('does a double left non-root rotation, with a single right child on new root', () => {
       const myTree = new AVLTree();
       myTree.insert(10);
       myTree.insert(9);
@@ -807,7 +807,7 @@ describe('avl tree', () => {
       expect(myTree.root.right.left.right).toBeNull();
     });
 
-    it('does a double right non-root rotation, with a single right child on new root, with correct height maintenance', () => {
+    it('does a double left non-root rotation, with a single right child on new root, with correct height maintenance', () => {
       const myTree = new AVLTree();
       myTree.insert(10);
       myTree.insert(9);
@@ -868,6 +868,7 @@ describe('avl tree', () => {
       const result = myTree.remove(2);
 
       expect(result).toBeUndefined();
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
 
     it('returns the node when it is present, and is the root, and has no children', () => {
@@ -887,6 +888,7 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(2);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
 
     it('returns the node when it is present, and is the root, and has 1 left child', () => {
@@ -906,6 +908,7 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(2);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
 
     it('returns the node when it is present, and is the root, and has 1 right child', () => {
@@ -925,6 +928,7 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(2);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
 
     it('returns the removed node, and is the root, from a tree that has two single-node children', () => {
@@ -944,6 +948,7 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(2);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
 
     it('returns the removed leaf node', () => {
@@ -963,6 +968,7 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(1);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
 
     it('removes left non leaf node from sub tree with only leaves', () => {
@@ -982,6 +988,7 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(3);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
 
     it('removes right non leaf node from sub tree with only leaves', () => {
@@ -1001,9 +1008,10 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(7);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
 
-    it('removes a leaf node causing a single left rotation', () => {
+    it('removes a leaf node causing a single right rotation', () => {
       const myTree = new AVLTree();
 
       const values = [3, 2, 4, 1];
@@ -1020,9 +1028,10 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(4);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
 
-    it('removes a leaf node causing a single right rotation', () => {
+    it('removes a leaf node causing a single left rotation', () => {
       const myTree = new AVLTree();
 
       const values = [1, 0, 2, 3];
@@ -1039,9 +1048,10 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(0);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
 
-    it('removes a leaf node causing a double left rotation', () => {
+    it('removes a leaf node causing a double right rotation', () => {
       const myTree = new AVLTree();
 
       const values = [8, 6, 9, 7];
@@ -1058,8 +1068,9 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(9);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
-    it('removes a leaf node causing a double right rotation', () => {
+    it('removes a leaf node causing a double left rotation', () => {
       const myTree = new AVLTree();
 
       const values = [5, 4, 7, 6];
@@ -1076,9 +1087,10 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(4);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
 
-    it('removes a leaf node causing a double left rotation', () => {
+    it('removes a leaf node causing a double right rotation', () => {
       const myTree = new AVLTree();
 
       const values = [8, 6, 9, 5, 7];
@@ -1095,8 +1107,9 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(9);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
-    it('removes a leaf node causing a double right rotation', () => {
+    it('removes a leaf node causing a double left rotation', () => {
       const myTree = new AVLTree();
 
       const values = [5, 4, 7, 6, 8];
@@ -1113,9 +1126,10 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(4);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
 
-    it('removes a leaf node causing a double left rotation with larger sub trees', () => {
+    it('removes a leaf node causing a double right rotation with larger sub trees', () => {
       const myTree = new AVLTree();
 
       const values = [85, 62, 88, 42, 66, 86, 0, 65];
@@ -1132,8 +1146,9 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(86);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
-    it('removes a leaf node causing a double left rotation with full sub trees', () => {
+    it('removes a leaf node causing a double right rotation with full sub trees', () => {
       const myTree = new AVLTree();
       const values = [71, 35, 87, 27, 61, 84, 96, 16, 30, 53, 70, 97, 8, 24, 28, 32, 39, 56];
       for (let i = 0; i < values.length; i++) {
@@ -1149,6 +1164,7 @@ describe('avl tree', () => {
       }
 
       expect(myTree).toEqual(myExpectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
 
     it('returns undefined when removing an value that does not exist', () => {
@@ -1161,6 +1177,7 @@ describe('avl tree', () => {
       const result = myTree.remove(2);
 
       expect(result).toBeUndefined();
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
 
     it('creates imbalance in left sub tree when removing left leaf node, when removed node is 0 deep', () => {
@@ -1180,6 +1197,7 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(0);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
     it('creates imbalance in left sub tree when removing right leaf node, when removed node is 0 deep', () => {
       const myTree = new AVLTree();
@@ -1198,6 +1216,7 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(7);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
 
     it('creates imbalance in right sub tree when removing left leaf node, when removed node is 0 deep', () => {
@@ -1217,6 +1236,7 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(17);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
     it('creates imbalance in right sub tree when removing right leaf node, when removed node is 0 deep', () => {
       const myTree = new AVLTree();
@@ -1235,10 +1255,11 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(12);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
 
 
-    it('removes left sub tree root, when replacement is in left tree, 2 deep, replacement causes double left rotation', () => {
+    it('removes left sub tree root, when replacement is in left tree, 2 deep, replacement causes double right rotation', () => {
       const myTree = new AVLTree();
 
       const values = [20, 10, 30, 5, 15, 25, 35, 2, 8, 13, 17, 40, 3];
@@ -1255,8 +1276,9 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(10);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
-    it('removes left sub tree root, when replacement is in left tree, 2 deep, replacement causes single left rotation', () => {
+    it('removes left sub tree root, when replacement is in left tree, 2 deep, replacement causes single right rotation', () => {
       const myTree = new AVLTree();
 
       const values = [20, 10, 30, 5, 15, 25, 35, 2, 8, 13, 17, 40, 1];
@@ -1273,6 +1295,7 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(10);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
     it('removes left sub tree root, when replacement is in left tree, 2 deep, replacement causes no rotation', () => {
       const myTree = new AVLTree();
@@ -1291,6 +1314,7 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(10);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
     it('removes left sub tree root, when replacement is in left tree, 2 deep, replacement causes no rotation', () => {
       const myTree = new AVLTree();
@@ -1309,6 +1333,7 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(10);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
     it('removes left sub tree root, when replacement is in right tree, 2 deep, replacement causes no rotation', () => {
       const myTree = new AVLTree();
@@ -1327,6 +1352,7 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(10);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
     it('removes left sub tree root, when replacement is in right tree, 2 deep, replacement causes no rotation', () => {
       const myTree = new AVLTree();
@@ -1345,6 +1371,7 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(10);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
     it('removes left sub tree root, when replacement is in right tree, 2 deep, replacement causes double rotation', () => {
       const myTree = new AVLTree();
@@ -1363,6 +1390,7 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(10);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
     it('removes left sub tree root, when replacement is in right tree, 2 deep, replacement causes single rotation', () => {
       const myTree = new AVLTree();
@@ -1381,8 +1409,9 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(10);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
-    it('removes right sub tree root, when replacement is in left tree, 2 deep, replacement causes single left rotation', () => {
+    it('removes right sub tree root, when replacement is in left tree, 2 deep, replacement causes single right rotation', () => {
       const myTree = new AVLTree();
 
       const values = [20, 10, 30, 5, 15, 25, 35, 1, 23, 27, 33, 40, 22];
@@ -1399,8 +1428,9 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(30);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
-    it('removes right sub tree root, when replacement is in left tree, 2 deep, replacement causes double left rotation', () => {
+    it('removes right sub tree root, when replacement is in left tree, 2 deep, replacement causes double right rotation', () => {
       const myTree = new AVLTree();
 
       const values = [20, 10, 30, 5, 15, 25, 35, 1, 23, 27, 33, 40, 24];
@@ -1417,6 +1447,7 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(30);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
     it('removes right sub tree root, when replacement is in left tree, 2 deep, replacement causes no rotation', () => {
       const myTree = new AVLTree();
@@ -1435,6 +1466,7 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(30);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
     it('removes right sub tree root, when replacement is in left tree, 2 deep, replacement causes no rotation', () => {
       const myTree = new AVLTree();
@@ -1453,6 +1485,7 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(30);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
     it('removes right sub tree root, when replacement is in left tree, 2 deep, replacement causes no rotation', () => {
       const myTree = new AVLTree();
@@ -1471,6 +1504,7 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(30);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
     it('removes right sub tree root, when replacement is in left tree, 2 deep, replacement causes no rotation', () => {
       const myTree = new AVLTree();
@@ -1489,8 +1523,9 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(30);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
-    it('removes right sub tree root, when replacement is in left tree, 2 deep, replacement causes double right rotation', () => {
+    it('removes right sub tree root, when replacement is in left tree, 2 deep, replacement causes double left rotation', () => {
       const myTree = new AVLTree();
 
       const values = [20, 10, 30, 5, 15, 25, 35, 1, 23, 27, 33, 40, 39];
@@ -1507,8 +1542,9 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(30);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
-    it('removes right sub tree root, when replacement is in left tree, 2 deep, replacement causes single right rotation', () => {
+    it('removes right sub tree root, when replacement is in left tree, 2 deep, replacement causes single left rotation', () => {
       const myTree = new AVLTree();
 
       const values = [20, 10, 30, 5, 15, 25, 35, 1, 23, 27, 33, 40, 41];
@@ -1525,6 +1561,7 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(30);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
 
     it('removes left sub tree root, when replacement is in left tree, 3 deep, removal causes no rotation, no height change', () => {
@@ -1544,6 +1581,7 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(19);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
     it('removes left sub tree root, when replacement is in left tree, 2 deep, removal causes no rotation, no height change', () => {
       const myTree = new AVLTree();
@@ -1562,6 +1600,7 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(19);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
     it('removes left sub tree root, when replacement is in left tree, 1 deep, removal causes no rotation, no height change', () => {
       const myTree = new AVLTree();
@@ -1579,6 +1618,7 @@ describe('avl tree', () => {
       }
       expect(result.value).toBe(19);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
 
     it('removes left sub tree root, replacement is 3 steps from removed node, removal causes no rotation, a height change', () => {
@@ -1598,6 +1638,7 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(19);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
     it('removes left sub tree root, replacement is 2 steps from removed node, removal causes no rotation, a height change', () => {
       const myTree = new AVLTree();
@@ -1616,6 +1657,7 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(19);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
     it('removes left sub tree root, replacement is 1 steps from removed node, removal causes no rotation, a height change', () => {
       const myTree = new AVLTree();
@@ -1634,6 +1676,7 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(19);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
 
 
@@ -1654,6 +1697,7 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(14);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
     it('removes left sub tree root, imbalance 1 step from removed node, with height change', () => {
       const myTree = new AVLTree();
@@ -1672,6 +1716,7 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(14);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
     it('removes left sub tree root, imbalance 1 step from removed node, with height change', () => {
       const myTree = new AVLTree();
@@ -1690,6 +1735,7 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(14);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
     it('removes left sub tree root, imbalance 2 steps from removed node, with height change', () => {
       const myTree = new AVLTree();
@@ -1708,6 +1754,7 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(13);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
     it('removes left sub tree root, imbalance 3 steps from removed node, with height change', () => {
       const myTree = new AVLTree();
@@ -1726,9 +1773,10 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(21);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
 
-    it('removal of leaf node causes double right rotation at root, which requries another double rotation', () => {
+    it('removal of leaf node causes double left rotation at root, which requries another double rotation', () => {
       const myTree = new AVLTree();
 
 
@@ -1746,8 +1794,9 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(42);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
-    it('removal of leaf node -> single right -> double right at root -> double rotation in right tree', () => {
+    it('removal of leaf node -> single left -> double left at root -> double rotation in right tree', () => {
       const myTree = new AVLTree();
 
       const values = [37, 24, 56, 13, 29, 50, 80, 4, 14, 26, 36, 45, 53, 63, 91, 17, 44, 47, 52, 54, 60, 72, 87, 96, 48, 62, 69, 78, 83, 90, 94];
@@ -1762,11 +1811,11 @@ describe('avl tree', () => {
         expectedTree.insert(expectedTreeValues[i]);
       }
 
-
       expect(result.value).toBe(4);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
-    it('removal of leaf node -> single right -> double right at root -> 2x double rotation in right tree', () => {
+    it('removal of leaf node -> single left -> double left at root -> 2x double rotation in right tree', () => {
       const myTree = new AVLTree();
 
       const values = [37, 24, 56, 13, 29, 50, 80, 4, 14, 26, 36, 45, 53, 63, 91, 17, 44, 47, 52, 54, 60, 72, 87, 96, 48, 62, 83, 90, 94];
@@ -1783,6 +1832,7 @@ describe('avl tree', () => {
 
       expect(result.value).toBe(4);
       expect(myTree).toEqual(expectedTree);
+      expect(myTree.containsHeightErrors()).toBe(false);
     });
   });
 
