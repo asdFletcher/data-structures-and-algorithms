@@ -1,10 +1,19 @@
+// class TreeNode {
+//   constructor(val) {
+//     this.val = val;
+//     this.left = null;
+//     this.right = null;
+//   }
+// }
+
 class TreeNode {
   constructor(val) {
     this.val = val;
     this.left = null;
     this.right = null;
+    this.next = null;
   }
-}
+};
 
 class VBT {
   constructor() {
