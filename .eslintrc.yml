@@ -10,4 +10,13 @@ globals:
 parserOptions:
   ecmaVersion: 2018
   sourceType: script
-rules: {}
+rules:
+  {
+    'strict': 'off',
+    'no-unused-vars': 'off',
+    'prefer-const': 'error',
+    'no-var': 'warn',
+    'no-plusplus': 'off',
+    'no-empty': 'off',
+    'operator-assignment': 'off',
+  }
